@@ -5,8 +5,8 @@ public class Jogador{
 	private int vidasRestantes;
 	private int faseAtual;
 	
-	public Jogador(){
-		this.nome = null;
+	public Jogador(String nome){
+		this.nome = nome;
 		this.pontuacao = 0;
 		this.vidasRestantes = 3;
 		this.faseAtual = 0;

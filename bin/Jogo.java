@@ -114,7 +114,7 @@ public class Jogo{
 	}
 	
 	private ArrayList<Casa> criaFases(){
-		// Fase - 1
+		// Casa - 1
 		Casa casa1 = new Casa("Casa de Paulo", "Paulo é um jovem que mora sozinho.", 1)
 		
 		//Comodos
