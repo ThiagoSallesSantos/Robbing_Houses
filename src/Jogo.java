@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Jogo{
 	
@@ -21,9 +22,55 @@ public class Jogo{
 		Ladra ladrao = new Ladrao(casa.getComodoInicial());
 		while((this.jogador.getVidasRestantes() > 0) && (casaAtual != null)){
 			this.preMoveDonos(casaAtual);
-			
+			this.saidaUsr.outputUsr("\n----------------------Comodo Infomacoes----------------------\n");
+			this.saidaUsr.outputUsr(this.getInfoComodo(ladrao.getLocalAtual()));
+			this.saidaUsr.outputUsr("\n----------------------Dono Infomacoes----------------------\n");
+			this.saidaUsr.outputUsr(this.getInfoDono());
+			this.saidaUsr.outputUsr("\n----------------------Ladrao Infomacoes----------------------\n");
 			this.moveDonos(casaAtual);
 		}
+	}
+	
+	private String getInfoDono(Casa casa){
+		String texto = "Acao dos dono(s):";
+		int cont = 1;
+		for(Dono dono : casa.getDonos()){
+			texto += "Dono-" + (String)cont + ": " + dono; 
+		}
+		return texto;
+	}
+	
+	private String getInfoComodo(Comodo comodo){
+		return comodo + "\nPorta(s):\n" + this.getPortasComodo(comodo) + "\nItens:\n" + this.getItensComodo(comodo) + "\nEsconderijo:\n" + this.getEsconderijoComodo(comodo) + "\nSaida:\n" + this.getSaidaComodo(comodo);
+	}
+	
+	private String getPortasComodo(Comodo comodo){
+		String texto = "entrar <nome_comodo> \n";
+		Map<Comodo, Boolean> portas = comodo.getPortas();
+		for(Comodo comodoAdjacente : portas.keySet()){
+			texto += comodoAdjacente + ((portas.get(comodoAdjacente)) ? " - (Trancada)" : "");
+		}
+		return texto + "\n";
+	}
+	
+	private String getItensComodo(Comodo comodo){
+		String texto = "roubar <nome_item> \n";
+		if(comodo.getQtdItens() <= 0){
+			return texto + "Neste comodo nao possui item para ser roubado! \n";
+		}
+		texto += "Lista itens para serem roubados: \n";
+		for(Item item : comodo.getItens()){
+			texto += item + "\n";
+		}
+		return texto + "\n";
+	}
+	
+	private String getEsconderijoComodo(Comodo comodo){
+		return (comodo.getEsconderijo()) ? "esconder\n" : "Nao possui local para esconder!\n";
+	}
+	
+	private String getSaidaComodo(Comodo comodo){
+		return (comodo.getSaida()) ? "fugir\n" : "Nao possui saida para fugir!\n";
 	}
 	
 	private void preMoveDonos(Casa casa){

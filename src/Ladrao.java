@@ -32,5 +32,14 @@ public class Ladrao extends Pessoa{
 			this.vidaUtilChaveMestre -= 1;
 		}
 	}
+	
+	@Override
+	public String toString(){
+		String texto = "Chave Mestre: " + (String)this.getVidaUtilChave() + " uso(s) restante\n";
+		for(Item itemRoubado : this.listaItensRoubados){
+			texto += itemRoubado + "\n";
+		}
+		return texto;
+	}
 
 }

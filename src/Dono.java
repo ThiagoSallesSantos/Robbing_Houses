@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Random;
 
 public class Dono extends Pessoa {
@@ -18,9 +19,10 @@ public class Dono extends Pessoa {
 	}
 
 	public void selecionaProximoComodo(){
-		Comodo comodoAtual = super.getLocalAtual();
-		ArrayList<Comodo> comodosAdjacentes = comodoAtual.getComodosAdjacentes(true);
 		Random random = new Random();
+		Comodo comodoAtual = super.getLocalAtual();
+		Map<Comodo, Boolean> portas = comodoAtual.getPortas();
+		ArrayList<Comodo> comodosAdjacentes = new ArrayList<>(portas.keySet());
 		this.setProximoComodo(comodosAdjacentes.get(random.nextInt(comodosAdjacentes.size() - 1)));
 	}
 	
