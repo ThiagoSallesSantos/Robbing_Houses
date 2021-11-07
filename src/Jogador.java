@@ -1,4 +1,7 @@
-public class Jogador{
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Jogador implements Serializable{
 	
 	private String nome;
 	private int pontuacao;
