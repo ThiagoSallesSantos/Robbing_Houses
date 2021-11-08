@@ -63,5 +63,16 @@ public class Casa{
 		}
 		return comodoDono;
 	}
+	
+	@Override
+	public String toString(){
+		int cont = 0;
+		String texto = "Casa: " + this.getNome() + "\nDescricao: " + this.getDescricao() + "\n";
+		for(Dono dono : this.getDonos()){
+			texto += "Dono " + cont + " - " + dono + "\n";
+			cont += 1;
+		}
+		return texto;
+	}
 
 }

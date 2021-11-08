@@ -43,7 +43,7 @@ public class Comodo{
 		this.portas.replace(comodoX, false);
 	}
 	
-	public ArrayList<Item> selecionaItens(Tier tier){
+	private ArrayList<Item> selecionaItens(Tier tier){
 		Random random = new Random();
 		ArrayList<Item> auxListaItens = new ArrayList<Item>();
 		int qtdItens = random.nextInt(5) + 1;
@@ -67,7 +67,23 @@ public class Comodo{
 	
 	@Override
 	public String toString(){
-		return this.getNome();
+		int cont = 0;
+		String texto = this.getNome() + "\n";
+		texto += "\n-Portas-\nLista de comodos adjacentes:\n";
+		for(Comodo comodoAdjacente : this.getPortas()){
+			texto += cont + " - " + comodoAdjacente.getNome() + "\n";
+			cont += 1;
+		}
+		texto += "-Itens-\nLista de itens para serem roubados:\n";
+		if(this.getQtdItens == 0){
+			texto += "Este comodo nao possui itens para ser roubados!";
+		}else{
+			cont = 0;
+			for(Item item : this.getItens()){
+				texto += cont + " - " + item;
+			}
+		}
+		return texto;
 	}
 	
 }
