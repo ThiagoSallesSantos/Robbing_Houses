@@ -4,14 +4,29 @@ public class Ladrao extends Pessoa{
 
 	private int vidaUtilChaveMestre;
 	private ArrayList<Item> listaItensRoubados;
+	private boolean esconder;
 	
-	public Ladrao(){
+	public Ladrao(Comodo localInicial){
+		super(localInicial);
+		this.esconder = false;
 		this.vidaUtilChaveMestre = 3;
 		this.listaItensRoubados = new ArrayList<Item>();
 	}
 	
 	public void adicionaItemRoubado(Item item){
 		this.listaItensRoubados.add(item);
+	}
+	
+	public boolean getEscondido(){
+		return this.esconder;
+	}
+	
+	public void esconder(){
+		this.esconder = true;
+	}
+	
+	public void sairEsconderijo(){
+		this.esconder = false;
 	}
 	
 	public int calculaRoubo(){
@@ -26,16 +41,25 @@ public class Ladrao extends Pessoa{
 		return this.vidaUtilChaveMestre;
 	}
 	
-	public void abrirPorta(Porta porta){
-		if(this.vidaUtilChaveMestre > 0){
-			porta.abrirPorta();
-			this.vidaUtilChaveMestre -= 1;
-		}
+	public void usaChaveMestre(){
+		this.vidaUtilChaveMestre -= 1;
+	}
+	
+	public ArrayList<Item> getListaItensRoubados(){
+		return this.listaItensRoubados;
+	}
+	
+	public int getQtdItens(){
+		return this.listaItensRoubados.size();
 	}
 	
 	@Override
 	public String toString(){
-		String texto = "Chave Mestre: " + (String)this.getVidaUtilChave() + " uso(s) restante\n";
+		String texto = "Chave Mestre: " + this.getVidaUtilChave() + " uso(s) restante\n";
+		texto += "Itens roubados:";
+		if(this.getQtdItens() > 0){
+			return texto + "Nenhum foi roubado ainda!";
+		}
 		for(Item itemRoubado : this.listaItensRoubados){
 			texto += itemRoubado + "\n";
 		}

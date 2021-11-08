@@ -39,12 +39,18 @@ public class Comodo{
 		return this.portas;
 	}
 	
-	public void selecionaItens(Tier tier){
+	public void abrirPorta(Comodo comodoX){
+		this.portas.replace(comodoX, false);
+	}
+	
+	public ArrayList<Item> selecionaItens(Tier tier){
 		Random random = new Random();
-		int qtdItens = random.nextInt(4) + 1;
+		ArrayList<Item> auxListaItens = new ArrayList<Item>();
+		int qtdItens = random.nextInt(5) + 1;
 		for(int i=0; i < qtdItens; i++){
-			listaItens.add(tier.getItem(random.nextInt(tier.getQtdItens() - 1)))
+			auxListaItens.add(tier.getItem(random.nextInt(tier.getQtdItens())));
 		}
+		return auxListaItens;
 	}
 	
 	public ArrayList<Item> getItens(){
@@ -53,6 +59,10 @@ public class Comodo{
 	
 	public int getQtdItens(){
 		return this.listaItens.size();
+	}
+	
+	public Item roubaItem(int posicaoItem){
+		return this.listaItens.remove(posicaoItem);
 	}
 	
 	@Override

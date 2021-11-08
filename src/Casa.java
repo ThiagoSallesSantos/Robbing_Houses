@@ -41,6 +41,11 @@ public class Casa{
 		this.comodos.add(comodo);
 	}
 	
+	public void adicionaPorta(Comodo comodoA, Comodo comodoB, boolean trancada){
+		comodoA.adicionaPorta(comodoB, trancada);
+		comodoB.adicionaPorta(comodoA, trancada);
+	}
+	
 	public void adicionaDonos(int qtdDonos){
 		for(int i=0; i < qtdDonos; i++){
 			this.donos.add(new Dono(this.selecionaComodoDono()));
@@ -48,10 +53,10 @@ public class Casa{
 	}
 	
 	public Comodo selecionaComodoDono(){
-		Random random;
+		Random random = new Random();
 		Comodo comodoDono;
 		while(true){
-			comodoDono = this.comodos.get(random.nextInt(this.comodos.size() - 1));
+			comodoDono = this.comodos.get(random.nextInt(this.comodos.size()));
 			if(!comodoDono.equals(this.comodoInicial)){
 				break;
 			}

@@ -13,7 +13,7 @@ public class Tier{
 	}
 
 	public int getBonus(){
-		return this.bonus
+		return this.bonus;
 	}
 	
 	public String getDescricao(){

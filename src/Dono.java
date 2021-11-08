@@ -23,7 +23,7 @@ public class Dono extends Pessoa {
 		Comodo comodoAtual = super.getLocalAtual();
 		Map<Comodo, Boolean> portas = comodoAtual.getPortas();
 		ArrayList<Comodo> comodosAdjacentes = new ArrayList<>(portas.keySet());
-		this.setProximoComodo(comodosAdjacentes.get(random.nextInt(comodosAdjacentes.size() - 1)));
+		this.setProximoComodo(comodosAdjacentes.get(random.nextInt(comodosAdjacentes.size())));
 	}
 	
 	@Override

@@ -4,38 +4,137 @@ import java.util.Map;
 public class Jogo{
 	
 	private Jogador jogador;
-	private ArrayList<Casa> listaFases;
 	private EntradaUsuario entradaUsr;
 	private SaidaUsuario saidaUsr;
 	private ArrayList<Tier> listaTier;
+	private Ladrao ladrao;
+	private Casa casaAtual;
 	
 	public Jogo(Jogador jogador){
 		this.jogador = jogador;
-		this.listaTier = this.criaTierItens();
-		this.listaFases = this.criaFases();
 		this.entradaUsr = new EntradaUsuario();
 		this.saidaUsr = new SaidaUsuario();
+		this.listaTier = this.criarTierItens();
 	}
 	
 	public void executaJogo(){
-		Casa casaAtual = this.getFase(this.jogador.getFaseAtual());
-		Ladra ladrao = new Ladrao(casa.getComodoInicial());
-		while((this.jogador.getVidasRestantes() > 0) && (casaAtual != null)){
-			this.preMoveDonos(casaAtual);
+		this.iniciaFase(this.jogador.getFaseAtual());
+		while((this.jogador.getVidasRestantes() > 0) && (this.casaAtual != null)){
+			this.preMoveDonos(this.casaAtual);
 			this.saidaUsr.outputUsr("\n----------------------Comodo Infomacoes----------------------\n");
 			this.saidaUsr.outputUsr(this.getInfoComodo(ladrao.getLocalAtual()));
 			this.saidaUsr.outputUsr("\n----------------------Dono Infomacoes----------------------\n");
-			this.saidaUsr.outputUsr(this.getInfoDono());
+			this.saidaUsr.outputUsr(this.getInfoDonos(this.casaAtual));
 			this.saidaUsr.outputUsr("\n----------------------Ladrao Infomacoes----------------------\n");
-			this.moveDonos(casaAtual);
+			this.saidaUsr.outputUsr(this.getInfoLadrao(ladrao));
+			Comando comando = entradaUsr.getComandoUsuario();
+			this.executaComando(comando, ladrao);
+			if(this.verficarEncontro(ladrao, this.casaAtual)){
+				this.jogador.reduzirVidasRestantes();
+				this.iniciaFase(this.jogador.getFaseAtual());
+			}else{
+				this.moveDonos(this.casaAtual);
+			}
+			
+			System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+			System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		}
 	}
 	
-	private String getInfoDono(Casa casa){
-		String texto = "Acao dos dono(s):";
+	private void iniciaFase(int faseAtual){
+		this.casaAtual = this.criarFases(faseAtual);
+		this.ladrao = new Ladrao(this.casaAtual.getComodoInicial());
+	}
+	
+	private void executaComando(Comando comando, Ladrao ladrao){
+		
+		switch(comando.getComando()){
+			case "roubar":
+				this.executaRoubar(ladrao, comando.getAtributo());
+				break;
+			case "entrar":
+				this.executaEntrar(ladrao, comando.getAtributo());
+				break;
+			case "esconder":
+				this.executaEsconder(ladrao);
+				break;
+			case "sair":
+				this.executaSair(ladrao);
+				break;
+			case "fugir":
+				System.out.println("Fugiu cagão");
+				this.executaFugir(ladrao);
+				break;
+			default:
+				System.out.println("AAAA");
+		}
+		
+	}
+	
+	private void executaFugir(Ladrao ladrao){
+		this.jogador.proximaFase();
+		this.jogador.adicionaPontuacao(ladrao.calculaRoubo());
+		this.iniciaFase(this.jogador.getFaseAtual());
+	}
+	
+	private void executaRoubar(Ladrao ladrao, String atributo){
+		int atributoInt = Integer.parseInt(atributo);
+		Comodo comodoAtual = ladrao.getLocalAtual();
+		ladrao.adicionaItemRoubado(comodoAtual.roubaItem(atributoInt-1));
+	}
+	
+	private void executaEntrar(Ladrao ladrao, String atributo){
+		int atributoInt = Integer.parseInt(atributo);
+		Comodo comodoOrigem = ladrao.getLocalAtual();
+		Map<Comodo, Boolean> portas = comodoOrigem.getPortas();
+		ArrayList<Comodo> comodosAdjacentes = new ArrayList<>(portas.keySet());
+		Comodo comodoDestino  = comodosAdjacentes.get(atributoInt-1);
+		if(portas.get(comodoDestino)){
+			if(ladrao.getVidaUtilChave() > 0){
+				comodoOrigem.abrirPorta(comodoDestino);
+				comodoDestino.abrirPorta(comodoOrigem);
+				ladrao.usaChaveMestre();
+			}
+		}
+		ladrao.movimentar(comodoDestino);
+	}
+	
+	private void executaEsconder(Ladrao ladrao){
+		ladrao.esconder();
+	}
+	
+	private void executaSair(Ladrao ladrao){
+		ladrao.sairEsconderijo();
+	}
+	
+	private boolean verficarEncontro(Ladrao ladrao, Casa casa){
+		if(!ladrao.getEscondido()){
+			for(Dono dono : casa.getDonos()){
+				if((ladrao.getLocalAtual() == dono.getLocalAtual()) || (ladrao.getLocalAtual() == dono.getProximoComodo())){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	private String getInfoLadrao(Ladrao ladrao){
+		String texto = "Chave Mestre: " + ladrao.getVidaUtilChave() + " uso(s) restante\n";
+		texto += "Itens roubados:\n";
+		if(ladrao.getQtdItens() == 0){
+			return texto + "Nenhum foi roubado ainda!\n";
+		}
+		for(Item itemRoubado : ladrao.getListaItensRoubados()){
+			texto += itemRoubado + "\n";
+		}
+		return texto + "\n";
+	}
+	
+	private String getInfoDonos(Casa casa){
+		String texto = "Acao dos dono(s):\n";
 		int cont = 1;
 		for(Dono dono : casa.getDonos()){
-			texto += "Dono-" + (String)cont + ": " + dono; 
+			texto += cont + " - Dono" + ": " + dono + "\n"; 
 		}
 		return texto;
 	}
@@ -45,32 +144,35 @@ public class Jogo{
 	}
 	
 	private String getPortasComodo(Comodo comodo){
-		String texto = "entrar <nome_comodo> \n";
+		String texto = "Lista dos comodos adjacentes:\n";
 		Map<Comodo, Boolean> portas = comodo.getPortas();
+		int cont = 1;
 		for(Comodo comodoAdjacente : portas.keySet()){
-			texto += comodoAdjacente + ((portas.get(comodoAdjacente)) ? " - (Trancada)" : "");
+			texto += cont + " - " + comodoAdjacente + ((portas.get(comodoAdjacente)) ? " - (Trancada)" : "") + "\n";
+			cont += 1;
 		}
 		return texto + "\n";
 	}
 	
 	private String getItensComodo(Comodo comodo){
-		String texto = "roubar <nome_item> \n";
+		String texto = "Lista dos itens para serem roubados:\n";
 		if(comodo.getQtdItens() <= 0){
-			return texto + "Neste comodo nao possui item para ser roubado! \n";
+			return texto + "Neste comodo nao possui item para ser roubado!\n";
 		}
-		texto += "Lista itens para serem roubados: \n";
+		int cont = 1;
 		for(Item item : comodo.getItens()){
-			texto += item + "\n";
+			texto += cont + " - " + item + "\n";
+			cont += 1;
 		}
 		return texto + "\n";
 	}
 	
 	private String getEsconderijoComodo(Comodo comodo){
-		return (comodo.getEsconderijo()) ? "esconder\n" : "Nao possui local para esconder!\n";
+		return (comodo.getEsconderijo()) ? "Este comodo possui local para esconder!\n" : "Este comodo NAO possui local para esconder!\n";
 	}
 	
 	private String getSaidaComodo(Comodo comodo){
-		return (comodo.getSaida()) ? "fugir\n" : "Nao possui saida para fugir!\n";
+		return (comodo.getSaida()) ? "Este comodo possui rota de fuga!\n" : "NAO possui rota de fuga!\n";
 	}
 	
 	private void preMoveDonos(Casa casa){
@@ -81,17 +183,13 @@ public class Jogo{
 	
 	private void moveDonos(Casa casa){
 		for(Dono dono : casa.getDonos()){
-			dono.movimentar(dono.getProximoComodo());
+			if(dono.getProximoComodo() != null){
+				dono.movimentar(dono.getProximoComodo());
+			}
 		}
 	}
 	
-	private Casa getFase(int faseAtual){
-		if(faseAtual < this.listaFases.size()){
-			return this.listaFases.get(faseAtual);
-		} return null;
-	}
-	
-	private ArrayList<Tier> criaTierItens(){
+	public ArrayList<Tier> criarTierItens(){
 		
 		ArrayList<Tier> auxListaTier = new ArrayList<Tier>();
 		
@@ -160,51 +258,122 @@ public class Jogo{
 		
 	}
 	
-	private ArrayList<Casa> criaFases(){
-		// Casa - 1
-		Casa casa1 = new Casa("Casa de Paulo", "Paulo é um jovem que mora sozinho.", 1)
+	private Casa criarFases(int nivelCasa){
 		
-		//Comodos
-		Comodo corredor1 = new Comodo("Corredor-1", this.listaTier.get(0), true, false);
-		Comodo cozinha = new Comodo("Cozinha", this.listaTier.get(0), false, true);
-		Comodo garagem = new Comodo("Garagem", this.listaTier.get(2), true, true);
-		Comodo sala = new Comodo("Sala", this.listaTier.get(1), false, true);
-		Comodo corredor2 = new Comodo("Corredor-2", this.listaTier.get(0), false, false);
-		Comodo quarto1 = new Comodo("Quarto-1", this.listaTier.get(3), false, true);
-		Comodo quarto2 = new Comodo("Quarto-2", this.listaTier.get(1), false, true);
-		Comodo banheiro1 = new Comodo("Banheiro-1", this.listaTier.get(2), false, false);
-		Comodo quarto3 = new Comodo("Quarto-3", this.listaTier.get(2), false, true);
-		Comodo banheiro2 = new Comodo("Banheiro-2", this.listaTier.get(3), false, false);
+		Casa casa = null;
 		
-		//Portas
-		Porta porta1 = new Porta(corredor1, cozinha, false);
-		Porta porta2 = new Porta(corredor1, sala, false);
-		Porta porta3 = new Porta(cozinha, garagem, true);
-		Porta porta4 = new Porta(cozinha, corredor2, false);
-		Porta porta5 = new Porta(sala, corredor2, false);
-		Porta porta6 = new Porta(corredor2, quarto1, true);
-		Porta porta7 = new Porta(corredor2, quarto2, false);
-		Porta porta8 = new Porta(corredor2, banheiro1, true);
-		Porta porta9 = new Porta(corredor2, quarto3, false);
-		Porta porta10 = new Porta(banheiro2, quarto3, false);
-	
-		// Criando a casa
-		casa1.adicionaComodo(corredor1);
-		casa1.adicionaComodo(cozinha);
-		casa1.adicionaComodo(garagem);
-		casa1.adicionaComodo(sala);
-		casa1.adicionaComodo(corredor2);
-		casa1.adicionaComodo(quarto1);
-		casa1.adicionaComodo(quarto2);
-		casa1.adicionaComodo(banheiro1);
-		casa1.adicionaComodo(quarto3);
-		casa1.adicionaComodo(banheiro2);
+		switch(nivelCasa){
 		
-		// Seleciona comodo inicial do ladrão
-		casa1.setComodoInicial(corredor1);
+			case 1:
+			
+				// Casa - 1
+				casa = new Casa("Casa Rústica", "Casa bem aparentada, que se localiza em uma região nobre da cidade!");
+				
+				//Comodos
+				Comodo corredor1C1 = new Comodo("Corredor 1", this.listaTier.get(0), true, false);
+				Comodo cozinhaC1 = new Comodo("Cozinha", this.listaTier.get(0), false, true);
+				Comodo garagemC1 = new Comodo("Garagem", this.listaTier.get(2), true, true);
+				Comodo salaC1 = new Comodo("Sala", this.listaTier.get(1), false, true);
+				Comodo corredor2C1 = new Comodo("Corredor 2", this.listaTier.get(0), false, false);
+				Comodo quarto1C1 = new Comodo("Quarto 1", this.listaTier.get(2), false, true);
+				Comodo quarto2C1 = new Comodo("Quarto 2", this.listaTier.get(1), false, true);
+				Comodo banheiro1C1 = new Comodo("Banheiro 1", this.listaTier.get(1), false, false);
+				Comodo quarto3C1 = new Comodo("Quarto 3", this.listaTier.get(2), false, true);
+				Comodo banheiro2C1 = new Comodo("Banheiro 2", this.listaTier.get(3), false, false);
+			
+				// Adicionando comodos a casa
+				casa.adicionaComodo(corredor1C1);
+				casa.adicionaComodo(cozinhaC1);
+				casa.adicionaComodo(garagemC1);
+				casa.adicionaComodo(salaC1);
+				casa.adicionaComodo(corredor2C1);
+				casa.adicionaComodo(quarto1C1);
+				casa.adicionaComodo(quarto2C1);
+				casa.adicionaComodo(banheiro1C1);
+				casa.adicionaComodo(quarto3C1);
+				casa.adicionaComodo(banheiro2C1);
+				
+				//Portas
+				casa.adicionaPorta(corredor1C1, cozinhaC1, false);
+				casa.adicionaPorta(corredor1C1, salaC1, false);
+				casa.adicionaPorta(garagemC1, cozinhaC1, true);
+				casa.adicionaPorta(corredor2C1, cozinhaC1, false);
+				casa.adicionaPorta(corredor2C1, salaC1, false);
+				casa.adicionaPorta(corredor2C1, quarto1C1, true);
+				casa.adicionaPorta(corredor2C1, quarto2C1, false);
+				casa.adicionaPorta(corredor2C1, banheiro1C1, false);
+				casa.adicionaPorta(corredor2C1, quarto3C1, false);
+				casa.adicionaPorta(banheiro2C1, quarto3C1, false);
+
+				// Seleciona comodo inicial do ladrão
+				casa.setComodoInicial(corredor1C1);
+				
+				// Adiciona os Donos
+				casa.adicionaDonos(1);
+				
+				break;
+			
+			case 2:
+			
+				// Casa - 2
+				casa = new Casa("Casa Moderna", "Casa nova, bem localizada!");
+				
+				// Comodos
+				Comodo salaC2 = new Comodo("Sala", this.listaTier.get(0), true, false);
+				Comodo garagemC2 = new Comodo("Garagem", this.listaTier.get(1), true, true);
+				Comodo depositoC2 = new Comodo("Deposito", this.listaTier.get(0), false, true);
+				Comodo corredorC2 = new Comodo("Corredor", this.listaTier.get(0), false, false);
+				Comodo cozinhaC2 = new Comodo("Cozinha", this.listaTier.get(0), false, true);
+				Comodo quarto1C2 = new Comodo("Quarto 1", this.listaTier.get(2), false, true);
+				Comodo salaJantarC2 = new Comodo("Sala de Jantar", this.listaTier.get(1), false, false);
+				Comodo banheiro1C2 = new Comodo("Banheiro 1", this.listaTier.get(1), false, false);
+				Comodo salaTVC2 = new Comodo("Sala de TV", this.listaTier.get(1), true, false);
+				Comodo quarto2C2 = new Comodo("Quarto 2", this.listaTier.get(2), false, true);
+				Comodo quarto3C2 = new Comodo("Quarto 3", this.listaTier.get(1), false, true);
+				Comodo banheiro2C2 = new Comodo("Banheiro 2", this.listaTier.get(3), false, false);
+				Comodo banheiro3C2 = new Comodo("Banheiro 3", this.listaTier.get(3), false, false);
+			
+				// Adicionando comodos a casa
+				casa.adicionaComodo(salaC2);
+				casa.adicionaComodo(garagemC2);
+				casa.adicionaComodo(depositoC2);
+				casa.adicionaComodo(corredorC2);
+				casa.adicionaComodo(cozinhaC2);
+				casa.adicionaComodo(quarto1C2);
+				casa.adicionaComodo(salaJantarC2);
+				casa.adicionaComodo(banheiro1C2);
+				casa.adicionaComodo(salaTVC2);
+				casa.adicionaComodo(quarto2C2);
+				casa.adicionaComodo(quarto3C2);
+				casa.adicionaComodo(banheiro2C2);
+				casa.adicionaComodo(banheiro3C2);
+				
+				// Portas
+				casa.adicionaPorta(salaC2, garagemC2, true);
+				casa.adicionaPorta(salaC2, depositoC2, false);
+				casa.adicionaPorta(salaC2, corredorC2, false);
+				casa.adicionaPorta(quarto1C2, corredorC2, true);
+				casa.adicionaPorta(cozinhaC2, corredorC2, false);
+				casa.adicionaPorta(cozinhaC2, salaJantarC2, false);
+				casa.adicionaPorta(salaJantarC2, corredorC2, false);
+				casa.adicionaPorta(banheiro1C2, corredorC2, false);
+				casa.adicionaPorta(salaTVC2, corredorC2, false);
+				casa.adicionaPorta(quarto2C2, corredorC2, false);
+				casa.adicionaPorta(quarto2C2, banheiro2C2, true);
+				casa.adicionaPorta(quarto3C2, corredorC2, true);
+				casa.adicionaPorta(quarto3C2, banheiro3C2, false);
+			
+				// Seleciona comodo inicial do ladrão
+				casa.setComodoInicial(salaC2);
+				
+				// Adiciona os Donos
+				casa.adicionaDonos(2);
+			
+			default:
+				break;
+		}
 		
-		// Adiciona os Donos
-		casa1.adicionaDonos(1);
+		return casa;
 		
 	}
 	
