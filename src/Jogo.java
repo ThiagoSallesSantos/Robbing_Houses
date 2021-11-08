@@ -17,48 +17,61 @@ public class Jogo{
 		this.entradaUsr = new EntradaUsuario();
 		this.saidaUsr = new SaidaUsuario();
 		this.listaTier = this.criarTierItens();
-		this.anInterface = new Interface(this);
 	}
 
 	public void setInput(String input) {
 		this.input = input;
 	}
 
+	public Jogador getJogador() {
+		return jogador;
+	}
+
+	public Casa getCasaAtual() {
+		return casaAtual;
+	}
+
 	public void executaJogo(){
 		this.iniciaFase(this.jogador.getFaseAtual());
-		this.anInterface.exibir();
-		Integer cont = 0;
-		while((this.jogador.getVidasRestantes() > 0) && (this.casaAtual != null)){
-			this.preMoveDonos(this.casaAtual);
-			this.saidaUsr.outputUsr("\n----------------------Comodo Infomacoes----------------------\n");
-			this.saidaUsr.outputUsr(this.getInfoComodo(ladrao.getLocalAtual()));
-			this.anInterface.updateTentativasRestantes(cont.toString());
-			this.saidaUsr.outputUsr("\n----------------------Dono Infomacoes----------------------\n");
-			this.saidaUsr.outputUsr(this.getInfoDonos(this.casaAtual));
-			this.saidaUsr.outputUsr("\n----------------------Ladrao Infomacoes----------------------\n");
-			this.saidaUsr.outputUsr(this.getInfoLadrao(ladrao));
-			this.input = anInterface.getInput();
-			System.out.print("-----------teste");
-			Comando comando = new Comando(input.split(" ")[0], input.split(" ")[1]);
-			this.executaComando(comando, ladrao);
-			if(this.verficarEncontro(ladrao, this.casaAtual)){
-				this.jogador.reduzirVidasRestantes();
-				this.iniciaFase(this.jogador.getFaseAtual());
-			}else{
-				this.moveDonos(this.casaAtual);
-			}
-			
-			System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-			System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-		}
+		this.anInterface = new Interface(this);
+
+//		while((this.jogador.getVidasRestantes() > 0) && (this.casaAtual != null)){
+//			this.preMoveDonos(this.casaAtual);
+//			this.saidaUsr.outputUsr("\n----------------------Comodo Infomacoes----------------------\n");
+//			this.saidaUsr.outputUsr(this.getInfoComodo(ladrao.getLocalAtual()));
+//			this.anInterface.updateTentativasRestantes(cont.toString());
+//			this.saidaUsr.outputUsr("\n----------------------Dono Infomacoes----------------------\n");
+//			this.saidaUsr.outputUsr(this.getInfoDonos(this.casaAtual));
+//			this.saidaUsr.outputUsr("\n----------------------Ladrao Infomacoes----------------------\n");
+//			this.saidaUsr.outputUsr(this.getInfoLadrao(ladrao));
+//			this.input = anInterface.getInput();
+//			System.out.print("-----------teste");
+//			Comando comando = new Comando(input.split(" ")[0], input.split(" ")[1]);
+//			this.executaComando(comando, ladrao);
+//			if(this.verficarEncontro(ladrao, this.casaAtual)){
+//				this.jogador.reduzirVidasRestantes();
+//				this.iniciaFase(this.jogador.getFaseAtual());
+//			}else{
+//				this.moveDonos(this.casaAtual);
+//			}
+//
+//			System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+//			System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+//		}
 	}
 	
 	private void iniciaFase(int faseAtual){
 		this.casaAtual = this.criarFases(faseAtual);
 		this.ladrao = new Ladrao(this.casaAtual.getComodoInicial());
+		this.anInterface.inicializarFase();
 	}
-	
-	private void executaComando(Comando comando, Ladrao ladrao){
+
+	public void executaComandoInterface(String input){
+		Comando comando = new Comando(input.split(" ")[0], input.split(" ")[1]);
+		this.executaComando(comando, ladrao);
+	}
+
+	public void executaComando(Comando comando, Ladrao ladrao){
 		
 		switch(comando.getComando()){
 			case "roubar":
@@ -80,7 +93,13 @@ public class Jogo{
 			default:
 				System.out.println("AAAA");
 		}
-		
+
+		if(this.verficarEncontro(ladrao, this.casaAtual)){
+			this.jogador.reduzirVidasRestantes();
+			this.iniciaFase(this.jogador.getFaseAtual());
+		}else{
+			this.moveDonos(this.casaAtual);
+		}
 	}
 	
 	private void executaFugir(Ladrao ladrao){

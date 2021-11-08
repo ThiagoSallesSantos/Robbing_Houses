@@ -15,12 +15,16 @@ public class Interface {
     private JPanel dicasEncontradasPanel;
     private JPanel panelCentral;
     private Jogo jogo;
-    private String input;
+    private Casa casaAtual;
+    private Jogador jogador;
 
     public Interface(Jogo jogo){
         this.jogo = jogo;
-        this.input = "";
+        this.jogador = jogo.getJogador();
+        this.casaAtual = jogo.getCasaAtual();
+
         montarJanela();
+        inicializarFase();
     }
 
     private void montarJanela(){
@@ -116,6 +120,18 @@ public class Interface {
         janela.add(panelTerminal, BorderLayout.SOUTH);
     }
 
+    public void inicializarFase(){
+
+        this.casaAtual = jogo.getCasaAtual();
+    }
+
+    public void executaComando(String input){
+        this.jogo.executaComandoInterface(input);
+        if((this.jogador.getVidasRestantes() > 0) && (this.casaAtual != null)){
+
+        }
+    }
+
     public void updateTentativasRestantes(String tentativasRestantesValue){
         tentativasRestantes.setText(tentativasRestantesValue);
     }
@@ -158,16 +174,11 @@ public class Interface {
         janela.setVisible(false);
     }
 
-    public String getInput(){
-        while(input.equals("")){
-        }
-        return input;
-    }
-
     private class EventTerminal implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            input = terminalInput.getText();
+            String input = terminalInput.getText();
+            executaComando(input);
             terminalInput.setText("");
         }
     }
