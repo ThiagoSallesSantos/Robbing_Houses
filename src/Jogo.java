@@ -9,25 +9,37 @@ public class Jogo{
 	private ArrayList<Tier> listaTier;
 	private Ladrao ladrao;
 	private Casa casaAtual;
+	private Interface anInterface;
+	private String input;
 	
 	public Jogo(Jogador jogador){
 		this.jogador = jogador;
 		this.entradaUsr = new EntradaUsuario();
 		this.saidaUsr = new SaidaUsuario();
 		this.listaTier = this.criarTierItens();
+		this.anInterface = new Interface(this);
 	}
-	
+
+	public void setInput(String input) {
+		this.input = input;
+	}
+
 	public void executaJogo(){
 		this.iniciaFase(this.jogador.getFaseAtual());
+		this.anInterface.exibir();
+		Integer cont = 0;
 		while((this.jogador.getVidasRestantes() > 0) && (this.casaAtual != null)){
 			this.preMoveDonos(this.casaAtual);
 			this.saidaUsr.outputUsr("\n----------------------Comodo Infomacoes----------------------\n");
 			this.saidaUsr.outputUsr(this.getInfoComodo(ladrao.getLocalAtual()));
+			this.anInterface.updateTentativasRestantes(cont.toString());
 			this.saidaUsr.outputUsr("\n----------------------Dono Infomacoes----------------------\n");
 			this.saidaUsr.outputUsr(this.getInfoDonos(this.casaAtual));
 			this.saidaUsr.outputUsr("\n----------------------Ladrao Infomacoes----------------------\n");
 			this.saidaUsr.outputUsr(this.getInfoLadrao(ladrao));
-			Comando comando = entradaUsr.getComandoUsuario();
+			this.input = anInterface.getInput();
+			System.out.print("-----------teste");
+			Comando comando = new Comando(input.split(" ")[0], input.split(" ")[1]);
 			this.executaComando(comando, ladrao);
 			if(this.verficarEncontro(ladrao, this.casaAtual)){
 				this.jogador.reduzirVidasRestantes();
@@ -62,7 +74,7 @@ public class Jogo{
 				this.executaSair(ladrao);
 				break;
 			case "fugir":
-				System.out.println("Fugiu cagão");
+				System.out.println("Fugiu cagao");
 				this.executaFugir(ladrao);
 				break;
 			default:
@@ -140,7 +152,7 @@ public class Jogo{
 	}
 	
 	private String getInfoComodo(Comodo comodo){
-		return comodo + "\nPorta(s):\n" + this.getPortasComodo(comodo) + "\nItens:\n" + this.getItensComodo(comodo) + "\nEsconderijo:\n" + this.getEsconderijoComodo(comodo) + "\nSaida:\n" + this.getSaidaComodo(comodo);
+		return "\nPorta(s):\n" + this.getPortasComodo(comodo) + "\nItens:\n" + this.getItensComodo(comodo) + "\nEsconderijo:\n" + this.getEsconderijoComodo(comodo) + "\nSaida:\n" + this.getSaidaComodo(comodo);
 	}
 	
 	private String getPortasComodo(Comodo comodo){
@@ -195,11 +207,11 @@ public class Jogo{
 		
 		// Itens
 		// Itens comuns
-		Item item1 = new Item("Anel de plástico", 10);
-		Item item2 = new Item("Colhar de plástico", 10);
+		Item item1 = new Item("Anel de plastico", 10);
+		Item item2 = new Item("Colhar de plastico", 10);
 		Item item3 = new Item("Pulseira da amizadade", 5);
 		Item item4 = new Item("Bracelete de plástico", 15);
-		Item item5 = new Item("Pregador de cabelo de plástico", 5);
+		Item item5 = new Item("Pregador de cabelo de plastico", 5);
 		
 		Tier tier1 = new Tier("Comum", 1);
 		tier1.adicionaItem(item1);
@@ -267,7 +279,10 @@ public class Jogo{
 			case 1:
 			
 				// Casa - 1
-				casa = new Casa("Casa Rústica", "Casa bem aparentada, que se localiza em uma região nobre da cidade!");
+				casa = new Casa(
+						"Casa Rustica",
+						"Casa bem aparentada, que se localiza em uma regiao nobre da cidade!",
+						"src/resource/casas/Casa 1.png");
 				
 				//Comodos
 				Comodo corredor1C1 = new Comodo("Corredor 1", this.listaTier.get(0), true, false);
@@ -316,7 +331,10 @@ public class Jogo{
 			case 2:
 			
 				// Casa - 2
-				casa = new Casa("Casa Moderna", "Casa nova, bem localizada!");
+				casa = new Casa(
+						"Casa Moderna",
+						"Casa nova, bem localizada!",
+						"src/resource/casas/Casa 2.png");
 				
 				// Comodos
 				Comodo salaC2 = new Comodo("Sala", this.listaTier.get(0), true, false);

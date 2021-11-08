@@ -8,13 +8,15 @@ public class Casa{
 	private ArrayList<Dono> donos;
 	private Comodo comodoInicial;
 	private ArrayList<Comodo> comodos;
+	private String dirImagem;
 	
-	public Casa(String nome, String descricao){
+	public Casa(String nome, String descricao, String dirImagem){
 		this.nome = nome;
 		this.descricao = descricao;
 		this.comodoInicial = null;
 		this.comodos = new ArrayList<Comodo>();
 		this.donos =  new ArrayList<Dono>();
+		this.dirImagem = dirImagem;
 	}
 	
 	public String getNome(){

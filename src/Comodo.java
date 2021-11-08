@@ -70,17 +70,17 @@ public class Comodo{
 		int cont = 0;
 		String texto = this.getNome() + "\n";
 		texto += "\n-Portas-\nLista de comodos adjacentes:\n";
-		for(Comodo comodoAdjacente : this.getPortas()){
+		for(Comodo comodoAdjacente : this.getPortas().keySet()){
 			texto += cont + " - " + comodoAdjacente.getNome() + "\n";
 			cont += 1;
 		}
 		texto += "-Itens-\nLista de itens para serem roubados:\n";
-		if(this.getQtdItens == 0){
-			texto += "Este comodo nao possui itens para ser roubados!";
+		if(this.getQtdItens() == 0){
+			texto += "Este comodo nao possui itens para ser roubados!\n";
 		}else{
 			cont = 0;
 			for(Item item : this.getItens()){
-				texto += cont + " - " + item;
+				texto += cont + " - " + item + "\n";
 			}
 		}
 		return texto;
