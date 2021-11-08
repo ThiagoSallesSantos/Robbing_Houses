@@ -8,11 +8,11 @@ public class Jogador implements Serializable{
 	private int vidasRestantes;
 	private int faseAtual;
 	
-	public Jogador(String nome){
-		this.nome = nome;
+	public Jogador(){
+		this.nome = null;
 		this.pontuacao = 0;
 		this.vidasRestantes = 3;
-		this.faseAtual = 0;
+		this.faseAtual = 1;
 	}
 	
 	public String getNome(){

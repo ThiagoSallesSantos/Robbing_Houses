@@ -1,3 +1,7 @@
+/**
+* Classe que representa item que pode ser roubado pelo ladrão.
+*/
+
 public class Item{
 
 	private String nome;
