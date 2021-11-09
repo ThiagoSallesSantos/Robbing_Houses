@@ -82,6 +82,7 @@ public class Comodo{
 			cont = 1;
 			for(Item item : this.getItens()){
 				texto += cont + " - " + item + "<br/>";
+				cont += 1;
 			}
 		}
 		return texto;

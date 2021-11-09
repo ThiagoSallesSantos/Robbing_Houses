@@ -12,6 +12,7 @@ public class Interface {
 	private JPanel painelCentral;
 	private JPanel painelTerminal;
 	private JPanel terminalInputEBotao;
+	private JPanel terminalPanel;
 	private JLabel informacoesComodos;
 	private JLabel informacoesLadrao;
 	private JLabel informacoesJogador;
@@ -31,13 +32,13 @@ public class Interface {
 		
         // Configuração janela geral
         this.janela = new JFrame("Robbing Houses");
-        this.janela.setSize(1000, 500);
+        this.janela.setSize(1200, 600);
         this.janela.setLayout(new BorderLayout());
 	
         // Configuração painel esquerdo
         this.painelEsquerda = new JPanel();
         this.painelEsquerda.setLayout(new BoxLayout(this.painelEsquerda, BoxLayout.Y_AXIS));
-        this.painelEsquerda.setPreferredSize(new Dimension(280, 350));
+        this.painelEsquerda.setPreferredSize(new Dimension(280, 450));
 
         this.informacoesComodos = new JLabel("<html><strong>---INFORMACOES COMODO---</strong><br/>" + jogo.getComodoAtualLadrao() + "</html>");
         this.informacoesComodos.setFont(new Font("Ariel", Font.PLAIN, 10));
@@ -48,7 +49,7 @@ public class Interface {
         // Configuração painel direito
         this.painelDireita = new JPanel();
         this.painelDireita.setLayout(new BoxLayout(this.painelDireita, BoxLayout.Y_AXIS));
-        this.painelDireita.setPreferredSize(new Dimension(280, 350));
+        this.painelDireita.setPreferredSize(new Dimension(280, 450));
 
 		this.informacoesJogador = new JLabel("<html><strong>---INFORMACOES JOGADOR---</strong><br/>" + jogo.getInfoJogador() + "<br/></html>");
 		this.informacoesJogador.setFont(new Font("Ariel", Font.PLAIN, 10));
@@ -65,10 +66,10 @@ public class Interface {
         this.painelCentral.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         this.painelCentral.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.painelCentral.setLayout(new BoxLayout(this.painelCentral, BoxLayout.Y_AXIS));
-        this.painelCentral.setPreferredSize(new Dimension(460, 350));
+        this.painelCentral.setPreferredSize(new Dimension(460, 450));
 
-        // this.mapaCasa = new JLabel(new ImageIcon(jogo.getImagemCasaAtual()));
-        // this.painelCentral.add(this.mapaCasa);
+        this.mapaCasa = new JLabel(new ImageIcon(jogo.getImagemCasaAtual()));
+        this.painelCentral.add(this.mapaCasa);
 
         this.informacoesCasa = new JLabel("<html><strong>---INFORMACOES CASA---</strong><br/>" + jogo.getCasaAtual() + "</html>");
         this.informacoesCasa.setFont(new Font("Ariel", Font.PLAIN, 10));
@@ -80,17 +81,20 @@ public class Interface {
 		this.painelTerminal = new JPanel();
         this.painelTerminal.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         this.painelTerminal.setLayout(new BoxLayout(this.painelTerminal, BoxLayout.Y_AXIS));
-        this.painelTerminal.setPreferredSize(new Dimension(1000, 150));
+        this.painelTerminal.setPreferredSize(new Dimension(1200, 150));
 
         this.terminal = new JLabel("<html><strong>---COMANDOS---</strong><br/>" + jogo.getComandosDisp() + "</html>");
-        this.terminal.setFont(new Font("Ariel", Font.BOLD, 12));
-        this.terminal.setPreferredSize(new Dimension(1000, 120));
+        this.terminal.setFont(new Font("Ariel", Font.BOLD, 10));
+        this.terminal.setPreferredSize(new Dimension(1200, 120));
+		this.terminal.setMaximumSize(new Dimension(400, 120));
+		this.terminal.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+
         this.painelTerminal.add(this.terminal);
 
 		// Configuração painel terminal input e botão
         this.terminalInputEBotao = new JPanel();
         this.terminalInputEBotao.setLayout(new BoxLayout(this.terminalInputEBotao, BoxLayout.X_AXIS));
-        this.terminalInputEBotao.setPreferredSize(new Dimension(1000, 30));
+        this.terminalInputEBotao.setPreferredSize(new Dimension(1200, 30));
 
         this.terminalInput = new JTextArea();
         this.terminalInput.setPreferredSize(new Dimension(800, 30));
