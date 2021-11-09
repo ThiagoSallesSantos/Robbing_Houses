@@ -7,12 +7,6 @@ import java.util.Scanner;
 
 public class Interface {
     private JFrame janela;
-	private JPanel painelEsquerda;
-	private JPanel painelDireita;
-	private JPanel painelCentral;
-	private JPanel painelTerminal;
-	private JPanel terminalInputEBotao;
-	private JPanel terminalPanel;
 	private JLabel informacoesComodos;
 	private JLabel informacoesLadrao;
 	private JLabel informacoesJogador;
@@ -32,56 +26,57 @@ public class Interface {
 		
         // Configuração janela geral
         this.janela = new JFrame("Robbing Houses");
-        this.janela.setSize(1200, 600);
+		this.janela.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		this.janela.setSize(new Dimension(1200, 600));
         this.janela.setLayout(new BorderLayout());
 	
         // Configuração painel esquerdo
-        this.painelEsquerda = new JPanel();
-        this.painelEsquerda.setLayout(new BoxLayout(this.painelEsquerda, BoxLayout.Y_AXIS));
-        this.painelEsquerda.setPreferredSize(new Dimension(280, 450));
+        JPanel painelEsquerda = new JPanel();
+        painelEsquerda.setLayout(new BoxLayout(painelEsquerda, BoxLayout.Y_AXIS));
+        painelEsquerda.setPreferredSize(new Dimension(280, 450));
 
         this.informacoesComodos = new JLabel("<html><strong>---INFORMACOES COMODO---</strong><br/>" + jogo.getComodoAtualLadrao() + "</html>");
         this.informacoesComodos.setFont(new Font("Ariel", Font.PLAIN, 10));
-        this.painelEsquerda.add(this.informacoesComodos);
+        painelEsquerda.add(this.informacoesComodos);
 
-        this.janela.add(this.painelEsquerda, BorderLayout.WEST);
+        this.janela.add(painelEsquerda, BorderLayout.WEST);
 
         // Configuração painel direito
-        this.painelDireita = new JPanel();
-        this.painelDireita.setLayout(new BoxLayout(this.painelDireita, BoxLayout.Y_AXIS));
-        this.painelDireita.setPreferredSize(new Dimension(280, 450));
+		JPanel painelDireita = new JPanel();
+        painelDireita.setLayout(new BoxLayout(painelDireita, BoxLayout.Y_AXIS));
+        painelDireita.setPreferredSize(new Dimension(280, 450));
 
 		this.informacoesJogador = new JLabel("<html><strong>---INFORMACOES JOGADOR---</strong><br/>" + jogo.getInfoJogador() + "<br/></html>");
 		this.informacoesJogador.setFont(new Font("Ariel", Font.PLAIN, 10));
-		this.painelDireita.add(this.informacoesJogador);
+		painelDireita.add(this.informacoesJogador);
 
 		this.informacoesLadrao = new JLabel("<html><strong>---INFORMACOES LADRAO---</strong><br/>" + jogo.getLadrao() + "</html>");
 		this.informacoesLadrao.setFont(new Font("Ariel", Font.PLAIN, 10));
-		this.painelDireita.add(this.informacoesLadrao);
+		painelDireita.add(this.informacoesLadrao);
 
-        this.janela.add(this.painelDireita, BorderLayout.EAST);
+        this.janela.add(painelDireita, BorderLayout.EAST);
 
         // Configuração painel central
-        this.painelCentral = new JPanel();
-        this.painelCentral.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        this.painelCentral.setAlignmentX(Component.CENTER_ALIGNMENT);
-        this.painelCentral.setLayout(new BoxLayout(this.painelCentral, BoxLayout.Y_AXIS));
-        this.painelCentral.setPreferredSize(new Dimension(460, 450));
+		JPanel painelCentral = new JPanel();
+        painelCentral.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        painelCentral.setAlignmentX(Component.CENTER_ALIGNMENT);
+        painelCentral.setLayout(new BoxLayout(painelCentral, BoxLayout.Y_AXIS));
+        painelCentral.setPreferredSize(new Dimension(460, 450));
 
         this.mapaCasa = new JLabel(new ImageIcon(jogo.getImagemCasaAtual()));
-        this.painelCentral.add(this.mapaCasa);
+        painelCentral.add(this.mapaCasa);
 
         this.informacoesCasa = new JLabel("<html><strong>---INFORMACOES CASA---</strong><br/>" + jogo.getCasaAtual() + "</html>");
         this.informacoesCasa.setFont(new Font("Ariel", Font.PLAIN, 10));
-        this.painelCentral.add(this.informacoesCasa);
+        painelCentral.add(this.informacoesCasa);
 
-        this.janela.add(this.painelCentral, BorderLayout.CENTER);
+        this.janela.add(painelCentral, BorderLayout.CENTER);
 
         // Configuração painel terminal
-		this.painelTerminal = new JPanel();
-        this.painelTerminal.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        this.painelTerminal.setLayout(new BoxLayout(this.painelTerminal, BoxLayout.Y_AXIS));
-        this.painelTerminal.setPreferredSize(new Dimension(1200, 150));
+		JPanel painelTerminal = new JPanel();
+        painelTerminal.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        painelTerminal.setLayout(new BoxLayout(painelTerminal, BoxLayout.Y_AXIS));
+        painelTerminal.setPreferredSize(new Dimension(1200, 150));
 
         this.terminal = new JLabel("<html><strong>---COMANDOS---</strong><br/>" + jogo.getComandosDisp() + "</html>");
         this.terminal.setFont(new Font("Ariel", Font.BOLD, 10));
@@ -89,20 +84,20 @@ public class Interface {
 		this.terminal.setMaximumSize(new Dimension(400, 120));
 		this.terminal.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
 
-        this.painelTerminal.add(this.terminal);
+        painelTerminal.add(this.terminal);
 
 		// Configuração painel terminal input e botão
-        this.terminalInputEBotao = new JPanel();
-        this.terminalInputEBotao.setLayout(new BoxLayout(this.terminalInputEBotao, BoxLayout.X_AXIS));
-        this.terminalInputEBotao.setPreferredSize(new Dimension(1200, 30));
+		JPanel terminalInputEBotao = new JPanel();
+        terminalInputEBotao.setLayout(new BoxLayout(terminalInputEBotao, BoxLayout.X_AXIS));
+        terminalInputEBotao.setPreferredSize(new Dimension(1200, 30));
 
         this.terminalInput = new JTextArea();
         this.terminalInput.setPreferredSize(new Dimension(800, 30));
-        this.terminalInputEBotao.add(this.terminalInput);
+        terminalInputEBotao.add(this.terminalInput);
 
         this.botao = new JButton("Enviar");
         this.botao.setPreferredSize(new Dimension(200, 30));
-        this.terminalInputEBotao.add(this.botao);
+        terminalInputEBotao.add(this.botao);
 
 		this.botao.addActionListener(
 			new ActionListener(){
@@ -125,9 +120,9 @@ public class Interface {
 				}
 			});
 
-        this.painelTerminal.add(this.terminalInputEBotao);
+        painelTerminal.add(terminalInputEBotao);
 
-        this.janela.add(this.painelTerminal, BorderLayout.SOUTH);
+        this.janela.add(painelTerminal, BorderLayout.SOUTH);
     }
 
 	public void atualizaDados(){
@@ -165,10 +160,6 @@ public class Interface {
 	
     public void exibir(){
         this.janela.setVisible(true);
-    }
-
-    public void fechar(){
-        this.janela.setVisible(false);
     }
 	
 }
