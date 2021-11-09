@@ -42,15 +42,6 @@ public class ScoreBoard {
 		});
 	}
 	
-	public void listarSB()//para testar
-	{
-		for(int i=0; i<lista.size(); i++)
-		{
-			System.out.println(getPontuacao(i));
-			
-		}
-	}
-	
 	public void salvarSB()
 	{
 		BinFile.saveSBFile(lista);

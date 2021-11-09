@@ -46,7 +46,7 @@ public class Jogador {
 	
 	@Override
 	public String toString(){
-		return "aopa";
+		return this.getNome() + " - " + this.getPontuacao();
 	}
 	
 }
