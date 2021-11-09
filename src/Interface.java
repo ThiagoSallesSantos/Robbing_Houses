@@ -15,40 +15,28 @@ public class Interface {
     private JPanel dicasEncontradasPanel;
     private JPanel panelCentral;
     private Jogo jogo;
-    private String input;
 
-    public Interface(Jogo jogo){
-        this.jogo = jogo;
-        this.input = "";
+    public Interface(){
+        this.jogo = new Jogo();
+		this.jogo.iniciaFase();
         montarJanela();
     }
-
+	
     private void montarJanela(){
+		
         // Configuração janela geral
         janela = new JFrame("Robbing Houses");
         janela.setSize(1000, 500);
         janela.setLayout(new BorderLayout());
-
+	
         // Configuração painel esquerdo
         JPanel panelEsquerda = new JPanel();
         panelEsquerda.setLayout(new BoxLayout(panelEsquerda, BoxLayout.Y_AXIS));
         panelEsquerda.setPreferredSize(new Dimension(280, 350));
 
-        JLabel tentativasRestantesLabel = new JLabel("Número de Tentativas Restantes:");
-        tentativasRestantesLabel.setFont(new Font("Ariel", Font.PLAIN, 17));
-        panelEsquerda.add(tentativasRestantesLabel);
-
-        tentativasRestantes = new JLabel("0");
-        tentativasRestantes.setFont(new Font("Ariel", Font.PLAIN, 17));
-        panelEsquerda.add(tentativasRestantes);
-
-        JLabel durabilidadeChaveMestreLabel = new JLabel("Durabilidade da chave mestra:");
-        durabilidadeChaveMestreLabel.setFont(new Font("Ariel", Font.PLAIN, 17));
-        panelEsquerda.add(durabilidadeChaveMestreLabel);
-
-        durabilidadeChaveMestre = new JLabel("0");
-        durabilidadeChaveMestre.setFont(new Font("Ariel", Font.PLAIN, 17));
-        panelEsquerda.add(durabilidadeChaveMestre);
+        JLabel informacoesComodos = new JLabel("<html><b>---INFORMACOES COMODO---</b><br/>" + this.jogo.getComodoAtualLadrao() + "</html>");
+        informacoesComodos.setFont(new Font("Ariel", Font.PLAIN, 10));
+        panelEsquerda.add(informacoesComodos);
 
         janela.add(panelEsquerda, BorderLayout.WEST);
 
@@ -57,15 +45,13 @@ public class Interface {
         panelDireita.setLayout(new BoxLayout(panelDireita, BoxLayout.Y_AXIS));
         panelDireita.setPreferredSize(new Dimension(280, 350));
 
-//        JLabel dicasEncontradasLabel = new JLabel("Dicas encontradas:");
-//        dicasEncontradasLabel.setFont(new Font("Ariel", Font.PLAIN, 17));
-//        panelDireita.add(dicasEncontradasLabel);
-//
-//        dicasEncontradasPanel = new JPanel();
-//        dicasEncontradasPanel.setLayout(new BoxLayout(dicasEncontradasPanel, BoxLayout.Y_AXIS));
-//        dicasEncontradasPanel.setPreferredSize(new Dimension(280, 340));
-//        panelDireita.add(dicasEncontradasPanel);
+		JLabel informacoesJogador = new JLabel("<html><b>---INFORMACOES JOGADOR---</b><br/>" + this.jogo.getInfoJogador() + "<br/></html>");
+		informacoesJogador.setFont(new Font("Ariel", Font.PLAIN, 10));
+		panelDireita.add(informacoesJogador);
 
+		JLabel informacoesLadrao = new JLabel("<html><b>---INFORMACOES LADRAO---</b><br/>" + this.jogo.getLadrao() + "</html>");
+		informacoesLadrao.setFont(new Font("Ariel", Font.PLAIN, 10));
+		panelDireita.add(informacoesLadrao);
 
         janela.add(panelDireita, BorderLayout.EAST);
 
@@ -76,12 +62,12 @@ public class Interface {
         panelCentral.setLayout(new BoxLayout(panelCentral, BoxLayout.Y_AXIS));
         panelCentral.setPreferredSize(new Dimension(460, 350));
 
-        mapa = new JLabel(new ImageIcon("src/Casa_2.png"));
+        mapa = new JLabel(new ImageIcon(this.jogo.getImagemCasaAtual()));
         panelCentral.add(mapa);
 
-        portaAtual = new JLabel("Porta atual:");
-        portaAtual.setFont(new Font("Ariel", Font.PLAIN, 17));
-        panelCentral.add(portaAtual);
+        JLabel informacoesCasa = new JLabel("<html><b>---INFORMACOES CASA---</b><br/>" + this.jogo.getCasaAtual() + "</html>");
+        informacoesCasa.setFont(new Font("Ariel", Font.PLAIN, 10));
+        panelCentral.add(informacoesCasa);
 
         janela.add(panelCentral, BorderLayout.CENTER);
 
@@ -158,16 +144,9 @@ public class Interface {
         janela.setVisible(false);
     }
 
-    public String getInput(){
-        while(input.equals("")){
-        }
-        return input;
-    }
-
     private class EventTerminal implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            input = terminalInput.getText();
             terminalInput.setText("");
         }
     }

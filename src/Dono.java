@@ -28,7 +28,7 @@ public class Dono extends Pessoa {
 	
 	@Override
 	public String toString(){
-		return "Local Atual: " + super.getLocalAtual() + " Proximo Local: " + this.getProximoComodo();
+		return "LOCAL ATUAL: " + super.getLocalAtual().getNome() + " PROXIMO LOCAL: " + (this.getProximoComodo() == null ? "Proximo local ainda NAO definido" : this.getProximoComodo().getNome());
 	}
 
 }

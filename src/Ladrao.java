@@ -55,13 +55,13 @@ public class Ladrao extends Pessoa{
 	
 	@Override
 	public String toString(){
-		String texto = "Chave Mestre: " + this.getVidaUtilChave() + " uso(s) restante\n";
-		texto += "Itens roubados:";
-		if(this.getQtdItens() > 0){
-			return texto + "Nenhum foi roubado ainda!";
+		String texto = "<b>Chave Mestre:</b> " + this.getVidaUtilChave() + " uso(s) restante<br/>";
+		texto += "<br/><b>-LISTA ITENS ROUBADOS-</b><br/>";
+		if(this.getQtdItens() == 0){
+			return texto + "Nenhum item foi roubado ainda!<br/>";
 		}
 		for(Item itemRoubado : this.listaItensRoubados){
-			texto += itemRoubado + "\n";
+			texto += itemRoubado + "<br/>";
 		}
 		return texto;
 	}

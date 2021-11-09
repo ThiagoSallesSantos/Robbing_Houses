@@ -4,57 +4,37 @@ import java.util.Map;
 public class Jogo{
 	
 	private Jogador jogador;
-	private EntradaUsuario entradaUsr;
-	private SaidaUsuario saidaUsr;
 	private ArrayList<Tier> listaTier;
 	private Ladrao ladrao;
 	private Casa casaAtual;
-	private Interface anInterface;
-	private String input;
 	
-	public Jogo(Jogador jogador){
-		this.jogador = jogador;
-		this.entradaUsr = new EntradaUsuario();
-		this.saidaUsr = new SaidaUsuario();
+	public Jogo(){
+		this.jogador = new Jogador();
 		this.listaTier = this.criarTierItens();
-		this.anInterface = new Interface(this);
-	}
-
-	public void setInput(String input) {
-		this.input = input;
-	}
-
-	public void executaJogo(){
-		this.iniciaFase(this.jogador.getFaseAtual());
-		this.anInterface.exibir();
-		Integer cont = 0;
-		while((this.jogador.getVidasRestantes() > 0) && (this.casaAtual != null)){
-			this.preMoveDonos(this.casaAtual);
-			this.saidaUsr.outputUsr("\n----------------------Comodo Infomacoes----------------------\n");
-			this.saidaUsr.outputUsr(this.getInfoComodo(ladrao.getLocalAtual()));
-			this.anInterface.updateTentativasRestantes(cont.toString());
-			this.saidaUsr.outputUsr("\n----------------------Dono Infomacoes----------------------\n");
-			this.saidaUsr.outputUsr(this.getInfoDonos(this.casaAtual));
-			this.saidaUsr.outputUsr("\n----------------------Ladrao Infomacoes----------------------\n");
-			this.saidaUsr.outputUsr(this.getInfoLadrao(ladrao));
-			this.input = anInterface.getInput();
-			System.out.print("-----------teste");
-			Comando comando = new Comando(input.split(" ")[0], input.split(" ")[1]);
-			this.executaComando(comando, ladrao);
-			if(this.verficarEncontro(ladrao, this.casaAtual)){
-				this.jogador.reduzirVidasRestantes();
-				this.iniciaFase(this.jogador.getFaseAtual());
-			}else{
-				this.moveDonos(this.casaAtual);
-			}
-			
-			System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-			System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-		}
 	}
 	
-	private void iniciaFase(int faseAtual){
-		this.casaAtual = this.criarFases(faseAtual);
+	public Comodo getComodoAtualLadrao(){
+		return this.ladrao.getLocalAtual();
+	}
+	
+	public Ladrao getLadrao(){
+		return this.ladrao;
+	}
+	
+	public Casa getCasaAtual(){
+		return this.casaAtual;
+	}
+	
+	public String getImagemCasaAtual(){
+		return this.casaAtual.getDirImagem();
+	}
+	
+	public String getInfoJogador(){
+		return "<b>Vidas do Jogador:</b> " + this.jogador.getVidasRestantes() + "<br/>";
+	}
+	
+	public void iniciaFase(){
+		this.casaAtual = this.criarFases(this.jogador.getFaseAtual());
 		this.ladrao = new Ladrao(this.casaAtual.getComodoInicial());
 	}
 	
@@ -86,7 +66,6 @@ public class Jogo{
 	private void executaFugir(Ladrao ladrao){
 		this.jogador.proximaFase();
 		this.jogador.adicionaPontuacao(ladrao.calculaRoubo());
-		this.iniciaFase(this.jogador.getFaseAtual());
 	}
 	
 	private void executaRoubar(Ladrao ladrao, String atributo){
@@ -282,7 +261,7 @@ public class Jogo{
 				casa = new Casa(
 						"Casa Rustica",
 						"Casa bem aparentada, que se localiza em uma regiao nobre da cidade!",
-						"src/resource/casas/Casa 1.png");
+						"resource/casas/Casa 1.png");
 				
 				//Comodos
 				Comodo corredor1C1 = new Comodo("Corredor 1", this.listaTier.get(0), true, false);
@@ -334,7 +313,7 @@ public class Jogo{
 				casa = new Casa(
 						"Casa Moderna",
 						"Casa nova, bem localizada!",
-						"src/resource/casas/Casa 2.png");
+						"resource/casas/Casa 2.png");
 				
 				// Comodos
 				Comodo salaC2 = new Comodo("Sala", this.listaTier.get(0), true, false);

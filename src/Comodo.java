@@ -67,20 +67,20 @@ public class Comodo{
 	
 	@Override
 	public String toString(){
-		int cont = 0;
-		String texto = this.getNome() + "\n";
-		texto += "\n-Portas-\nLista de comodos adjacentes:\n";
+		int cont = 1;
+		String texto = "<b>Comodo Atual:</b> " + this.getNome() + "<br/>";
+		texto += "<br/><b>-LISTA PORTAS-</b><br/>Lista de comodos adjacentes:<br/>";
 		for(Comodo comodoAdjacente : this.getPortas().keySet()){
-			texto += cont + " - " + comodoAdjacente.getNome() + "\n";
+			texto += cont + " - " + comodoAdjacente.getNome() + "<br/>";
 			cont += 1;
 		}
-		texto += "-Itens-\nLista de itens para serem roubados:\n";
+		texto += "<br/><b>-LISTA ITENS-</b><br/>Lista de itens para serem roubados:<br/>";
 		if(this.getQtdItens() == 0){
-			texto += "Este comodo nao possui itens para ser roubados!\n";
+			texto += "Este comodo nao possui itens para ser roubados!<br/>";
 		}else{
-			cont = 0;
+			cont = 1;
 			for(Item item : this.getItens()){
-				texto += cont + " - " + item + "\n";
+				texto += cont + " - " + item + "<br/>";
 			}
 		}
 		return texto;

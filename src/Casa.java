@@ -35,6 +35,10 @@ public class Casa{
 		return this.comodoInicial;
 	}
 	
+	public String getDirImagem(){
+		return this.dirImagem;
+	}
+	
 	public void setComodoInicial(Comodo comodoInicial){
 		this.comodoInicial = comodoInicial;
 	}
@@ -68,10 +72,10 @@ public class Casa{
 	
 	@Override
 	public String toString(){
-		int cont = 0;
-		String texto = "Casa: " + this.getNome() + "\nDescricao: " + this.getDescricao() + "\n";
+		int cont = 1;
+		String texto = "<b>Casa:</b> " + this.getNome() + "<br/><b>Descricao:</b> " + this.getDescricao() + "<br/><b>-LISTA DONOS-</b><br/>";
 		for(Dono dono : this.getDonos()){
-			texto += "Dono " + cont + " - " + dono + "\n";
+			texto += "Dono " + cont + " - " + dono + "<br/>";
 			cont += 1;
 		}
 		return texto;

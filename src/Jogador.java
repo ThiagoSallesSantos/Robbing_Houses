@@ -1,7 +1,4 @@
-import java.io.Serializable;
-
-@SuppressWarnings("serial")
-public class Jogador implements Serializable{
+public class Jogador {
 	
 	private String nome;
 	private int pontuacao;
@@ -45,6 +42,11 @@ public class Jogador implements Serializable{
 	
 	public void proximaFase(){
 		this.faseAtual += 1;
+	}
+	
+	@Override
+	public String toString(){
+		return "aopa";
 	}
 	
 }
