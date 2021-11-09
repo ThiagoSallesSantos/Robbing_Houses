@@ -7,144 +7,164 @@ import java.util.Scanner;
 
 public class Interface {
     private JFrame janela;
-    private JLabel terminal;
-    private JTextArea terminalInput;
-    private JLabel tentativasRestantes;
-    private JLabel mapa;
-    private JLabel durabilidadeChaveMestre;
-    private JLabel portaAtual;
-    private JPanel dicasEncontradasPanel;
-    private JPanel panelCentral;
-    private Jogo jogo;
+	private JPanel painelEsquerda;
+	private JPanel painelDireita;
+	private JPanel painelCentral;
+	private JPanel painelTerminal;
+	private JPanel terminalInputEBotao;
+	private JLabel informacoesComodos;
+	private JLabel informacoesLadrao;
+	private JLabel informacoesJogador;
+	private JLabel mapaCasa;
+	private JLabel informacoesCasa;
+	private JLabel terminal;
+	private JTextArea terminalInput;
+	private JButton botao;
 
     public Interface(){
-        this.jogo = new Jogo();
-		this.jogo.iniciaFase();
         montarJanela();
     }
 	
     private void montarJanela(){
 		
+		Jogo jogo = Jogo.getInstanciaJogo();
+		
         // Configuração janela geral
-        janela = new JFrame("Robbing Houses");
-        janela.setSize(1000, 500);
-        janela.setLayout(new BorderLayout());
+        this.janela = new JFrame("Robbing Houses");
+        this.janela.setSize(1000, 500);
+        this.janela.setLayout(new BorderLayout());
 	
         // Configuração painel esquerdo
-        JPanel panelEsquerda = new JPanel();
-        panelEsquerda.setLayout(new BoxLayout(panelEsquerda, BoxLayout.Y_AXIS));
-        panelEsquerda.setPreferredSize(new Dimension(280, 350));
+        this.painelEsquerda = new JPanel();
+        this.painelEsquerda.setLayout(new BoxLayout(this.painelEsquerda, BoxLayout.Y_AXIS));
+        this.painelEsquerda.setPreferredSize(new Dimension(280, 350));
 
-        JLabel informacoesComodos = new JLabel("<html><b>---INFORMACOES COMODO---</b><br/>" + this.jogo.getComodoAtualLadrao() + "</html>");
-        informacoesComodos.setFont(new Font("Ariel", Font.PLAIN, 10));
-        panelEsquerda.add(informacoesComodos);
+        this.informacoesComodos = new JLabel("<html><strong>---INFORMACOES COMODO---</strong><br/>" + jogo.getComodoAtualLadrao() + "</html>");
+        this.informacoesComodos.setFont(new Font("Ariel", Font.PLAIN, 10));
+        this.painelEsquerda.add(this.informacoesComodos);
 
-        janela.add(panelEsquerda, BorderLayout.WEST);
+        this.janela.add(this.painelEsquerda, BorderLayout.WEST);
 
         // Configuração painel direito
-        JPanel panelDireita = new JPanel();
-        panelDireita.setLayout(new BoxLayout(panelDireita, BoxLayout.Y_AXIS));
-        panelDireita.setPreferredSize(new Dimension(280, 350));
+        this.painelDireita = new JPanel();
+        this.painelDireita.setLayout(new BoxLayout(this.painelDireita, BoxLayout.Y_AXIS));
+        this.painelDireita.setPreferredSize(new Dimension(280, 350));
 
-		JLabel informacoesJogador = new JLabel("<html><b>---INFORMACOES JOGADOR---</b><br/>" + this.jogo.getInfoJogador() + "<br/></html>");
-		informacoesJogador.setFont(new Font("Ariel", Font.PLAIN, 10));
-		panelDireita.add(informacoesJogador);
+		this.informacoesJogador = new JLabel("<html><strong>---INFORMACOES JOGADOR---</strong><br/>" + jogo.getInfoJogador() + "<br/></html>");
+		this.informacoesJogador.setFont(new Font("Ariel", Font.PLAIN, 10));
+		this.painelDireita.add(this.informacoesJogador);
 
-		JLabel informacoesLadrao = new JLabel("<html><b>---INFORMACOES LADRAO---</b><br/>" + this.jogo.getLadrao() + "</html>");
-		informacoesLadrao.setFont(new Font("Ariel", Font.PLAIN, 10));
-		panelDireita.add(informacoesLadrao);
+		this.informacoesLadrao = new JLabel("<html><strong>---INFORMACOES LADRAO---</strong><br/>" + jogo.getLadrao() + "</html>");
+		this.informacoesLadrao.setFont(new Font("Ariel", Font.PLAIN, 10));
+		this.painelDireita.add(this.informacoesLadrao);
 
-        janela.add(panelDireita, BorderLayout.EAST);
+        this.janela.add(this.painelDireita, BorderLayout.EAST);
 
         // Configuração painel central
-        panelCentral = new JPanel();
-        panelCentral.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        panelCentral.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panelCentral.setLayout(new BoxLayout(panelCentral, BoxLayout.Y_AXIS));
-        panelCentral.setPreferredSize(new Dimension(460, 350));
+        this.painelCentral = new JPanel();
+        this.painelCentral.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        this.painelCentral.setAlignmentX(Component.CENTER_ALIGNMENT);
+        this.painelCentral.setLayout(new BoxLayout(this.painelCentral, BoxLayout.Y_AXIS));
+        this.painelCentral.setPreferredSize(new Dimension(460, 350));
 
-        // mapa = new JLabel(new ImageIcon(this.jogo.getImagemCasaAtual()));
-        // panelCentral.add(mapa);
+        // this.mapaCasa = new JLabel(new ImageIcon(jogo.getImagemCasaAtual()));
+        // this.painelCentral.add(this.mapaCasa);
 
-        JLabel informacoesCasa = new JLabel("<html><b>---INFORMACOES CASA---</b><br/>" + this.jogo.getCasaAtual() + "</html>");
-        informacoesCasa.setFont(new Font("Ariel", Font.PLAIN, 10));
-        panelCentral.add(informacoesCasa);
+        this.informacoesCasa = new JLabel("<html><strong>---INFORMACOES CASA---</strong><br/>" + jogo.getCasaAtual() + "</html>");
+        this.informacoesCasa.setFont(new Font("Ariel", Font.PLAIN, 10));
+        this.painelCentral.add(this.informacoesCasa);
 
-        janela.add(panelCentral, BorderLayout.CENTER);
+        this.janela.add(this.painelCentral, BorderLayout.CENTER);
 
         // Configuração painel terminal
-        JPanel panelTerminal = new JPanel();
-        panelTerminal.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        panelTerminal.setLayout(new BoxLayout(panelTerminal, BoxLayout.Y_AXIS));
-        panelTerminal.setPreferredSize(new Dimension(1000, 150));
+		this.painelTerminal = new JPanel();
+        this.painelTerminal.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        this.painelTerminal.setLayout(new BoxLayout(this.painelTerminal, BoxLayout.Y_AXIS));
+        this.painelTerminal.setPreferredSize(new Dimension(1000, 150));
 
-        terminal = new JLabel();
-        terminal.setFont(new Font("Ariel", Font.BOLD, 10));
-        terminal.setPreferredSize(new Dimension(1000, 120));
-        panelTerminal.add(terminal);
+        this.terminal = new JLabel("<html><strong>---COMANDOS---</strong><br/>" + jogo.getComandosDisp() + "</html>");
+        this.terminal.setFont(new Font("Ariel", Font.BOLD, 12));
+        this.terminal.setPreferredSize(new Dimension(1000, 120));
+        this.painelTerminal.add(this.terminal);
 
 		// Configuração painel terminal input e botão
-        JPanel terminalInputEBotao = new JPanel();
-        terminalInputEBotao.setLayout(new BoxLayout(terminalInputEBotao, BoxLayout.X_AXIS));
-        terminalInputEBotao.setPreferredSize(new Dimension(1000, 30));
+        this.terminalInputEBotao = new JPanel();
+        this.terminalInputEBotao.setLayout(new BoxLayout(this.terminalInputEBotao, BoxLayout.X_AXIS));
+        this.terminalInputEBotao.setPreferredSize(new Dimension(1000, 30));
 
-        terminalInput = new JTextArea();
-        terminalInput.setPreferredSize(new Dimension(800, 30));
-        terminalInputEBotao.add(terminalInput);
+        this.terminalInput = new JTextArea();
+        this.terminalInput.setPreferredSize(new Dimension(800, 30));
+        this.terminalInputEBotao.add(this.terminalInput);
 
-        EventTerminal eventTerminal = new EventTerminal();
+        this.botao = new JButton("Enviar");
+        this.botao.setPreferredSize(new Dimension(200, 30));
+        this.terminalInputEBotao.add(this.botao);
 
-        JButton botao = new JButton("Enviar");
-        botao.addActionListener(eventTerminal);
-        botao.setPreferredSize(new Dimension(200, 30));
-        terminalInputEBotao.add(botao);
+		this.botao.addActionListener(
+			new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					String input = terminalInput.getText();
+					terminalInput.setText("");
+					String comandoStr = null;
+					String atributo = null;
+					Scanner entrada = new Scanner(input);
+					if(entrada.hasNext()){
+						comandoStr = entrada.next();
+					}
+					if(entrada.hasNext()){
+						atributo = entrada.next();
+					}
+					Comando comando = new Comando(comandoStr, atributo);
+					Jogo jogo = Jogo.getInstanciaJogo();
+					jogo.executaComando(comando);
+				}
+			});
 
-        panelTerminal.add(terminalInputEBotao);
+        this.painelTerminal.add(this.terminalInputEBotao);
 
-        janela.add(panelTerminal, BorderLayout.SOUTH);
+        this.janela.add(this.painelTerminal, BorderLayout.SOUTH);
     }
+
+	public void atualizaDados(){
+		Jogo jogo = Jogo.getInstanciaJogo();
+		this.atualizaInfoComodos(jogo);
+		this.atualizaInfoJogador(jogo);
+		this.atualizaInfoLadrao(jogo);
+		this.atualizaInfoCasa(jogo);
+		this.atualizaInfoTerminal(jogo);
+	}
+
+	private void atualizaInfoComodos(Jogo jogo){
+		this.informacoesComodos.setText("<html><strong>---INFORMACOES COMODO---</strong><br/>" + jogo.getComodoAtualLadrao() + "</html>");
+	}
+
+	private void atualizaInfoJogador(Jogo jogo){
+		this.informacoesJogador.setText("<html><strong>---INFORMACOES JOGADOR---</strong><br/>" + jogo.getInfoJogador() + "<br/></html>");
+	}
 	
+	private void atualizaInfoLadrao(Jogo jogo){
+		this.informacoesLadrao.setText("<html><strong>---INFORMACOES LADRAO---</strong><br/>" + jogo.getLadrao() + "</html>");
+	}
+
+	private void atualizaInfoCasa(Jogo jogo){
+		this.informacoesCasa.setText("<html><strong>---INFORMACOES CASA---</strong><br/>" + jogo.getCasaAtual() + "</html>");
+	}
 	
-
-    public void updateMapa(String imagemMapaPath){
-        panelCentral.removeAll();
-
-        mapa = new JLabel(new ImageIcon(imagemMapaPath));
-        panelCentral.add(mapa);
-        panelCentral.add(portaAtual);
-
-        terminalInput.setText("");
-    }
-
-    public void updateTerminal(String texto){
-        terminal.setText(texto);
-    }
-
+	private void atualizaInfoTerminal(Jogo jogo){
+		this.terminal.setText("<html><strong>---COMANDOS---</strong><br/>" + jogo.getComandosDisp() + "</html>");
+	}
+	
+	public void janelaMensagem(String mensagem){
+		JOptionPane.showMessageDialog(this.janela, mensagem);
+	}
+	
     public void exibir(){
-        janela.setVisible(true);
+        this.janela.setVisible(true);
     }
 
     public void fechar(){
-        janela.setVisible(false);
+        this.janela.setVisible(false);
     }
-
-    private class EventTerminal implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-			String input = terminalInput.getText();
-			terminalInput.setText("");
-			String comandoStr = null;
-			String atributo = null;
-			Scanner entrada = new Scanner(input);
-			if(entrada.hasNext()){
-				comandoStr = entrada.next();
-			}
-			if(entrada.hasNext()){
-				atributo = entrada.next();
-			}
-            Comando comando = new Comando(comandoStr, atributo);
-			// this.jogo.executaComando(comando);
-			// this.atualizaDados();
-        }
-    }
+	
 }

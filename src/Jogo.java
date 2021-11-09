@@ -3,14 +3,29 @@ import java.util.Map;
 
 public class Jogo{
 	
+	private static Jogo jogo;
+	private Interface interfaceJogo;
 	private Jogador jogador;
 	private ArrayList<Tier> listaTier;
 	private Ladrao ladrao;
 	private Casa casaAtual;
 	
-	public Jogo(){
+	private Jogo(){
 		this.jogador = new Jogador();
 		this.listaTier = this.criarTierItens();
+	}
+	
+	public static Jogo getInstanciaJogo(){
+		if(jogo == null){
+			jogo = new Jogo();
+		}
+		return jogo;
+	}
+	
+	public void start(){
+		this.iniciaFase();
+		this.interfaceJogo = new Interface();
+		this.interfaceJogo.exibir();
 	}
 	
 	public Comodo getComodoAtualLadrao(){
@@ -38,7 +53,39 @@ public class Jogo{
 		this.ladrao = new Ladrao(this.casaAtual.getComodoInicial());
 	}
 	
-	private void executaComando(Comando comando){
+	public String getComandosDisp(){
+		String texto = "<b>-LISTA COMANDOS DISPONIVEIS-</b><br/>";
+		if(this.verficarComandosEscSair()){
+			return texto + "<b>Comando:</b> <i>sair</i><br/>";
+		}
+		texto += "<b>Comando:</b> <i>esconder</i><br/>";
+		texto += "<b>Comando:</b> <i>entrar (numero_da_porta)</i><br/>";
+		if(this.verificarComandoFugir()){
+			texto += "<b>Comando:</b> <i>fugir</i><br/>";
+		}
+		if(verificarComandoRoubar()){
+			texto += "<b>Comando:</b> <i>roubar (numero_do_item)</i><br/>";
+		}
+		return texto;
+	}
+	
+	private boolean verificarComandoRoubar(){
+		return (this.ladrao.getLocalAtual().getQtdItens() > 0);
+	}
+	
+	private boolean verficarComandoEntrar(){
+		return true;
+	}
+	
+	private boolean verficarComandosEscSair(){
+		return (this.ladrao.getEscondido());
+	}
+	
+	private boolean verificarComandoFugir(){
+		return (this.ladrao.getLocalAtual().getSaida());
+	}
+	
+	public void executaComando(Comando comando){
 		
 		switch(comando.getComando()){
 			case "roubar":
@@ -59,12 +106,20 @@ public class Jogo{
 			default:
 				break;
 		}
+		if(this.verficarEncontro()){
+			this.interfaceJogo.janelaMensagem("Voce foi \ncapturado!");
+			this.iniciaFase();
+		}
+		this.moveDonos();
+		this.preMoveDonos();
+		this.interfaceJogo.atualizaDados();
 		
 	}
 	
 	private void executaFugir(){
 		this.jogador.proximaFase();
 		this.jogador.adicionaPontuacao(this.ladrao.calculaRoubo());
+		this.interfaceJogo.janelaMensagem("Voce \nfugiu!");
 		this.iniciaFase();
 	}
 	
@@ -132,7 +187,7 @@ public class Jogo{
 		Item item1 = new Item("Anel de plastico", 10);
 		Item item2 = new Item("Colhar de plastico", 10);
 		Item item3 = new Item("Pulseira da amizadade", 5);
-		Item item4 = new Item("Bracelete de plástico", 15);
+		Item item4 = new Item("Bracelete de plastico", 15);
 		Item item5 = new Item("Pregador de cabelo de plastico", 5);
 		
 		Tier tier1 = new Tier("Comum", 1);
@@ -180,7 +235,7 @@ public class Jogo{
 		Item item19 = new Item("Bracelete de ouro", 15);
 		Item item20 = new Item("Pregador de cabelo de ouro", 5);
 		
-		Tier tier4 = new Tier("Lendário", 5);
+		Tier tier4 = new Tier("Lendario", 5);
 		tier4.adicionaItem(item16);
 		tier4.adicionaItem(item17);
 		tier4.adicionaItem(item18);

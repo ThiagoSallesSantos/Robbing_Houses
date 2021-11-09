@@ -73,7 +73,7 @@ public class Casa{
 	@Override
 	public String toString(){
 		int cont = 1;
-		String texto = "<b>Casa:</b> " + this.getNome() + "<br/><b>Descricao:</b> " + this.getDescricao() + "<br/><b>-LISTA DONOS-</b><br/>";
+		String texto = "<b>Casa:</b> " + this.getNome() + "<br/><b>Descricao:</b> " + this.getDescricao() + "<br/><br/><b>-LISTA DONOS-</b><br/>";
 		for(Dono dono : this.getDonos()){
 			texto += "Dono " + cont + " - " + dono + "<br/>";
 			cont += 1;
