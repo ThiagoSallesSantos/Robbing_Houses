@@ -38,70 +38,70 @@ public class Jogo{
 		this.ladrao = new Ladrao(this.casaAtual.getComodoInicial());
 	}
 	
-	private void executaComando(Comando comando, Ladrao ladrao){
+	private void executaComando(Comando comando){
 		
 		switch(comando.getComando()){
 			case "roubar":
-				this.executaRoubar(ladrao, comando.getAtributo());
+				this.executaRoubar(comando.getAtributo());
 				break;
 			case "entrar":
-				this.executaEntrar(ladrao, comando.getAtributo());
+				this.executaEntrar(comando.getAtributo());
 				break;
 			case "esconder":
-				this.executaEsconder(ladrao);
+				this.executaEsconder();
 				break;
 			case "sair":
-				this.executaSair(ladrao);
+				this.executaSair();
 				break;
 			case "fugir":
-				System.out.println("Fugiu cagao");
-				this.executaFugir(ladrao);
+				this.executaFugir();
 				break;
 			default:
-				System.out.println("AAAA");
+				break;
 		}
 		
 	}
 	
-	private void executaFugir(Ladrao ladrao){
+	private void executaFugir(){
 		this.jogador.proximaFase();
-		this.jogador.adicionaPontuacao(ladrao.calculaRoubo());
+		this.jogador.adicionaPontuacao(this.ladrao.calculaRoubo());
+		this.iniciaFase();
 	}
 	
-	private void executaRoubar(Ladrao ladrao, String atributo){
+	private void executaRoubar(String atributo){
 		int atributoInt = Integer.parseInt(atributo);
-		Comodo comodoAtual = ladrao.getLocalAtual();
-		ladrao.adicionaItemRoubado(comodoAtual.roubaItem(atributoInt-1));
+		Comodo comodoAtual = this.ladrao.getLocalAtual();
+		this.ladrao.adicionaItemRoubado(comodoAtual.roubaItem(atributoInt-1));
 	}
 	
-	private void executaEntrar(Ladrao ladrao, String atributo){
+	private void executaEntrar(String atributo){
 		int atributoInt = Integer.parseInt(atributo);
-		Comodo comodoOrigem = ladrao.getLocalAtual();
+		Comodo comodoOrigem = this.ladrao.getLocalAtual();
 		Map<Comodo, Boolean> portas = comodoOrigem.getPortas();
 		ArrayList<Comodo> comodosAdjacentes = new ArrayList<>(portas.keySet());
 		Comodo comodoDestino  = comodosAdjacentes.get(atributoInt-1);
 		if(portas.get(comodoDestino)){
-			if(ladrao.getVidaUtilChave() > 0){
+			if(this.ladrao.getVidaUtilChave() > 0){
 				comodoOrigem.abrirPorta(comodoDestino);
 				comodoDestino.abrirPorta(comodoOrigem);
-				ladrao.usaChaveMestre();
+				this.ladrao.usaChaveMestre();
 			}
 		}
-		ladrao.movimentar(comodoDestino);
+		this.ladrao.movimentar(comodoDestino);
 	}
 	
-	private void executaEsconder(Ladrao ladrao){
-		ladrao.esconder();
+	private void executaEsconder(){
+		this.ladrao.esconder();
 	}
 	
-	private void executaSair(Ladrao ladrao){
-		ladrao.sairEsconderijo();
+	private void executaSair(){
+		this.ladrao.sairEsconderijo();
 	}
 	
-	private boolean verficarEncontro(Ladrao ladrao, Casa casa){
-		if(!ladrao.getEscondido()){
-			for(Dono dono : casa.getDonos()){
-				if((ladrao.getLocalAtual() == dono.getLocalAtual()) || (ladrao.getLocalAtual() == dono.getProximoComodo())){
+	private boolean verficarEncontro(){
+		if(!this.ladrao.getEscondido()){
+			for(Dono dono : this.casaAtual.getDonos()){
+				if((this.ladrao.getLocalAtual() == dono.getLocalAtual()) || (this.ladrao.getLocalAtual() == dono.getProximoComodo())){
 					return true;
 				}
 			}
@@ -109,71 +109,14 @@ public class Jogo{
 		return false;
 	}
 	
-	private String getInfoLadrao(Ladrao ladrao){
-		String texto = "Chave Mestre: " + ladrao.getVidaUtilChave() + " uso(s) restante\n";
-		texto += "Itens roubados:\n";
-		if(ladrao.getQtdItens() == 0){
-			return texto + "Nenhum foi roubado ainda!\n";
-		}
-		for(Item itemRoubado : ladrao.getListaItensRoubados()){
-			texto += itemRoubado + "\n";
-		}
-		return texto + "\n";
-	}
-	
-	private String getInfoDonos(Casa casa){
-		String texto = "Acao dos dono(s):\n";
-		int cont = 1;
-		for(Dono dono : casa.getDonos()){
-			texto += cont + " - Dono" + ": " + dono + "\n"; 
-		}
-		return texto;
-	}
-	
-	private String getInfoComodo(Comodo comodo){
-		return "\nPorta(s):\n" + this.getPortasComodo(comodo) + "\nItens:\n" + this.getItensComodo(comodo) + "\nEsconderijo:\n" + this.getEsconderijoComodo(comodo) + "\nSaida:\n" + this.getSaidaComodo(comodo);
-	}
-	
-	private String getPortasComodo(Comodo comodo){
-		String texto = "Lista dos comodos adjacentes:\n";
-		Map<Comodo, Boolean> portas = comodo.getPortas();
-		int cont = 1;
-		for(Comodo comodoAdjacente : portas.keySet()){
-			texto += cont + " - " + comodoAdjacente + ((portas.get(comodoAdjacente)) ? " - (Trancada)" : "") + "\n";
-			cont += 1;
-		}
-		return texto + "\n";
-	}
-	
-	private String getItensComodo(Comodo comodo){
-		String texto = "Lista dos itens para serem roubados:\n";
-		if(comodo.getQtdItens() <= 0){
-			return texto + "Neste comodo nao possui item para ser roubado!\n";
-		}
-		int cont = 1;
-		for(Item item : comodo.getItens()){
-			texto += cont + " - " + item + "\n";
-			cont += 1;
-		}
-		return texto + "\n";
-	}
-	
-	private String getEsconderijoComodo(Comodo comodo){
-		return (comodo.getEsconderijo()) ? "Este comodo possui local para esconder!\n" : "Este comodo NAO possui local para esconder!\n";
-	}
-	
-	private String getSaidaComodo(Comodo comodo){
-		return (comodo.getSaida()) ? "Este comodo possui rota de fuga!\n" : "NAO possui rota de fuga!\n";
-	}
-	
-	private void preMoveDonos(Casa casa){
-		for(Dono dono : casa.getDonos()){
+	private void preMoveDonos(){
+		for(Dono dono : this.casaAtual.getDonos()){
 			dono.selecionaProximoComodo();
 		}
 	}
 	
-	private void moveDonos(Casa casa){
-		for(Dono dono : casa.getDonos()){
+	private void moveDonos(){
+		for(Dono dono : this.casaAtual.getDonos()){
 			if(dono.getProximoComodo() != null){
 				dono.movimentar(dono.getProximoComodo());
 			}

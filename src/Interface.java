@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Interface {
     private JFrame janela;
@@ -62,8 +63,8 @@ public class Interface {
         panelCentral.setLayout(new BoxLayout(panelCentral, BoxLayout.Y_AXIS));
         panelCentral.setPreferredSize(new Dimension(460, 350));
 
-        mapa = new JLabel(new ImageIcon(this.jogo.getImagemCasaAtual()));
-        panelCentral.add(mapa);
+        // mapa = new JLabel(new ImageIcon(this.jogo.getImagemCasaAtual()));
+        // panelCentral.add(mapa);
 
         JLabel informacoesCasa = new JLabel("<html><b>---INFORMACOES CASA---</b><br/>" + this.jogo.getCasaAtual() + "</html>");
         informacoesCasa.setFont(new Font("Ariel", Font.PLAIN, 10));
@@ -78,10 +79,11 @@ public class Interface {
         panelTerminal.setPreferredSize(new Dimension(1000, 150));
 
         terminal = new JLabel();
-        terminal.setFont(new Font("Ariel", Font.BOLD, 17));
+        terminal.setFont(new Font("Ariel", Font.BOLD, 10));
         terminal.setPreferredSize(new Dimension(1000, 120));
         panelTerminal.add(terminal);
 
+		// Configuração painel terminal input e botão
         JPanel terminalInputEBotao = new JPanel();
         terminalInputEBotao.setLayout(new BoxLayout(terminalInputEBotao, BoxLayout.X_AXIS));
         terminalInputEBotao.setPreferredSize(new Dimension(1000, 30));
@@ -92,7 +94,7 @@ public class Interface {
 
         EventTerminal eventTerminal = new EventTerminal();
 
-        JButton botao = new JButton("OK");
+        JButton botao = new JButton("Enviar");
         botao.addActionListener(eventTerminal);
         botao.setPreferredSize(new Dimension(200, 30));
         terminalInputEBotao.add(botao);
@@ -101,26 +103,8 @@ public class Interface {
 
         janela.add(panelTerminal, BorderLayout.SOUTH);
     }
-
-    public void updateTentativasRestantes(String tentativasRestantesValue){
-        tentativasRestantes.setText(tentativasRestantesValue);
-    }
-
-    public void updateDurabilidadeChaveMestre(String durabilidadeChaveMestreValue){
-        durabilidadeChaveMestre.setText(durabilidadeChaveMestreValue);
-    }
-
-    public void updateDicasEncontradas(ArrayList<String> dicasEncontradasPanelValues){
-        dicasEncontradasPanel.removeAll();
-        for (String dicaEncontrada: dicasEncontradasPanelValues) {
-            dicasEncontradasPanel.add(new JLabel("-> " + dicaEncontrada));
-        }
-        terminalInput.setText("");
-    }
-
-    public void updatePortaAtual(String novaPortaAtual){
-        portaAtual.setText("Porta atual: " + novaPortaAtual);
-    }
+	
+	
 
     public void updateMapa(String imagemMapaPath){
         panelCentral.removeAll();
@@ -147,7 +131,20 @@ public class Interface {
     private class EventTerminal implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            terminalInput.setText("");
+			String input = terminalInput.getText();
+			terminalInput.setText("");
+			String comandoStr = null;
+			String atributo = null;
+			Scanner entrada = new Scanner(input);
+			if(entrada.hasNext()){
+				comandoStr = entrada.next();
+			}
+			if(entrada.hasNext()){
+				atributo = entrada.next();
+			}
+            Comando comando = new Comando(comandoStr, atributo);
+			// this.jogo.executaComando(comando);
+			// this.atualizaDados();
         }
     }
 }

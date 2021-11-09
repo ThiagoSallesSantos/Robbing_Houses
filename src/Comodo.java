@@ -69,6 +69,7 @@ public class Comodo{
 	public String toString(){
 		int cont = 1;
 		String texto = "<b>Comodo Atual:</b> " + this.getNome() + "<br/>";
+		
 		texto += "<br/><b>-LISTA PORTAS-</b><br/>Lista de comodos adjacentes:<br/>";
 		for(Comodo comodoAdjacente : this.getPortas().keySet()){
 			texto += cont + " - " + comodoAdjacente.getNome() + "<br/>";
