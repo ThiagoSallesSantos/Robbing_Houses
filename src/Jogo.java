@@ -55,8 +55,11 @@ public class Jogo{
 	
 	public String getComandosDisp(){
 		String texto = "<b>-LISTA COMANDOS DISPONIVEIS-</b><br/>";
+		if(this.verificaFinalJogo()){
+			return texto + "<b>Comando:</b> <i>jogador (nome_jogador)</i><br/>";
+		}
 		if(this.verficarComandosEscSair()){
-			return texto + "<b>Comando:</b> <i>sair</i><br/>";
+			return texto + "<b>Comando:</b> <i>sair</i><br/> -<i>voce precisa sair do esconderijo para realizar outra acoes</i>-";
 		}
 		texto += "<b>Comando:</b> <i>esconder</i><br/>";
 		texto += "<b>Comando:</b> <i>entrar (numero_da_porta)</i><br/>";
@@ -67,6 +70,10 @@ public class Jogo{
 			texto += "<b>Comando:</b> <i>roubar (numero_do_item)</i><br/>";
 		}
 		return texto;
+	}
+	
+	private boolean verificaFinalJogo(){
+			return (this.casaAtual == null);
 	}
 	
 	private boolean verificarComandoRoubar(){
@@ -103,17 +110,36 @@ public class Jogo{
 			case "fugir":
 				this.executaFugir();
 				break;
+			case "jogador":
+				this.executaJogador(comando.getAtributo());
+				break;
 			default:
 				break;
 		}
+		
 		if(this.verficarEncontro()){
 			this.interfaceJogo.janelaMensagem("Voce foi \ncapturado!");
-			this.iniciaFase();
+			this.jogador.reduzirVidasRestantes();
+			if(this.jogador.getVidasRestantes() == 0){
+				this.casaAtual = null;
+			}else{
+				this.iniciaFase();
+			}
+		}else{
+			this.moveDonos();
+			this.preMoveDonos();
 		}
-		this.moveDonos();
-		this.preMoveDonos();
 		this.interfaceJogo.atualizaDados();
-		
+	}
+	
+	private void executaJogador(String atributo){
+		if(this.jogador != null){
+			this.jogador.setNome(atributo);
+			ScoreBoard sb = BinFile.loadSBFile();
+			sb.addJogador(this.jogador);
+			this.interfaceJogo.exibirInformacao("<html><strong>---SCOREBOARD---</strong><br/>" + sb + "</html>");
+			this.jogador = null;
+		}
 	}
 	
 	private void executaFugir(){
@@ -171,11 +197,11 @@ public class Jogo{
 	}
 	
 	private void moveDonos(){
-		for(Dono dono : this.casaAtual.getDonos()){
-			if(dono.getProximoComodo() != null){
-				dono.movimentar(dono.getProximoComodo());
+			for(Dono dono : this.casaAtual.getDonos()){
+				if(dono.getProximoComodo() != null){
+					dono.movimentar(dono.getProximoComodo());
+				}
 			}
-		}
 	}
 	
 	public ArrayList<Tier> criarTierItens(){
@@ -184,11 +210,11 @@ public class Jogo{
 		
 		// Itens
 		// Itens comuns
-		Item item1 = new Item("Anel de plastico", 10);
-		Item item2 = new Item("Colhar de plastico", 10);
-		Item item3 = new Item("Pulseira da amizadade", 5);
-		Item item4 = new Item("Bracelete de plastico", 15);
-		Item item5 = new Item("Pregador de cabelo de plastico", 5);
+		Item item1 = new Item("Anel de plastico", 2);
+		Item item2 = new Item("Colhar de plastico", 4);
+		Item item3 = new Item("Pulseira de plastico", 2);
+		Item item4 = new Item("Bracelete de plastico", 4);
+		Item item5 = new Item("Pregador de cabelo de plastico", 1);
 		
 		Tier tier1 = new Tier("Comum", 1);
 		tier1.adicionaItem(item1);
@@ -199,10 +225,10 @@ public class Jogo{
 		auxListaTier.add(tier1);
 		
 		// Itens incomuns
-		Item item6 = new Item("Anel de ferro", 10);
-		Item item7 = new Item("Colhar de ferro", 10);
-		Item item8 = new Item("Pulseira de ferro", 5);
-		Item item9 = new Item("Bracelete de ferro", 15);
+		Item item6 = new Item("Anel de ferro", 5);
+		Item item7 = new Item("Colhar de ferro", 7);
+		Item item8 = new Item("Pulseira de ferro", 6);
+		Item item9 = new Item("Bracelete de ferro", 7);
 		Item item10 = new Item("Pregador de cabelo de ferro", 5);
 		
 		Tier tier2 = new Tier("Incomum", 2);
@@ -214,11 +240,11 @@ public class Jogo{
 		auxListaTier.add(tier2);
 		
 		// Itens raros
-		Item item11 = new Item("Anel de prata", 10);
-		Item item12 = new Item("Colhar de prata", 10);
-		Item item13 = new Item("Pulseira de prata", 5);
-		Item item14 = new Item("Bracelete de prata", 15);
-		Item item15 = new Item("Pregador de cabelo de prata", 5);
+		Item item11 = new Item("Anel de prata", 15);
+		Item item12 = new Item("Colhar de prata", 20);
+		Item item13 = new Item("Pulseira de prata", 17);
+		Item item14 = new Item("Bracelete de prata", 20);
+		Item item15 = new Item("Pregador de cabelo de prata", 14);
 		
 		Tier tier3 = new Tier("Raro", 5);
 		tier3.adicionaItem(item11);
@@ -229,11 +255,11 @@ public class Jogo{
 		auxListaTier.add(tier3);
 		
 		// Itens lendários
-		Item item16 = new Item("Anel de ouro", 10);
-		Item item17 = new Item("Colhar de ouro", 10);
-		Item item18 = new Item("Pulseira de ouro", 5);
-		Item item19 = new Item("Bracelete de ouro", 15);
-		Item item20 = new Item("Pregador de cabelo de ouro", 5);
+		Item item16 = new Item("Anel de ouro", 30);
+		Item item17 = new Item("Colhar de ouro", 50);
+		Item item18 = new Item("Pulseira de ouro", 35);
+		Item item19 = new Item("Bracelete de ouro", 40);
+		Item item20 = new Item("Pregador de cabelo de ouro", 25);
 		
 		Tier tier4 = new Tier("Lendario", 5);
 		tier4.adicionaItem(item16);

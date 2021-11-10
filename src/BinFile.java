@@ -1,46 +1,31 @@
 import java.io.*;
-import java.util.ArrayList;
 
 public class BinFile {
 	
-	public static void saveSBFile(ArrayList<Jogador> lista) 
-    {
-    	String arquivoNome = "SBsave.bin";
-    	try
-    	{
-	    	ObjectOutputStream arquivo = new ObjectOutputStream( new FileOutputStream(arquivoNome)); 
-	    	arquivo.writeObject(lista);
-	    	arquivo.close();
+	private static String nomeArquivo = "SBsave.bin";
+	
+	public static void saveSBFile(ScoreBoard sb){
+    	try(ObjectOutputStream arq = new ObjectOutputStream(new FileOutputStream(nomeArquivo))){
+	    	arq.writeObject(sb);
     	}
-    	catch(IOException e)
-    	{
+    	catch(IOException e){
     		e.printStackTrace();
-    	}
+    	}catch(Exception e){
+			System.out.println("Erro: " + e.getMessage());
+		}
     }
 	
-	@SuppressWarnings("unchecked")
-	public static ArrayList<Jogador> loadSBFile()
-    {
-    	String arquivoNome = "SBsave.bin";
-    	ArrayList<Jogador> lista = new ArrayList<Jogador>();
-    	try
-    	{
-    		ObjectInputStream arquivo = new ObjectInputStream( new FileInputStream(arquivoNome)); 
-	    	lista = (ArrayList<Jogador>)arquivo.readObject();
-	    	arquivo.close();
-    	}
-    	catch(FileNotFoundException e)
-    	{
+	public static ScoreBoard loadSBFile(){
+    	ScoreBoard sb = new ScoreBoard();
+    	try(ObjectInputStream arq = new ObjectInputStream(new FileInputStream(nomeArquivo))){
+	    	sb = (ScoreBoard)arq.readObject();
+    	}catch(FileNotFoundException e){
     		System.out.println(e.getMessage());
-    	}
-    	catch(IOException e)
-    	{
+    	}catch(IOException e){
     		System.out.println(e.getMessage());
-    	}
-    	catch (ClassNotFoundException e) 
-    	{
+    	}catch (ClassNotFoundException e){
     		System.out.println(e.getMessage());
 		}
-		return lista;
+		return sb;
     }
 }

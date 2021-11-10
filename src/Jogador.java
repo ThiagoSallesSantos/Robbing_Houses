@@ -1,4 +1,4 @@
-public class Jogador {
+public class Jogador implements Comparable<Jogador> {
 	
 	private String nome;
 	private int pontuacao;
@@ -16,7 +16,7 @@ public class Jogador {
 		return this.nome;
 	}
 	
-	public void setNome(){
+	public void setNome(String nome){
 		this.nome = nome;
 	}
 	
@@ -42,6 +42,16 @@ public class Jogador {
 	
 	public void proximaFase(){
 		this.faseAtual += 1;
+	}
+	
+	@Override
+	public int compareTo(Jogador jogador){
+		if(this.getPontuacao() > jogador.getPontuacao()){
+			return -1;
+		}else if(this.getPontuacao() < jogador.getPontuacao()){
+			return 1;
+		}
+		return 0;
 	}
 	
 	@Override

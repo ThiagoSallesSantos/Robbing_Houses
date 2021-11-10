@@ -1,54 +1,27 @@
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
+import java.io.Serializable;
 
-public class ScoreBoard {
+public class ScoreBoard implements Serializable {
+	
 	private ArrayList<Jogador> lista;
 	
-	public ScoreBoard()
-	{
+	public ScoreBoard(){
 		this.lista = new ArrayList<Jogador>();
 	}
 	
-	public void addJogador(Jogador tmp)
-	{
-		lista.add(tmp);
+	public void addJogador(Jogador jogador){
+		lista.add(jogador);
 	}
 	
-	public Integer getTamanho()
-	{
-		return lista.size();
+	@Override
+	public String toString(){
+		Collections.sort(this.lista);
+		String texto = "";
+		for(Jogador jogador : this.lista){
+			texto += jogador + "<br/>";
+		}
+		return texto;
 	}
 	
-	public Integer getPontuacaoFinal(Jogador jgd)
-	{
-		return (jgd.getPontuacao() + (jgd.getPontuacao()*jgd.getVidasRestantes()/30));
-	}
-	
-	public String getPontuacao(Integer pos)
-	{
-		Jogador jgd = lista.get(pos);
-		return (pos+1) + "# - Jogador: " + jgd.getNome() + " - Pontuacao Final: " + getPontuacaoFinal(jgd); 
-	}
-	
-	public void ordenarSB()
-	{
-		
-		Collections.sort(lista , new Comparator<Jogador>() {
-			@Override
-			public int compare(Jogador j1, Jogador j2) {
-				return getPontuacaoFinal(j2).compareTo(getPontuacaoFinal(j1));
-			}
-		});
-	}
-	
-	public void salvarSB()
-	{
-		BinFile.saveSBFile(lista);
-	}
-	
-	public void carregarSB()
-	{
-		lista = BinFile.loadSBFile();
-	}
 }

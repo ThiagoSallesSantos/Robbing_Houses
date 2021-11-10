@@ -131,7 +131,17 @@ public class Interface {
 		this.atualizaInfoJogador(jogo);
 		this.atualizaInfoLadrao(jogo);
 		this.atualizaInfoCasa(jogo);
+		this.atualizaMapa(jogo);
 		this.atualizaInfoTerminal(jogo);
+	}
+
+	public void exibirInformacao(String info){
+		this.informacoesComodos.setText("");
+		this.informacoesJogador.setText("");
+		this.informacoesLadrao.setText("");
+		this.informacoesCasa.setText("");
+		this.mapaCasa.setText("");
+		this.terminal.setText(info);
 	}
 
 	private void atualizaInfoComodos(Jogo jogo){
@@ -148,6 +158,10 @@ public class Interface {
 
 	private void atualizaInfoCasa(Jogo jogo){
 		this.informacoesCasa.setText("<html><strong>---INFORMACOES CASA---</strong><br/>" + jogo.getCasaAtual() + "</html>");
+	}
+	
+	private void atualizaMapa(Jogo jogo){
+		this.mapaCasa.setText("");
 	}
 	
 	private void atualizaInfoTerminal(Jogo jogo){
