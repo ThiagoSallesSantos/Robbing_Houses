@@ -56,7 +56,7 @@ public class Jogador implements Comparable<Jogador> {
 	
 	@Override
 	public String toString(){
-		return this.getNome() + " - " + this.getPontuacao();
+		return "Nome: " + this.getNome() + " - Pontuacao: " + this.getPontuacao();
 	}
 	
 }

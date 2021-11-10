@@ -9,10 +9,12 @@ public class Jogo{
 	private ArrayList<Tier> listaTier;
 	private Ladrao ladrao;
 	private Casa casaAtual;
+	private boolean status;
 	
 	private Jogo(){
 		this.jogador = new Jogador();
 		this.listaTier = this.criarTierItens();
+		this.status = false;
 	}
 	
 	public static Jogo getInstanciaJogo(){
@@ -23,8 +25,9 @@ public class Jogo{
 	}
 	
 	public void start(){
+		this.status = true;
 		this.iniciaFase();
-		this.interfaceJogo = new Interface();
+		this.interfaceJogo = new Interface(this);
 		this.interfaceJogo.exibir();
 	}
 	
@@ -55,7 +58,7 @@ public class Jogo{
 	
 	public String getComandosDisp(){
 		String texto = "<b>-LISTA COMANDOS DISPONIVEIS-</b><br/>";
-		if(this.verificaFinalJogo()){
+		if(!this.status){
 			return texto + "<b>Comando:</b> <i>jogador (nome_jogador)</i><br/>";
 		}
 		if(this.verficarComandosEscSair()){
@@ -72,16 +75,8 @@ public class Jogo{
 		return texto;
 	}
 	
-	private boolean verificaFinalJogo(){
-			return (this.casaAtual == null);
-	}
-	
 	private boolean verificarComandoRoubar(){
 		return (this.ladrao.getLocalAtual().getQtdItens() > 0);
-	}
-	
-	private boolean verficarComandoEntrar(){
-		return true;
 	}
 	
 	private boolean verficarComandosEscSair(){
@@ -93,43 +88,61 @@ public class Jogo{
 	}
 	
 	public void executaComando(Comando comando){
-		
-		switch(comando.getComando()){
-			case "roubar":
-				this.executaRoubar(comando.getAtributo());
-				break;
-			case "entrar":
-				this.executaEntrar(comando.getAtributo());
-				break;
-			case "esconder":
-				this.executaEsconder();
-				break;
-			case "sair":
-				this.executaSair();
-				break;
-			case "fugir":
-				this.executaFugir();
-				break;
-			case "jogador":
-				this.executaJogador(comando.getAtributo());
-				break;
-			default:
-				break;
-		}
-		
-		if(this.verficarEncontro()){
-			this.interfaceJogo.janelaMensagem("Voce foi \ncapturado!");
-			this.jogador.reduzirVidasRestantes();
-			if(this.jogador.getVidasRestantes() == 0){
-				this.casaAtual = null;
-			}else{
-				this.iniciaFase();
+		try{
+			switch(comando.getComando()){
+				case "roubar":
+					this.executaRoubar(comando.getAtributo());
+					break;
+				case "entrar":
+					this.executaEntrar(comando.getAtributo());
+					break;
+				case "esconder":
+					this.executaEsconder();
+					break;
+				case "sair":
+					this.executaSair();
+					break;
+				case "fugir":
+					this.executaFugir();
+					break;
+				case "jogador":
+					this.executaJogador(comando.getAtributo());
+					break;
+				default:
+					break;
 			}
-		}else{
-			this.moveDonos();
-			this.preMoveDonos();
+			
+			if(this.verficarEncontro()){
+				this.interfaceJogo.enviaMensagem("Voce foi capturado!");
+				this.jogador.reduzirVidasRestantes();
+				if(this.jogador.getVidasRestantes() == 0){
+					this.interfaceJogo.enviaMensagem("GAME OVER - Voce perdeu todas suas vidas!");
+					this.finalizaJogo();
+				}else{
+					this.interfaceJogo.enviaMensagem("Casa " + this.casaAtual.getNome() + " foi reiniciada!");
+					this.iniciaFase();
+				}
+			}else{
+				this.moveDonos();
+				this.preMoveDonos();
+			}
+			this.interfaceJogo.atualizaDados(this);
 		}
-		this.interfaceJogo.atualizaDados();
+		catch(NumberFormatException erroNumberFormat){
+			this.interfaceJogo.enviaMensagem("Erro - Comando Invalido, o parametro do atributo nao e um numero!");
+		}
+		catch(RuntimeException erroRunTime){
+			this.interfaceJogo.enviaMensagem(erroRunTime.getMessage());
+		}catch(Exception erro){
+			this.interfaceJogo.enviaMensagem("Erro - Ocorreu um erro nao esperado. \nErro foi: " + erro.getMessage());
+		}
+	}
+	
+	private void finalizaJogo(){
+		this.interfaceJogo.enviaMensagem("Sua pontuação final foi de: " + this.jogador.getPontuacao() + " pontos.");
+		this.interfaceJogo.enviaMensagem("Por favor use o comando jogador para registrar seu nome e pontuação em nossa Score Board!");
+		this.interfaceJogo.limpaJanela();
+		this.status = false;
 	}
 	
 	private void executaJogador(String atributo){
@@ -137,45 +150,76 @@ public class Jogo{
 			this.jogador.setNome(atributo);
 			ScoreBoard sb = BinFile.loadSBFile();
 			sb.addJogador(this.jogador);
+			BinFile.saveSBFile(sb);
+			this.interfaceJogo.limpaJanela();
 			this.interfaceJogo.exibirInformacao("<html><strong>---SCOREBOARD---</strong><br/>" + sb + "</html>");
 			this.jogador = null;
+		}else{
+			throw new RuntimeException("Erro - Comando Invalido, este comando ja foi utilizado, este comando e unico por jogatina!");
 		}
 	}
 	
 	private void executaFugir(){
-		this.jogador.proximaFase();
+		this.interfaceJogo.enviaMensagem("Voce fugiu da casa " + this.casaAtual.getNome() + "!");
 		this.jogador.adicionaPontuacao(this.ladrao.calculaRoubo());
-		this.interfaceJogo.janelaMensagem("Voce \nfugiu!");
-		this.iniciaFase();
+		this.jogador.proximaFase();
+		if(this.jogador.getFaseAtual() > 5){
+			this.interfaceJogo.enviaMensagem("Voce finalizou todas as casas! Parabens!");
+			this.finalizaJogo();
+		}else{
+			this.iniciaFase();
+		}
 	}
 	
-	private void executaRoubar(String atributo){
+	private void executaRoubar(String atributo) throws NumberFormatException{
+		if(!this.status){
+			throw new RuntimeException("Erro - Comando Invalido, jogo entrou em modo de finalizado!");
+		}if(!this.verificarComandoRoubar()){
+			throw new RuntimeException("Erro - Comando Invalido, nao tem item pra ser roubado neste comodo!");
+		}
 		int atributoInt = Integer.parseInt(atributo);
 		Comodo comodoAtual = this.ladrao.getLocalAtual();
+		if(!((atributoInt > 0) && (atributoInt <= comodoAtual.getQtdItens()))){
+			throw new RuntimeException("Erro - Comando Invalido, parametro passado nao e valido!");
+		}
 		this.ladrao.adicionaItemRoubado(comodoAtual.roubaItem(atributoInt-1));
 	}
 	
-	private void executaEntrar(String atributo){
+	private void executaEntrar(String atributo) throws NumberFormatException{
+		if(!this.status){
+			throw new RuntimeException("Erro - Comando Invalido, jogo entrou em modo de finalizado!");
+		}
 		int atributoInt = Integer.parseInt(atributo);
 		Comodo comodoOrigem = this.ladrao.getLocalAtual();
 		Map<Comodo, Boolean> portas = comodoOrigem.getPortas();
 		ArrayList<Comodo> comodosAdjacentes = new ArrayList<>(portas.keySet());
+		if(!((atributoInt > 0) && (atributoInt <= comodosAdjacentes.size()))){
+			throw new RuntimeException("Erro - Comando Invalido, parametro passado nao e valido!");
+		}
 		Comodo comodoDestino  = comodosAdjacentes.get(atributoInt-1);
 		if(portas.get(comodoDestino)){
 			if(this.ladrao.getVidaUtilChave() > 0){
 				comodoOrigem.abrirPorta(comodoDestino);
 				comodoDestino.abrirPorta(comodoOrigem);
 				this.ladrao.usaChaveMestre();
+			}else{
+				throw new RuntimeException("Alerta - Voce nao pode mais abrir portas, devido que sua chave mestre estragou!");
 			}
 		}
 		this.ladrao.movimentar(comodoDestino);
 	}
 	
 	private void executaEsconder(){
+		if(this.verficarComandosEscSair()){
+			throw new RuntimeException("Erro - Comando Invalido, voce ja esta escondido!");
+		}
 		this.ladrao.esconder();
 	}
 	
 	private void executaSair(){
+		if(!this.verficarComandosEscSair()){
+			throw new RuntimeException("Erro - Comando Invalido, voce precisa esta escondido, para usar este comando!");
+		}
 		this.ladrao.sairEsconderijo();
 	}
 	
@@ -197,11 +241,11 @@ public class Jogo{
 	}
 	
 	private void moveDonos(){
-			for(Dono dono : this.casaAtual.getDonos()){
-				if(dono.getProximoComodo() != null){
-					dono.movimentar(dono.getProximoComodo());
-				}
+		for(Dono dono : this.casaAtual.getDonos()){
+			if(dono.getProximoComodo() != null){
+				dono.movimentar(dono.getProximoComodo());
 			}
+		}
 	}
 	
 	public ArrayList<Tier> criarTierItens(){

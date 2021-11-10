@@ -16,13 +16,11 @@ public class Interface {
 	private JTextArea terminalInput;
 	private JButton botao;
 
-    public Interface(){
-        montarJanela();
+    public Interface(Jogo jogo){
+        montarJanela(jogo);
     }
 	
-    private void montarJanela(){
-		
-		Jogo jogo = Jogo.getInstanciaJogo();
+    private void montarJanela(Jogo jogo){
 		
         // Configuração janela geral
         this.janela = new JFrame("Robbing Houses");
@@ -125,8 +123,7 @@ public class Interface {
         this.janela.add(painelTerminal, BorderLayout.SOUTH);
     }
 
-	public void atualizaDados(){
-		Jogo jogo = Jogo.getInstanciaJogo();
+	public void atualizaDados(Jogo jogo){
 		this.atualizaInfoComodos(jogo);
 		this.atualizaInfoJogador(jogo);
 		this.atualizaInfoLadrao(jogo);
@@ -135,13 +132,17 @@ public class Interface {
 		this.atualizaInfoTerminal(jogo);
 	}
 
-	public void exibirInformacao(String info){
+	public void limpaJanela(){
 		this.informacoesComodos.setText("");
 		this.informacoesJogador.setText("");
 		this.informacoesLadrao.setText("");
 		this.informacoesCasa.setText("");
 		this.mapaCasa.setText("");
-		this.terminal.setText(info);
+		this.terminal.setText("");
+	}
+
+	public void exibirInformacao(String info){
+		this.informacoesCasa.setText(info);
 	}
 
 	private void atualizaInfoComodos(Jogo jogo){
@@ -168,7 +169,7 @@ public class Interface {
 		this.terminal.setText("<html><strong>---COMANDOS---</strong><br/>" + jogo.getComandosDisp() + "</html>");
 	}
 	
-	public void janelaMensagem(String mensagem){
+	public void enviaMensagem(String mensagem){
 		JOptionPane.showMessageDialog(this.janela, mensagem);
 	}
 	
