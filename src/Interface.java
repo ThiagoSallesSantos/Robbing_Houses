@@ -61,7 +61,7 @@ public class Interface {
         painelCentral.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         painelCentral.setAlignmentX(Component.CENTER_ALIGNMENT);
         painelCentral.setLayout(new BoxLayout(painelCentral, BoxLayout.Y_AXIS));
-        painelCentral.setPreferredSize(new Dimension(640, 450));
+        painelCentral.setPreferredSize(new Dimension(460, 450));
 
         this.mapaCasa = new JLabel(new ImageIcon(jogo.getImagemCasaAtual()));
         painelCentral.add(this.mapaCasa);
