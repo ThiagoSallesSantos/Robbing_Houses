@@ -114,7 +114,7 @@ public class Jogo{
 					break;
 				default:
 					throw new RuntimeException("Erro - Comando Invalido, este comando nao existe!");
-					break;
+					
 			}
 			
 			if(this.verficarEncontro()){
@@ -501,9 +501,9 @@ public class Jogo{
 				casa.adicionaComodo(banheiro3C3);
 				
 				// Adiciona Porta
-				casa.adicionaPorta(salac3, garagemC3, true);
-				casa.adicionaPorta(salac3, depositoC3, false);
-				casa.adicionaPorta(salac3, corredorC3, false);
+				casa.adicionaPorta(salaC3, garagemC3, true);
+				casa.adicionaPorta(salaC3, depositoC3, false);
+				casa.adicionaPorta(salaC3, corredorC3, false);
 				casa.adicionaPorta(cozinhaC3, corredorC3, false);
 				casa.adicionaPorta(quarto1C3, corredorC3, true);
 				casa.adicionaPorta(banheiro1C3, corredorC3, false);
@@ -578,7 +578,7 @@ public class Jogo{
 				casa.adicionaComodo(banheiro4C4);
 				
 				// Adiciona Porta
-				casa.adicionaPorta(sacada1C4, garagemC1, true);
+				casa.adicionaPorta(sacada1C4, garagemC4, true);
 				casa.adicionaPorta(sacada1C4, escada2C4, false);
 				casa.adicionaPorta(corredor1C4, escada2C4, false);
 				casa.adicionaPorta(corredor1C4, bibliotecaC4, true);
@@ -612,7 +612,7 @@ public class Jogo{
 			
 			default:
 				throw new RuntimeException("Erro - Casa selecionada nao existe!");
-				break;
+				
 		}
 		
 		return casa;
