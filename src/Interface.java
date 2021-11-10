@@ -142,6 +142,8 @@ public class Interface {
         painelTerminal.add(terminalInputEBotao);
 
         this.janela.add(painelTerminal, BorderLayout.SOUTH);
+		
+		this.janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
 /**
@@ -174,7 +176,7 @@ public class Interface {
 	/**
 	 * Método para exibir informação
 	 * Este método é responsável por exibir as informações da casa.
-	 * @param info este atributo do tipo String contém a informação da casa a ser exibida.
+	 * @param info este atributo do tipo String contém a informação pertinente a ser exibida na label central.
 	 */
 	public void exibirInformacao(String info){
 		this.informacoesCasa.setText(info);
@@ -236,8 +238,8 @@ public class Interface {
 	
 	/**
 	 * Método de enviar mensagem.
-	 * Este método é responsável por enviar as mensagens escritas pelo jogador.
-	 * @param mensagem este atributo recebe um parâmetro que contém a mensagem escrita pelo jogador.
+	 * Este método é responsável por enviar as mensagens ao jogador, através de um pop-up.
+	 * @param mensagem este atributo recebe um parâmetro que contém a mensagem a ser exibida ao jogador.
 	 */
 	public void enviaMensagem(String mensagem){
 		JOptionPane.showMessageDialog(this.janela, mensagem);

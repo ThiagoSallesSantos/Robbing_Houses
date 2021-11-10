@@ -61,11 +61,12 @@ public class Jogo{
 		if(!this.status){
 			return texto + "<b>Comando:</b> <i>jogador (nome_jogador)</i><br/>";
 		}
+		texto += "<b>Comando:</b> <i>esperar</i><br/>";
 		if(this.verficarComandosEscSair()){
-			return texto + "<b>Comando:</b> <i>sair</i><br/> -<i>voce precisa sair do esconderijo para realizar outra acoes</i>-";
+			return texto + "<b>Comando:</b> <i>sair</i><br/> -<i>OBS: voce precisa sair do esconderijo para realizar outra acoes</i>-";
 		}
-		texto += "<b>Comando:</b> <i>esconder</i><br/>";
 		texto += "<b>Comando:</b> <i>entrar (numero_da_porta)</i><br/>";
+		texto += "<b>Comando:</b> <i>esconder</i><br/>";
 		if(this.verificarComandoFugir()){
 			texto += "<b>Comando:</b> <i>fugir</i><br/>";
 		}
@@ -108,7 +109,11 @@ public class Jogo{
 				case "jogador":
 					this.executaJogador(comando.getAtributo());
 					break;
+				case "esperar":
+					this.executaEsperar();
+					break;
 				default:
+					throw new RuntimeException("Erro - Comando Invalido, este comando nao existe!");
 					break;
 			}
 			
@@ -145,6 +150,13 @@ public class Jogo{
 		this.status = false;
 	}
 	
+	private void executaEsperar(){
+		if(!this.status){
+			throw new RuntimeException("Erro - Comando Invalido, jogo entrou em modo de finalizado!");
+		}
+		this.interfaceJogo.enviaMensagem("Voce ficou parado esperando o movimentos dos Donos!");
+	}
+	
 	private void executaJogador(String atributo){
 		if(this.jogador != null){
 			this.jogador.setNome(atributo);
@@ -160,6 +172,12 @@ public class Jogo{
 	}
 	
 	private void executaFugir(){
+		if(this.verficarComandosEscSair()){
+			throw new RuntimeException("Erro - Comando Invalido, voce esta escondido, precisa sair do esconderijo para realizar esta acao!");
+		}
+		if(!this.verificarComandoFugir()){
+			throw new RuntimeException("Erro - Comando Invalido, o comodo nao possui saida!");
+		}
 		this.interfaceJogo.enviaMensagem("Voce fugiu da casa " + this.casaAtual.getNome() + "!");
 		this.jogador.adicionaPontuacao(this.ladrao.calculaRoubo());
 		this.jogador.proximaFase();
@@ -172,8 +190,11 @@ public class Jogo{
 	}
 	
 	private void executaRoubar(String atributo) throws NumberFormatException{
+		
 		if(!this.status){
 			throw new RuntimeException("Erro - Comando Invalido, jogo entrou em modo de finalizado!");
+		}if(this.verficarComandosEscSair()){
+			throw new RuntimeException("Erro - Comando Invalido, voce esta escondido, precisa sair do esconderijo para realizar esta acao!");
 		}if(!this.verificarComandoRoubar()){
 			throw new RuntimeException("Erro - Comando Invalido, nao tem item pra ser roubado neste comodo!");
 		}
@@ -188,6 +209,8 @@ public class Jogo{
 	private void executaEntrar(String atributo) throws NumberFormatException{
 		if(!this.status){
 			throw new RuntimeException("Erro - Comando Invalido, jogo entrou em modo de finalizado!");
+		}if(this.verficarComandosEscSair()){
+			throw new RuntimeException("Erro - Comando Invalido, voce esta escondido, precisa sair do esconderijo para realizar esta acao!");
 		}
 		int atributoInt = Integer.parseInt(atributo);
 		Comodo comodoOrigem = this.ladrao.getLocalAtual();
@@ -332,16 +355,16 @@ public class Jogo{
 						"resource/casas/Casa 1.png");
 				
 				//Comodos
-				Comodo corredor1C1 = new Comodo("Corredor 1", this.listaTier.get(0), true, false);
-				Comodo cozinhaC1 = new Comodo("Cozinha", this.listaTier.get(0), false, true);
+				Comodo corredor1C1 = new Comodo("Corredor 1", this.listaTier.get(0), true, true);
+				Comodo cozinhaC1 = new Comodo("Cozinha", this.listaTier.get(1), false, true);
 				Comodo garagemC1 = new Comodo("Garagem", this.listaTier.get(2), true, true);
 				Comodo salaC1 = new Comodo("Sala", this.listaTier.get(1), false, true);
 				Comodo corredor2C1 = new Comodo("Corredor 2", this.listaTier.get(0), false, false);
 				Comodo quarto1C1 = new Comodo("Quarto 1", this.listaTier.get(2), false, true);
-				Comodo quarto2C1 = new Comodo("Quarto 2", this.listaTier.get(1), false, true);
-				Comodo banheiro1C1 = new Comodo("Banheiro 1", this.listaTier.get(1), false, false);
+				Comodo quarto2C1 = new Comodo("Quarto 2", this.listaTier.get(1), true, true);
+				Comodo banheiro1C1 = new Comodo("Banheiro 1", this.listaTier.get(1), false, true);
 				Comodo quarto3C1 = new Comodo("Quarto 3", this.listaTier.get(2), false, true);
-				Comodo banheiro2C1 = new Comodo("Banheiro 2", this.listaTier.get(3), false, false);
+				Comodo banheiro2C1 = new Comodo("Banheiro 2", this.listaTier.get(3), true, true);
 			
 				// Adicionando comodos a casa
 				casa.adicionaComodo(corredor1C1);
@@ -384,19 +407,19 @@ public class Jogo{
 						"resource/casas/Casa 2.png");
 				
 				// Comodos
-				Comodo salaC2 = new Comodo("Sala", this.listaTier.get(0), true, false);
-				Comodo garagemC2 = new Comodo("Garagem", this.listaTier.get(1), true, true);
+				Comodo salaC2 = new Comodo("Sala", this.listaTier.get(0), true, true);
+				Comodo garagemC2 = new Comodo("Garagem", this.listaTier.get(2), true, true);
 				Comodo depositoC2 = new Comodo("Deposito", this.listaTier.get(0), false, true);
 				Comodo corredorC2 = new Comodo("Corredor", this.listaTier.get(0), false, false);
-				Comodo cozinhaC2 = new Comodo("Cozinha", this.listaTier.get(0), false, true);
+				Comodo cozinhaC2 = new Comodo("Cozinha", this.listaTier.get(1), false, true);
 				Comodo quarto1C2 = new Comodo("Quarto 1", this.listaTier.get(2), false, true);
-				Comodo salaJantarC2 = new Comodo("Sala de Jantar", this.listaTier.get(1), false, false);
-				Comodo banheiro1C2 = new Comodo("Banheiro 1", this.listaTier.get(1), false, false);
+				Comodo salaJantarC2 = new Comodo("Sala de Jantar", this.listaTier.get(1), false, true);
+				Comodo banheiro1C2 = new Comodo("Banheiro 1", this.listaTier.get(1), true, false);
 				Comodo salaTVC2 = new Comodo("Sala de TV", this.listaTier.get(1), true, false);
 				Comodo quarto2C2 = new Comodo("Quarto 2", this.listaTier.get(2), false, true);
 				Comodo quarto3C2 = new Comodo("Quarto 3", this.listaTier.get(1), false, true);
-				Comodo banheiro2C2 = new Comodo("Banheiro 2", this.listaTier.get(3), false, false);
-				Comodo banheiro3C2 = new Comodo("Banheiro 3", this.listaTier.get(3), false, false);
+				Comodo banheiro2C2 = new Comodo("Banheiro 2", this.listaTier.get(3), false, true);
+				Comodo banheiro3C2 = new Comodo("Banheiro 3", this.listaTier.get(3), true, true);
 			
 				// Adicionando comodos a casa
 				casa.adicionaComodo(salaC2);
@@ -434,7 +457,161 @@ public class Jogo{
 				// Adiciona os Donos
 				casa.adicionaDonos(2);
 			
+			case 3:
+				
+				// Casa - 3
+				casa = new Casa("Casa Contemporaneo", "Casa mais bonita do novo condominio da cidade!", "resource/casas/Casa 3.png");
+				
+				// Comodos
+				Comodo salaC3 = new Comodo("Sala", this.listaTier.get(0), true, true);
+				Comodo garagemC3 = new Comodo("Garagem", this.listaTier.get(1), true, true);
+				Comodo depositoC3 = new Comodo("Deposito", this.listaTier.get(0), false, true);
+				Comodo corredorC3 = new Comodo("Corredor", this.listaTier.get(0), false, false);
+				Comodo quarto1C3 = new Comodo("Quarto 1", this.listaTier.get(3), false, false);
+				Comodo cozinhaC3 = new Comodo("Cozinha", this.listaTier.get(1), true, false);
+				Comodo banheiro1C3 = new Comodo("Banheiro 1", this.listaTier.get(2), true, false);
+				Comodo salaJantarC3 = new Comodo("Sala de Jantar", this.listaTier.get(1), false, true);
+				Comodo salaTVC3 = new Comodo("Sala de TV", this.listaTier.get(2), true, false);
+				Comodo quarto2C3 = new Comodo("Quarto 2", this.listaTier.get(2), false, true);
+				Comodo quarto3C3 = new Comodo("Quarto 3", this.listaTier.get(1), false, true);
+				Comodo quarto4C3 = new Comodo("Quarto 4", this.listaTier.get(1), false, true);
+				Comodo banheiro2C3 = new Comodo("Banheiro 2", this.listaTier.get(3), true, false);
+				Comodo salaJogosC3 = new Comodo("Sala de Jogos", this.listaTier.get(2), true, false);
+				Comodo escritorioC3 = new Comodo("Escritorio", this.listaTier.get(3), true, true);
+				Comodo quarto5C3 = new Comodo("Quarto 5", this.listaTier.get(2), false, true);
+				Comodo banheiro3C3 = new Comodo("Banheiro 3", this.listaTier.get(3), true, false);
+				
+				// Adiciona Comodo
+				casa.adicionaComodo(salaC3);
+				casa.adicionaComodo(garagemC3);
+				casa.adicionaComodo(depositoC3);
+				casa.adicionaComodo(corredorC3);
+				casa.adicionaComodo(quarto1C3);
+				casa.adicionaComodo(cozinhaC3);
+				casa.adicionaComodo(banheiro1C3);
+				casa.adicionaComodo(salaJantarC3);
+				casa.adicionaComodo(salaTVC3);
+				casa.adicionaComodo(quarto2C3);
+				casa.adicionaComodo(quarto3C3);
+				casa.adicionaComodo(quarto4C3);
+				casa.adicionaComodo(banheiro2C3);
+				casa.adicionaComodo(salaJogosC3);
+				casa.adicionaComodo(escritorioC3);
+				casa.adicionaComodo(quarto5C3);
+				casa.adicionaComodo(banheiro3C3);
+				
+				// Adiciona Porta
+				casa.adicionaPorta(salac3, garagemC3, true);
+				casa.adicionaPorta(salac3, depositoC3, false);
+				casa.adicionaPorta(salac3, corredorC3, false);
+				casa.adicionaPorta(cozinhaC3, corredorC3, false);
+				casa.adicionaPorta(quarto1C3, corredorC3, true);
+				casa.adicionaPorta(banheiro1C3, corredorC3, false);
+				casa.adicionaPorta(salaJantarC3, corredorC3, false);
+				casa.adicionaPorta(quarto2C3, corredorC3, false);
+				casa.adicionaPorta(salaTVC3, corredorC3, false);
+				casa.adicionaPorta(quarto3C3, corredorC3, false);
+				casa.adicionaPorta(quarto4C3, corredorC3, false);
+				casa.adicionaPorta(quarto4C3, banheiro2C3, true);
+				casa.adicionaPorta(salaJogosC3, corredorC3, false);
+				casa.adicionaPorta(salaJogosC3, escritorioC3, true);
+				casa.adicionaPorta(quarto5C3, corredorC3, true);
+				casa.adicionaPorta(quarto5C3, banheiro3C3, false);
+
+				// Seleciona comodo inicial do ladrão
+				casa.setComodoInicial(salaC3);
+				
+				// Adiciona os Donos
+				casa.adicionaDonos(2);
+				
+				break;
+				
+			case 4:
+			
+				// Casa - 4
+				casa = new Casa("Casarao Assombrado", "Casarao Assombrado, dizem que donos sao fantasmas, tome cuidado!", "resource/casas/Casa 4.png");
+				
+				// Comodos
+				Comodo sacada1C4 = new Comodo("Sacada 1", this.listaTier.get(0), true, true);
+				Comodo garagemC4 = new Comodo("Garagem", this.listaTier.get(2), true, true);
+				Comodo despensaC4 = new Comodo("Despensa", this.listaTier.get(2), false, true);
+				Comodo escada2C4 = new Comodo("Escada 2", this.listaTier.get(0), false, false);
+				Comodo bibliotecaC4 = new Comodo("Biblioteca", this.listaTier.get(1), false, true);
+				Comodo cozinhaC4 = new Comodo("Cozinha", this.listaTier.get(1), false, true);
+				Comodo corredor1C4 = new Comodo("Corredor 1", this.listaTier.get(0), true, true);
+				Comodo banheiro2C4 = new Comodo("Banheiro 2", this.listaTier.get(1), false, true);
+				Comodo sala1C4 = new Comodo("Sala 1", this.listaTier.get(1), false, true);
+				Comodo salaJantarC4 = new Comodo("Sala de Jantar", this.listaTier.get(1), false, true);
+				Comodo quarto1C4 = new Comodo("Quarto 1", this.listaTier.get(1), true, false);
+				Comodo banheiro1C4 = new Comodo("Banheiro 1", this.listaTier.get(3), false, true);
+				Comodo escritorioC4 = new Comodo("Escritorio", this.listaTier.get(2), false, true);
+				Comodo escada1C4 = new Comodo("Escada 1", this.listaTier.get(0), false, false);
+				Comodo sala2C4 = new Comodo("Sala 2", this.listaTier.get(1), true, true);
+				Comodo corredor2C4 = new Comodo("Corredor 2", this.listaTier.get(1), false, false);
+				Comodo sacada2C4 = new Comodo("Sacada 2", this.listaTier.get(2), true, false);
+				Comodo quarto2C4 = new Comodo("Quarto 2", this.listaTier.get(2), false, true);
+				Comodo banheiro3C4 = new Comodo("Banheiro 3", this.listaTier.get(3), false, false);
+				Comodo quarto3C4 = new Comodo("Quarto 3", this.listaTier.get(2), false, true);
+				Comodo banheiro4C4 = new Comodo("Banheiro 4", this.listaTier.get(3), false, false);
+				
+				// Adiciona Comodo
+				casa.adicionaComodo(sacada1C4);
+				casa.adicionaComodo(garagemC4);
+				casa.adicionaComodo(despensaC4);
+				casa.adicionaComodo(escada2C4);
+				casa.adicionaComodo(bibliotecaC4);
+				casa.adicionaComodo(cozinhaC4);
+				casa.adicionaComodo(corredor1C4);
+				casa.adicionaComodo(banheiro2C4);
+				casa.adicionaComodo(sala1C4);
+				casa.adicionaComodo(salaJantarC4);
+				casa.adicionaComodo(quarto1C4);
+				casa.adicionaComodo(banheiro1C4);
+				casa.adicionaComodo(escritorioC4);
+				casa.adicionaComodo(escada1C4);
+				casa.adicionaComodo(sala2C4);
+				casa.adicionaComodo(sacada2C4);
+				casa.adicionaComodo(quarto2C4);
+				casa.adicionaComodo(banheiro3C4);
+				casa.adicionaComodo(corredor2C4);
+				casa.adicionaComodo(quarto3C4);
+				casa.adicionaComodo(banheiro4C4);
+				
+				// Adiciona Porta
+				casa.adicionaPorta(sacada1C4, garagemC1, true);
+				casa.adicionaPorta(sacada1C4, escada2C4, false);
+				casa.adicionaPorta(corredor1C4, escada2C4, false);
+				casa.adicionaPorta(corredor1C4, bibliotecaC4, true);
+				casa.adicionaPorta(corredor1C4, cozinhaC4, false);
+				casa.adicionaPorta(corredor1C4, banheiro2C4, false);
+				casa.adicionaPorta(corredor1C4, quarto1C4, false);
+				casa.adicionaPorta(corredor1C4, sala1C4, false);
+				casa.adicionaPorta(salaJantarC4, sala1C4, false);
+				casa.adicionaPorta(salaJantarC4, corredor1C4, false);
+				casa.adicionaPorta(escritorioC4, corredor1C4, true);
+				casa.adicionaPorta(escritorioC4, banheiro1C4, false);
+				casa.adicionaPorta(sala2C4, corredor1C4, true);
+				casa.adicionaPorta(escada1C4, corredor1C4, false);
+				casa.adicionaPorta(escada1C4, corredor2C4, false);
+				casa.adicionaPorta(corredor2C4, escada2C4, false);
+				casa.adicionaPorta(corredor2C4, sacada2C4, true);
+				casa.adicionaPorta(corredor2C4, quarto2C4, false);
+				casa.adicionaPorta(banheiro3C4, quarto2C4, true);
+				casa.adicionaPorta(corredor2C4, quarto3C4, false);
+				casa.adicionaPorta(banheiro4C4, quarto3C4, true);
+				
+				// Seleciona comodo inicial do ladrão
+				casa.setComodoInicial(sacada1C4);
+				
+				// Adiciona os Donos
+				casa.adicionaDonos(3);
+			
+			case 5:
+			
+				casa = new Casa("Hotel", "Hotel a beira da praia!", "resource/casas/Casa 5.png");
+			
 			default:
+				throw new RuntimeException("Erro - Casa selecionada nao existe!");
 				break;
 		}
 		
