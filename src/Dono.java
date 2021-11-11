@@ -4,6 +4,11 @@ import java.util.Random;
 /**
  * A classe Dono é responsável por representar o dono contendo informações sobre sua localização
  * na casa a cada rodada.
+ * @version 1.0
+ * @author Alvaro Barbosa de Paula
+ * @author Ana Luiza Faria Calixto
+ * @author Chrystian Arriel Amaral
+ * @author Thiago Salles Santos
  */
 public class Dono extends Pessoa {
 

@@ -3,6 +3,11 @@ import java.io.Serializable;
 /**
  * Esta classe representa o jogador e contém informações como o nome, a pontuação obtida, as
  * vidas restantes e a fase em que o mesmo se encontra.
+ * @version 1.0
+ * @author Alvaro Barbosa de Paula
+ * @author Ana Luiza Faria Calixto
+ * @author Chrystian Arriel Amaral
+ * @author Thiago Salles Santos
  */
 public class Jogador implements Comparable<Jogador>, Serializable {
 	

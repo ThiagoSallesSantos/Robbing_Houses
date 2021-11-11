@@ -1,8 +1,12 @@
+import java.util.ArrayList;
 /**
  * Esta classe representa o ladrão do jogo.
+ * @version 1.0
+ * @author Alvaro Barbosa de Paula
+ * @author Ana Luiza Faria Calixto
+ * @author Chrystian Arriel Amaral
+ * @author Thiago Salles Santos
  */
-import java.util.ArrayList;
-
 public class Ladrao extends Pessoa{
 
 	private int vidaUtilChaveMestre;
@@ -89,7 +93,7 @@ public class Ladrao extends Pessoa{
 	public String toString(){
 		String texto = "<b>Chave Mestre:</b> " + this.getVidaUtilChave() + " uso(s) restante<br/>";
 		if(this.getEscondido()){
-			texto += "<b>VOCE ESTA ESCONDIDO!</b> (<i>sai do esconderijo para realizar outras acoes</i>)";
+			texto += "<b>VOCE ESTA ESCONDIDO!</b> (<i>sai do esconderijo para realizar outras acoes</i>)<br/>";
 		}
 		texto += "<br/><b>-LISTA ITENS ROUBADOS-</b><br/>";
 		if(this.getQtdItens() == 0){

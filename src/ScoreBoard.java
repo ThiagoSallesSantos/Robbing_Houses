@@ -5,6 +5,11 @@ import java.io.Serializable;
 /**
  * Esta classe representa a pontuação obtida pelo jogador no jogo. Um objeto de seu tipo
  * será gravado em um arquivo binário.
+ * @version 1.0
+ * @author Alvaro Barbosa de Paula
+ * @author Ana Luiza Faria Calixto
+ * @author Chrystian Arriel Amaral
+ * @author Thiago Salles Santos
  */
 public class ScoreBoard implements Serializable {
 	

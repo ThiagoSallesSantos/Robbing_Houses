@@ -10,6 +10,11 @@ import java.util.Scanner;
  * Fornece uma janela que será composta por seis labels contendo o mapa da casa; informações
  * sobre os cômodos, o ladrão, o jogador e a casa, além do terminal. A janela também possuirá um botão
  * que garante o envio do input dos comandos dos usuários.
+ * @version 1.0
+ * @author Alvaro Barbosa de Paula
+ * @author Ana Luiza Faria Calixto
+ * @author Chrystian Arriel Amaral
+ * @author Thiago Salles Santos
  */
 
 public class Interface {

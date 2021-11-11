@@ -5,7 +5,12 @@ import java.util.Random;
 /**
  * A classe Comodo representa um cômodo da casa. Nela contém o nome do cômodo, um valor booleano indicando se há 
  * ou não uma saída, um valor também booleano indicando se há ou não um esconderijo, um mapa representando as portas contendo
- * um cômodo adjacente em que este irá interagir e um booleano indicando se a porta ou não está fechada.
+ * um cômodo adjacente em que este irá interagir e um booleano indicando se a porta ou não está fechada. 
+ * @version 1.0
+ * @author Alvaro Barbosa de Paula
+ * @author Ana Luiza Faria Calixto
+ * @author Chrystian Arriel Amaral
+ * @author Thiago Salles Santos
  */
 public class Comodo{
 

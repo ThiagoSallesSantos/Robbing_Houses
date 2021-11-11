@@ -2,6 +2,11 @@ import java.io.*;
 
 /**
  * A classe BinFile é responsável por escrever e ler a pontuação do jogador em um arquivo.
+ * @version 1.0
+ * @author Alvaro Barbosa de Paula
+ * @author Ana Luiza Faria Calixto
+ * @author Chrystian Arriel Amaral
+ * @author Thiago Salles Santos
  */
 public class BinFile {
 	

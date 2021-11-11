@@ -1,6 +1,11 @@
 /**
  * Esta classe representa o comando que o jogador irá escolher.
- * Ela irá fornecer o nome do comando e o atributo de cada atributo.
+ * Ela irá fornecer o nome do comando e o atributo de cada atributo. *
+ * @version 1.0
+ * @author Alvaro Barbosa de Paula
+ * @author Ana Luiza Faria Calixto
+ * @author Chrystian Arriel Amaral
+ * @author Thiago Salles Santos
  */
 public class Comando{
 	

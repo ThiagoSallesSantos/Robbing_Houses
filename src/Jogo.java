@@ -1,9 +1,14 @@
+import java.util.ArrayList;
+import java.util.Map;
 /**
  * Esta classe representa o Jogo, sendo responsável por montar as casas, criar os itens, os
  * tiers, os cômodos e as portas, implementar e gerenciar os comandos dos jogadores.
+ * @version 1.0
+ * @author Alvaro Barbosa de Paula
+ * @author Ana Luiza Faria Calixto
+ * @author Chrystian Arriel Amaral
+ * @author Thiago Salles Santos
  */
-import java.util.ArrayList;
-import java.util.Map;
 
 public class Jogo{
 	
@@ -101,7 +106,7 @@ public class Jogo{
 		}
 		texto += "<b>Comando:</b> <i>esperar</i> - Funcao: Passar o turno, deixando com que os Donos se movimentem!<br/>";
 		if(this.verficarComandosEscSair()){
-			return texto + "<b>Comando:</b> <i>sair</i><br/> -<i> - Funcao: Comando para sair do esconderijo!</i>-";
+			return texto + "<b>Comando:</b> <i>sair</i> - Funcao: Comando para sair do esconderijo!<br/>-";
 		}
 		texto += "<b>Comando:</b> <i>entrar (numero_da_porta)</i> - Funcao: Comando acessar o comodo adjacente desejado!<br/>";
 		texto += "<b>Comando:</b> <i>esconder</i> - Funcao: Comando para esconder-se!<br/>";
@@ -183,7 +188,7 @@ public class Jogo{
 	}
 	
 	private void finalizaJogo(){
-		this.interfaceJogo.enviaMensagem("Sua pontuacao final foi de: " + this.jogador.getPontuacao() + " pontos.");
+		this.interfaceJogo.enviaMensagem("Sua pontuacao final foi de: R$" + this.jogador.getPontuacao());
 		this.interfaceJogo.enviaMensagem("Por favor use o comando jogador para registrar seu nome e pontuacao em nossa Score Board!");
 		this.interfaceJogo.limpaJanela();
 		this.status = false;
