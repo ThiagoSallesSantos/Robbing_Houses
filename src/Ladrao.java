@@ -88,6 +88,7 @@ public class Ladrao extends Pessoa{
 /**
  * Retorna uma String contendo as informações sobre a vida útil da chave e a lista
  * de itens roubados.
+ * @return retorna uma String, contendo informações do objeto.
 */	
 	@Override
 	public String toString(){

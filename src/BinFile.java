@@ -10,36 +10,38 @@ import java.io.*;
  */
 public class BinFile {
 	
-	private static String nomeArquivo = "SBsave.bin";
+	private static String nomeArquivo = "SBsave.bin"; // Nome do arquivo na qual a ScoreBoard será salva.
 	
 /**
  * Método responsável por salvar a pontuação do jogador no arquivo.
  * @param sb objeto do tipo ScoreBoard que será gravado no arquivo SBsave.bin.
+ * @param jogo objeto do tipo Jogo, para que caso de erro possa ser exibido a informação ao usuário.
  */
-	public static void saveSBFile(ScoreBoard sb){
+	public static void saveSBFile(ScoreBoard sb, Jogo jogo){
     	try(ObjectOutputStream arq = new ObjectOutputStream(new FileOutputStream(nomeArquivo))){
 	    	arq.writeObject(sb);
     	}
     	catch(IOException e){
-    		e.printStackTrace();
+    		jogo.enviaInformacaoPopUp("Erro - Nao foi possivel escrever no arquivo, devido ao um erro de entrada e saida!\nMais informacoes: " e.getMessage());
     	}catch(Exception e){
-			System.out.println("Erro: " + e.getMessage());
+			jogo.enviaInformacaoPopUp("Erro - Nao foi possivel escrever no arquivo, devido algum erro inesperado!\nMais informacoes: " e.getMessage());
 		}
     }
 /**
  * Método responsável por ler a pontuação do jogador no arquivo.
+ * @param jogo objeto do tipo Jogo, para que caso de erro possa ser exibido a informação ao usuário.
  * @return retorna um objeto do tipo ScoreBoard contendo a pontuação do jogador.
  */	
-	public static ScoreBoard loadSBFile(){
+	public static ScoreBoard loadSBFile(Jogo jogo) {
     	ScoreBoard sb = new ScoreBoard();
     	try(ObjectInputStream arq = new ObjectInputStream(new FileInputStream(nomeArquivo))){
 	    	sb = (ScoreBoard)arq.readObject();
     	}catch(FileNotFoundException e){
-    		System.out.println(e.getMessage());
+    		jogo.enviaInformacaoPopUp("Alerta - Nao foi possivel ler o arquivo, devido a arquivo na encontrado!\nMais informacoes: " e.getMessage());
     	}catch(IOException e){
-    		System.out.println(e.getMessage());
+    		jogo.enviaInformacaoPopUp("Erro - Nao foi possivel ler o arquivo, devido ao um erro de entrada e saida!\nMais informacoes: " e.getMessage());
     	}catch (ClassNotFoundException e){
-    		System.out.println(e.getMessage());
+    		jogo.enviaInformacaoPopUp("Erro - Nao foi possivel ler o arquivo, devido ao um erro de classe nao encontrada!\nMais informacoes: " e.getMessage());
 		}
 		return sb;
     }

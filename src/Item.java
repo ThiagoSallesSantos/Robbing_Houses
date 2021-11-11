@@ -59,7 +59,9 @@ public class Item{
 		return this.getValor() * this.tier.getBonus();
 	}
 /**
- * Retorna uma String contendo as informações do item. */	
+ * Retorna uma String contendo as informações do item. 
+ * @return retorna uma String, contendo informações do objeto.
+ */	
 	@Override
 	public String toString(){
 		return this.getNome() + " - R$ " + this.getValor() + " - " + this.getTier(); 

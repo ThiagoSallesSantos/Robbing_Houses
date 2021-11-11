@@ -28,7 +28,9 @@ public class ScoreBoard implements Serializable {
 		lista.add(jogador);
 	}
 /**
- * Retornará as pontuações obtidas pelos jogadores em ordem decrescente */	
+ * Retornará as pontuações obtidas pelos jogadores em ordem decrescente 
+ * @return retorna uma String, contendo informações do objeto.
+ */	
 	@Override
 	public String toString(){
 		Collections.sort(this.lista);

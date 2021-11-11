@@ -37,6 +37,10 @@ public class Interface {
         montarJanela(jogo);
     }
 
+/**
+ * Método para montar a janela.
+ * @param jogo atributo do tipo Jogo passado por parâmetro para montar a interface do jogo a partir de suas informações
+ */
     private void montarJanela(Jogo jogo){
 		
         // Configuração janela geral
@@ -50,7 +54,7 @@ public class Interface {
         painelEsquerda.setLayout(new BoxLayout(painelEsquerda, BoxLayout.Y_AXIS));
         painelEsquerda.setPreferredSize(new Dimension(280, 450));
 
-        this.informacoesComodos = new JLabel("<html><strong>---INFORMACOES COMODO---</strong><br/>" + jogo.getComodoAtualLadrao() + "</html>");
+        this.informacoesComodos = new JLabel();
         this.informacoesComodos.setFont(new Font("Ariel", Font.PLAIN, 10));
         painelEsquerda.add(this.informacoesComodos);
 
@@ -61,11 +65,11 @@ public class Interface {
         painelDireita.setLayout(new BoxLayout(painelDireita, BoxLayout.Y_AXIS));
         painelDireita.setPreferredSize(new Dimension(280, 450));
 
-		this.informacoesJogador = new JLabel("<html><strong>---INFORMACOES JOGADOR---</strong><br/>" + jogo.getInfoJogador() + "<br/></html>");
+		this.informacoesJogador = new JLabel();
 		this.informacoesJogador.setFont(new Font("Ariel", Font.PLAIN, 10));
 		painelDireita.add(this.informacoesJogador);
 
-		this.informacoesLadrao = new JLabel("<html><strong>---INFORMACOES LADRAO---</strong><br/>" + jogo.getLadrao() + "</html>");
+		this.informacoesLadrao = new JLabel();
 		this.informacoesLadrao.setFont(new Font("Ariel", Font.PLAIN, 10));
 		painelDireita.add(this.informacoesLadrao);
 
@@ -81,7 +85,7 @@ public class Interface {
         this.mapaCasa = new JLabel(new ImageIcon(jogo.getImagemCasaAtual()));
         painelCentral.add(this.mapaCasa);
 
-        this.informacoesCasa = new JLabel("<html><strong>---INFORMACOES CASA---</strong><br/>" + jogo.getCasaAtual() + "</html>");
+        this.informacoesCasa = new JLabel();
         this.informacoesCasa.setFont(new Font("Ariel", Font.PLAIN, 10));
         painelCentral.add(this.informacoesCasa);
 
@@ -93,7 +97,7 @@ public class Interface {
         painelTerminal.setLayout(new BoxLayout(painelTerminal, BoxLayout.Y_AXIS));
         painelTerminal.setPreferredSize(new Dimension(1200, 150));
 
-        this.terminal = new JLabel("<html><strong>---COMANDOS---</strong><br/>" + jogo.getComandosDisp() + "</html>");
+        this.terminal = new JLabel();
         this.terminal.setFont(new Font("Ariel", Font.BOLD, 8));
         this.terminal.setPreferredSize(new Dimension(1200, 120));
 		this.terminal.setMaximumSize(new Dimension(400, 120));
@@ -140,6 +144,8 @@ public class Interface {
         this.janela.add(painelTerminal, BorderLayout.SOUTH);
 		
 		this.janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		this.atualizaDados(jogo);
     }
 
 /**
@@ -180,26 +186,56 @@ public class Interface {
 		this.informacoesCasa.setText(info);
 	}
 	
+	/**
+	 * Método para atualizar as informações do JLabel do informacoesComodos.
+	 * Este método é responsável por atualizar as informações do comodo atual em que o ladrão se encontra, informando ao jogador sobre itens, comodos adjacentes, sobre esconderijo ou rota de fuga.
+	 * @param jogo objeto do tipo Jogo, para que possa pegar as informações atualizadas do estado atual do jogo.
+	 */
 	private void atualizaInfoComodos(Jogo jogo){
 		this.informacoesComodos.setText("<html><strong>---INFORMACOES COMODO---</strong><br/>" + jogo.getComodoAtualLadrao() + "</html>");
 	}
-
+	
+	/**
+	 * Método para atualizar as informações do JLabel do informacoesJogador.
+	 * Este método é responsável por atualizar as informações do jogador, para informar ao jogador, sobre os atributos dele na jogatina.
+	 * @param jogo objeto do tipo Jogo, para que possa pegar as informações atualizadas do estado atual do jogo.
+	 */
 	private void atualizaInfoJogador(Jogo jogo){
 		this.informacoesJogador.setText("<html><strong>---INFORMACOES JOGADOR---</strong><br/>" + jogo.getInfoJogador() + "<br/></html>");
 	}
 
+	/**
+	 * Método para atualizar as informações do JLabel do informacoesLadrao.
+	 * Este método é responsável por atualizar as informações do ladrão, para informar ao jogador, sobre os atributos do ladrão e os itens roubados pelo mesmo.
+	 * @param jogo objeto do tipo Jogo, para que possa pegar as informações atualizadas do estado atual do jogo.
+	 */
 	private void atualizaInfoLadrao(Jogo jogo){
 		this.informacoesLadrao.setText("<html><strong>---INFORMACOES LADRAO---</strong><br/>" + jogo.getLadrao() + "</html>");
 	}
 
+	/**
+	 * Método para atualizar as informações do JLabel do informacoesCasa.
+	 * Este método é responsável por atualizar as informações da casa, para informar ao jogador, as posições atuais dos Donos além de nome e descrição da casa atual.
+	 * @param jogo objeto do tipo Jogo, para que possa pegar as informações atualizadas do estado atual do jogo.
+	 */
 	private void atualizaInfoCasa(Jogo jogo){
 		this.informacoesCasa.setText("<html><strong>---INFORMACOES CASA---</strong><br/>" + jogo.getCasaAtual() + "</html>");
 	}
 	
+	/**
+	 * Método para atualizar as informações do JLabel de mapaCasa.
+	 * Este método é responsável por atualizar o mapa, para informar ao jogador o mapa atual da casa em que o jogador se encontra.
+	 * @param jogo objeto do tipo Jogo, para que possa pegar as informações atualizadas do estado atual do jogo.
+	 */
 	private void atualizaMapa(Jogo jogo){
 		this.mapaCasa.setIcon(new ImageIcon(jogo.getImagemCasaAtual()));
 	}
 	
+	/**
+	 * Método para atualizar as informações do JLabel do terminal.
+	 * Este método é responsável por atualizar os comandos, para informar ao jogador os comandos permitidos no comodo atual.
+	 * @param jogo objeto do tipo Jogo, para que possa pegar as informações atualizadas do estado atual do jogo.
+	 */
 	private void atualizaInfoTerminal(Jogo jogo){
 		this.terminal.setText("<html><strong>---COMANDOS---</strong><br/>" + jogo.getComandosDisp() + "</html>");
 	}
