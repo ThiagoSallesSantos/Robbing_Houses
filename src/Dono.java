@@ -43,6 +43,7 @@ public class Dono extends Pessoa {
 	}
 /**
  * Retorna uma String contendo informações sobre a localização do dono na casa.
+ * @return retorna uma String, contendo informações do objeto.
  */	
 	@Override
 	public String toString(){

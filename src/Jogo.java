@@ -28,7 +28,7 @@ public class Jogo{
 	}
 /**
  * Método responsável por retornar a instância do jogo. Caso o jogo não exista, ele é criado.
- * @return
+ * @return Jogo - retorna a única instancia do jogo.
  */	
 	public static Jogo getInstanciaJogo(){
 		if(jogo == null){
@@ -89,7 +89,8 @@ public class Jogo{
 	}
 	
 /**
- * Método responsável por iniciar a fase em que o ladrão estará. */	
+ * Método responsável por iniciar a fase em que o ladrão estará. 
+ */	
 	private void iniciaFase(){
 		this.casaAtual = this.criarFases(this.jogador.getFaseAtual());
 		this.ladrao = new Ladrao(this.casaAtual.getComodoInicial());
@@ -105,11 +106,14 @@ public class Jogo{
 			return texto + "<b>Comando:</b> <i>jogador (nome_jogador)</i> - Funcao: Setar nome do jogador a ser salvo na Score Board!<br/>";
 		}
 		texto += "<b>Comando:</b> <i>esperar</i> - Funcao: Passar o turno, deixando com que os Donos se movimentem!<br/>";
-		if(this.verficarComandosEscSair()){
-			return texto + "<b>Comando:</b> <i>sair</i> - Funcao: Comando para sair do esconderijo!<br/>-";
+		if(this.vericarEsconderijo()){
+			if(this.verficarComandosEscSair()){
+				return texto + "<b>Comando:</b> <i>sair</i> - Funcao: Comando para sair do esconderijo!<br/>-";
+			}else{
+				texto += "<b>Comando:</b> <i>esconder</i> - Funcao: Comando para esconder-se!<br/>";
+			}
 		}
 		texto += "<b>Comando:</b> <i>entrar (numero_da_porta)</i> - Funcao: Comando acessar o comodo adjacente desejado!<br/>";
-		texto += "<b>Comando:</b> <i>esconder</i> - Funcao: Comando para esconder-se!<br/>";
 		if(this.verificarComandoFugir()){
 			texto += "<b>Comando:</b> <i>fugir</i> - Funcao: Comando para fugir da casa e para outra casa!<br/>";
 		}
@@ -118,18 +122,39 @@ public class Jogo{
 		}
 		return texto;
 	}
-	
+
+/**
+ * Método responsável por verificar comando roubar está disponível.
+ * @return retorna uma boolean, retorna true caso exista item para ser roubado no comodo atual do ladrão, e false caso não tenha item para ser roubado.
+ */	
 	private boolean verificarComandoRoubar(){
 		return (this.ladrao.getLocalAtual().getQtdItens() > 0);
 	}
 	
+/**
+ * Método responsável por verificar se o comodo atual possui esconderijo.
+ * @return retorna uma boolean, retorna true para caso o comodo atual possua um esconderijo, e false para caso não tenha um esconderijo.
+ */	
+	private boolean vericarEsconderijo(){
+		return (this.ladrao.getLocalAtual().getEsconderijo());
+	}
+	
+/**
+ * Método responsável por verificar se o comando esconder ou sair está disponível no comodo atual do ladrão.
+ * @return retorna uma boolean, retorna true para caso o comando sair esteja disponível, ou false para caso o comando esconder esteja disponível.
+ */	
 	private boolean verficarComandosEscSair(){
 		return (this.ladrao.getEscondido());
 	}
 	
+/**
+ * Método responsável por verificar se o comando fugir está disponível no comodo atual do ladrão.
+ * @return retorna uma boolean, retorna true para caso exista uma rota de fuga apartir do comodo atual ou retorna false para caso não exista uma rota de fuga.
+ */	
 	private boolean verificarComandoFugir(){
 		return (this.ladrao.getLocalAtual().getSaida());
 	}
+	
 /**
  * Método responsável por executar o comando dado pelo jogador. Cada comando terá uma acão diferente
  * dentro do jogo. Caso o comando não exista, uma mensagem de erro é exibida.
@@ -174,12 +199,12 @@ public class Jogo{
 			}
 		}
 		catch(NumberFormatException erroNumberFormat){
-			this.interfaceJogo.enviaMensagem("Erro - Comando Invalido, o parametro do atributo nao e um numero!");
+			this.enviaInformacaoPopUp("Erro - Comando Invalido, o parametro do atributo nao e um numero!");
 		}
 		catch(RuntimeException erroRunTime){
-			this.interfaceJogo.enviaMensagem(erroRunTime.getMessage());
+			this.enviaInformacaoPopUp(erroRunTime.getMessage());
 		}catch(Exception erro){
-			this.interfaceJogo.enviaMensagem("Erro - Ocorreu um erro nao esperado. \nErro foi: " + erro.getMessage());
+			this.enviaInformacaoPopUp("Erro - Ocorreu um erro nao esperado. \nErro foi: " + erro.getMessage());
 		}finally{
 			if(this.jogador != null){
 				this.interfaceJogo.atualizaDados(this);
@@ -187,38 +212,56 @@ public class Jogo{
 		}
 	}
 	
+/**
+ * Método responsável por finalizar o jogo, limpar a tela e setar o jogo como finalizado através do this.status = false.
+ */	
 	private void finalizaJogo(){
-		this.interfaceJogo.enviaMensagem("Sua pontuacao final foi de: R$" + this.jogador.getPontuacao());
-		this.interfaceJogo.enviaMensagem("Por favor use o comando jogador para registrar seu nome e pontuacao em nossa Score Board!");
+		this.enviaInformacaoPopUp("Sua pontuacao final foi de: R$" + this.jogador.getPontuacao());
+		this.enviaInformacaoPopUp("Por favor use o comando jogador para registrar seu nome e pontuacao em nossa Score Board!");
 		this.interfaceJogo.limpaJanela();
 		this.status = false;
 	}
-	
+
+/**
+ * Método responsável por executar a operação de encontro, e de verificar se o jogador possui vida ou foi GAME-OVER.
+ */	
 	private void executaEncontro(){
-		this.interfaceJogo.enviaMensagem("Voce foi capturado!");
+		this.enviaInformacaoPopUp("Voce foi capturado!");
 		this.jogador.reduzirVidasRestantes();
 		if(this.jogador.getVidasRestantes() == 0){
-			this.interfaceJogo.enviaMensagem("GAME OVER - Voce perdeu todas suas vidas!");
+			this.enviaInformacaoPopUp("GAME OVER - Voce perdeu todas suas vidas!");
 			this.finalizaJogo();
 		}else{
-			this.interfaceJogo.enviaMensagem("Casa " + this.casaAtual.getNome() + " foi reiniciada!");
+			this.enviaInformacaoPopUp("Casa " + this.casaAtual.getNome() + " foi reiniciada!");
 			this.iniciaFase();
 		}
 	}
-	
+
+/**
+ * Método responsável por executar o comando de esperar, este comando serve para fazer nenhuma ação e "passar o turno".
+ * @throws Pode lançar os seguintes erros: RuntimeException.
+ */	
 	private void executaEsperar(){
 		if(!this.status){
 			throw new RuntimeException("Erro - Comando Invalido, jogo entrou em modo de finalizado!");
 		}
-		this.interfaceJogo.enviaMensagem("Voce ficou parado esperando o movimentos dos Donos!");
+		this.enviaInformacaoPopUp("Voce ficou parado esperando o movimentos dos Donos!");
 	}
-	
+
+/**
+ * Método responsável por executar o comando de jogador, este comando serve para setar o nome do jogador e exibir a ScoreBoard.
+ * @param atributo objeto do tipo String, é a parametro passado junto com o comando para dizer qual nome deseja usar para salavr na ScoreBoard.
+ * @throws Pode lançar os seguintes erros: RuntimeException.
+ */	
 	private void executaJogador(String atributo){
+		if(this.status){
+			throw new RuntimeException("Erro - Comando Invalido, este comando so pode ser utilizado ao final da jogatina!");
+		}
 		if(this.jogador != null){
 			this.jogador.setNome(atributo);
-			ScoreBoard sb = BinFile.loadSBFile();
+			ScoreBoard sb = BinFile.loadSBFile(this);
 			sb.addJogador(this.jogador);
-			BinFile.saveSBFile(sb);
+			BinFile.saveSBFile(sb, this);
 			this.interfaceJogo.limpaJanela();
 			this.interfaceJogo.exibirInformacao("<html><strong>---SCOREBOARD---</strong><br/>" + sb + "<br/><br/></strong>Obrigado por jogar ;)</strong></html>");
 			this.jogador = null;
@@ -226,7 +269,11 @@ public class Jogo{
 			throw new RuntimeException("Erro - Comando Invalido, este comando ja foi utilizado, este comando e unico por jogatina!");
 		}
 	}
-	
+
+/**
+ * Método responsável por executar o comando de fugir, este comando serve para fugir da casa atual e ir para outra casa.
+ * @throws Pode lançar os seguintes erros: RuntimeException.
+ */	
 	private void executaFugir(){
 		if(this.verficarComandosEscSair()){
 			throw new RuntimeException("Erro - Comando Invalido, voce esta escondido, precisa sair do esconderijo para realizar esta acao!");
@@ -234,17 +281,22 @@ public class Jogo{
 		if(!this.verificarComandoFugir()){
 			throw new RuntimeException("Erro - Comando Invalido, o comodo nao possui saida!");
 		}
-		this.interfaceJogo.enviaMensagem("Voce fugiu da casa " + this.casaAtual.getNome() + "!\nSua pontuacao foi de: R$" + this.ladrao.calculaRoubo());
+		this.enviaInformacaoPopUp("Voce fugiu da casa " + this.casaAtual.getNome() + "!\nSua pontuacao foi de: R$" + this.ladrao.calculaRoubo());
 		this.jogador.adicionaPontuacao(this.ladrao.calculaRoubo());
 		this.jogador.proximaFase();
 		if(this.jogador.getFaseAtual() > 5){
-			this.interfaceJogo.enviaMensagem("Voce finalizou todas as casas! Parabens!");
+			this.enviaInformacaoPopUp("Voce finalizou todas as casas! Parabens!");
 			this.finalizaJogo();
 		}else{
 			this.iniciaFase();
 		}
 	}
-	
+
+/**
+ * Método responsável por executar o comando de roubar, este comando serve para roubar um item do comodo atual.
+ * @param atributo objeto do tipo String, é o parametro passado junto com o comando para dizer qual item o jogador deseja roubar.
+ * @throws Pode lançar os seguintes erros: RuntimeException, NumberFormatException.
+ */	
 	private void executaRoubar(String atributo) throws NumberFormatException{
 		if(!this.status){
 			throw new RuntimeException("Erro - Comando Invalido, jogo entrou em modo de finalizado!");
@@ -263,6 +315,11 @@ public class Jogo{
 		this.ladrao.adicionaItemRoubado(comodoAtual.roubaItem(atributoInt-1));
 	}
 	
+/**
+ * Método responsável por executar o comando de entrar, este comando serve para acessar o comodo adjacente.
+ * @param atributo objeto do tipo String, é o parametro passado junto com o comando para dizer qual porta o jogador deseja acessar.
+ * @throws Pode lançar os seguintes erros: RuntimeException, NumberFormatException.
+ */	
 	private void executaEntrar(String atributo) throws NumberFormatException{
 		if(!this.status){
 			throw new RuntimeException("Erro - Comando Invalido, jogo entrou em modo de finalizado!");
@@ -279,33 +336,52 @@ public class Jogo{
 			throw new RuntimeException("Erro - Comando Invalido, parametro passado nao e valido!");
 		}
 		Comodo comodoDestino  = comodosAdjacentes.get(atributoInt-1);
-		if(portas.get(comodoDestino)){
+		if(portas.get(comodoDestino)){ // Verifico se a porta está fechada entre o comodo de origem e destino
 			if(this.ladrao.getVidaUtilChave() > 0){
 				comodoOrigem.abrirPorta(comodoDestino);
 				comodoDestino.abrirPorta(comodoOrigem);
 				this.ladrao.usaChaveMestre();
-				this.interfaceJogo.enviaMensagem("Alerta - Utilizou da chave mestra para abrir uma porta! \nA vida restante da chave mestre e de: " + this.ladrao.getVidaUtilChave() + " uso(s) restantes!");
+				this.enviaInformacaoPopUp("Alerta - Utilizou da chave mestra para abrir uma porta! \nA vida restante da chave mestre e de: " + this.ladrao.getVidaUtilChave() + " uso(s) restantes!");
 			}else{
 				throw new RuntimeException("Erro - Comando Invalido, voce nao pode mais abrir portas, devido que sua chave mestre estragou!");
 			}
 		}
-		this.ladrao.movimentar(comodoDestino);
+		this.ladrao.movimentar(comodoDestino); // Caso tudo certo ladrão pode movimentar para o como de destino
 	}
 	
+/**
+ * Método responsável por executar o comando de esconder, este comando serve para ladrão se esconder no comodo em que se encontra.
+ * @throws Pode lançar os seguintes erros: RuntimeException.
+ */	
 	private void executaEsconder(){
-		if(this.verficarComandosEscSair()){
+		if(!this.status){
+			throw new RuntimeException("Erro - Comando Invalido, jogo entrou em modo de finalizado!");
+		}if(this.verficarComandosEscSair()){
 			throw new RuntimeException("Erro - Comando Invalido, voce ja esta escondido!");
+		}if(!this.vericarEsconderijo()){
+			throw new RuntimeException("Erro - Comando Invalido, comodo nao possui esconderijo!");
 		}
 		this.ladrao.esconder();
 	}
 	
+/**
+ * Método responsável por executar o comando de sair, este comando serve para sair de um esconderijo.
+ * @throws Pode lançar os seguintes erros: RuntimeException.
+ */	
 	private void executaSair(){
-		if(!this.verficarComandosEscSair()){
+		if(!this.status){
+			throw new RuntimeException("Erro - Comando Invalido, jogo entrou em modo de finalizado!");
+		}if(!this.verficarComandosEscSair()){ // 
 			throw new RuntimeException("Erro - Comando Invalido, voce precisa esta escondido, para usar este comando!");
+		}if(!this.vericarEsconderijo()){
+			throw new RuntimeException("Erro - Comando Invalido, comodo nao possui esconderijo!");
 		}
 		this.ladrao.sairEsconderijo();
 	}
 	
+/**
+ * Método responsável por verificar se houve encontro entre o ladrão e o(s) dono(s).
+ */	
 	private boolean verficarEncontro(){
 		if(!this.ladrao.getEscondido()){
 			for(Dono dono : this.casaAtual.getDonos()){
@@ -317,25 +393,40 @@ public class Jogo{
 		return false;
 	}
 	
+/**
+ * Método responsável por deixar selecionado o proximo comodo que os dono(s) da casa atual irão na proxima interação.
+ */	
 	private void preMoveDonos(){
 		for(Dono dono : this.casaAtual.getDonos()){
 			dono.selecionaProximoComodo();
 		}
 	}
 	
+/**
+ * Método responsável por mover os dono(s) da casa atual.
+ */	
 	private void moveDonos(){
 		for(Dono dono : this.casaAtual.getDonos()){
-			if(dono.getProximoComodo() != null){
+			if(dono.getProximoComodo() != null){ // Verifico se existe um proximo comodo para eles irem
 				dono.movimentar(dono.getProximoComodo());
 			}
 		}
 	}
+	
+/**
+ * Método responsável por enviar um popup ao jogador informando de alguma informação pertinente:
+ * @param texto objeto do tipo String, é a informação que será exibida ao jogador.
+ */	
+	public void enviaInformacaoPopUp(String texto){
+		this.interfaceJogo.enviaMensagem(texto);
+	}
+	
 /**
  * Método responsável por criar os itens que estarão na casa e os tiers. Haverão 4 tiers:
  * comuns, incomuns, raros e lendários.
  * @return retorna um array contendo os tiers criados.
  */	
-	public ArrayList<Tier> criarTierItens(){
+	private ArrayList<Tier> criarTierItens(){
 		
 		ArrayList<Tier> auxListaTier = new ArrayList<Tier>();
 		

@@ -123,6 +123,7 @@ public class Casa{
 	}
 /**
  * Método que retorna uma string contendo todas as informações da casa.
+ * @return retorna uma String, contendo informações do objeto.
  */	
 	@Override
 	public String toString(){

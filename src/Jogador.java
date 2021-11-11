@@ -79,7 +79,8 @@ public class Jogador implements Comparable<Jogador>, Serializable {
 		this.faseAtual += 1;
 	}
 /**
- * Método que realiza a comparação entre as pontuações do jogador. */	
+ * Método que realiza a comparação entre as pontuações do jogador. 
+ */	
 	@Override
 	public int compareTo(Jogador jogador){
 		if(this.getPontuacao() > jogador.getPontuacao()){
@@ -91,7 +92,9 @@ public class Jogador implements Comparable<Jogador>, Serializable {
 	}
 /**
  * Método que retorna uma String contendo informações sobre o jogador, como seu nome
- * e sua pontuação. */	
+ * e sua pontuação. 
+ * @return retorna uma String, contendo informações do objeto.
+ */	
 	@Override
 	public String toString(){
 		return "Nome do jogador: " + this.getNome() + " - Pontuacao: R$" + this.getPontuacao();

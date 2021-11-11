@@ -71,7 +71,9 @@ public class Tier{
 	}
 	
 /**
- * Retorna um tipo String contendo a descrição do tier. */	
+ * Retorna um tipo String contendo a descrição do tier.
+ * @return retorna uma String, contendo informações do objeto.
+ */	
 	@Override
 	public String toString(){
 		return this.getDescricao();

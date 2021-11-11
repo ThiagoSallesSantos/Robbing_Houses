@@ -74,6 +74,7 @@ public class Comodo{
 	public Map<Comodo, Boolean> getPortas(){
 		return this.portas;
 	}
+	
 /**
  * Método que abre uma porta setando um valor false para a porta, indicando que a mesma está aberta.
  * @param comodoX objeto do tipo cômodo que representa o cômodo ajdacente.
@@ -82,6 +83,11 @@ public class Comodo{
 		this.portas.replace(comodoX, false);
 	}
 	
+/**
+ * Método para selecionar "aleatoriamente" os itens para o comodo apartir de uma lista.
+ * @param tier objeto do tipo Tier, é o tier da onde os itens que estarão presente no comodo serão retirados.
+ * @return retorna uma lista de itens.
+ */	
 	private ArrayList<Item> selecionaItens(Tier tier){
 		Random random = new Random();
 		ArrayList<Item> auxListaItens = new ArrayList<Item>();
@@ -116,6 +122,7 @@ public class Comodo{
 	}
 /**
  * Método responsável por retornar uma String contendo as informações do cômodo.
+ * @return retorna uma String, contendo as informações do objeto.
  */	
 	@Override
 	public String toString(){
