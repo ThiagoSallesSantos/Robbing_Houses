@@ -1,9 +1,14 @@
+import java.util.ArrayList;
+import java.util.Map;
 /**
  * Esta classe representa o Jogo, sendo responsável por montar as casas, criar os itens, os
  * tiers, os cômodos e as portas, implementar e gerenciar os comandos dos jogadores.
+ * @version 1.0
+ * @author Alvaro Barbosa de Paula
+ * @author Ana Luiza Faria Calixto
+ * @author Chrystian Arriel Amaral
+ * @author Thiago Salles Santos
  */
-import java.util.ArrayList;
-import java.util.Map;
 
 public class Jogo{
 	

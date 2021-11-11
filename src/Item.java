@@ -1,6 +1,11 @@
 /**
 * Classe que representa item que pode ser roubado pelo ladrão.
 * Possui um nome, um valor e um nível.
+* @version 1.0
+* @author Alvaro Barbosa de Paula
+* @author Ana Luiza Faria Calixto
+* @author Chrystian Arriel Amaral
+* @author Thiago Salles Santos
 */
 
 public class Item{

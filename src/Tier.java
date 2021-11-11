@@ -1,8 +1,12 @@
+import java.util.ArrayList;
 /**
  * Esta classe representa os tiers (níveis) dos itens do jogo.
+ * @version 1.0
+ * @author Alvaro Barbosa de Paula
+ * @author Ana Luiza Faria Calixto
+ * @author Chrystian Arriel Amaral
+ * @author Thiago Salles Santos
  */
-import java.util.ArrayList;
-
 public class Tier{
 	
 	private String descricao;

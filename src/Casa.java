@@ -5,6 +5,11 @@ import java.util.Random;
  * A classe Casa será responsável por representar a casa em que o jogador irá roubar. Nela, conterá
  * algumas informações importantes como o nome, a descrição, os donos que nela moram, o cômodo inicial, uma
  * lista de cômodos e a imagem do mapa.
+ * @version 1.0
+ * @author Alvaro Barbosa de Paula
+ * @author Ana Luiza Faria Calixto
+ * @author Chrystian Arriel Amaral
+ * @author Thiago Salles Santos
  */
 public class Casa{
 

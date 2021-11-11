@@ -1,5 +1,10 @@
 /**
  * Esta classe representa uma pessoa, que gerencia a movimentação.
+ * @version 1.0
+ * @author Alvaro Barbosa de Paula
+ * @author Ana Luiza Faria Calixto
+ * @author Chrystian Arriel Amaral
+ * @author Thiago Salles Santos
  */
 public class Pessoa{
 
