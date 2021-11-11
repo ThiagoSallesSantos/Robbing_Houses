@@ -114,7 +114,6 @@ public class Jogo{
 					break;
 				default:
 					throw new RuntimeException("Erro - Comando Invalido, este comando nao existe!");
-					break;
 			}
 			
 			if(this.verficarEncontro()){
@@ -501,9 +500,9 @@ public class Jogo{
 				casa.adicionaComodo(banheiro3C3);
 				
 				// Adiciona Porta
-				casa.adicionaPorta(salac3, garagemC3, true);
-				casa.adicionaPorta(salac3, depositoC3, false);
-				casa.adicionaPorta(salac3, corredorC3, false);
+				casa.adicionaPorta(salaC3, garagemC3, true);
+				casa.adicionaPorta(salaC3, depositoC3, false);
+				casa.adicionaPorta(salaC3, corredorC3, false);
 				casa.adicionaPorta(cozinhaC3, corredorC3, false);
 				casa.adicionaPorta(quarto1C3, corredorC3, true);
 				casa.adicionaPorta(banheiro1C3, corredorC3, false);
@@ -578,7 +577,7 @@ public class Jogo{
 				casa.adicionaComodo(banheiro4C4);
 				
 				// Adiciona Porta
-				casa.adicionaPorta(sacada1C4, garagemC1, true);
+				casa.adicionaPorta(sacada1C4, garagemC4, true);
 				casa.adicionaPorta(sacada1C4, escada2C4, false);
 				casa.adicionaPorta(corredor1C4, escada2C4, false);
 				casa.adicionaPorta(corredor1C4, bibliotecaC4, true);
@@ -607,12 +606,102 @@ public class Jogo{
 				casa.adicionaDonos(3);
 			
 			case 5:
+				
+				// Casa - 5
+				casa = new Casa("Hotel", "Hotel 5 estrelas da cidade!", "resource/casas/Casa 5.png");
+				
+				// Comodos
+				Comodo recepcaoC5 = new Comodo("Recepcao", this.listaTier.get(0), true, false);
+				Comodo balcaoC5 = new Comodo("Balcao", this.listaTier.get(2), false, true);
+				Comodo escritorioC5 = new Comodo("Escritorio", this.listaTier.get(1), false, false);
+				Comodo cozinhaC5 = new Comodo("Cozinha", this.listaTier.get(1), false, true);
+				Comodo estacionamentoC5 = new Comodo("Estacionamento", this.listaTier.get(0), true, true);
+				Comodo escada1C5 = new Comodo("Escada 1", this.listaTier.get(2), false, false);
+				Comodo escada2C5 = new Comodo("Escada 2", this.listaTier.get(2), false, false);
+				Comodo elevadorC5 = new Comodo("Elevador", this.listaTier.get(0), false, true);
+				Comodo corredor1C5 = new Comodo("Corredor 1", this.listaTier.get(1), true, false);
+				Comodo quarto1C5 = new Comodo("Quarto 1", this.listaTier.get(2), false, true);
+				Comodo banheiro1C5 = new Comodo("Banheiro 1", this.listaTier.get(3), false, false);
+				Comodo quarto2C5 = new Comodo("Quarto 2", this.listaTier.get(2), true, true);
+				Comodo banheiro2C5 = new Comodo("Banheiro 2", this.listaTier.get(3), false, false);
+				Comodo quarto3C5 = new Comodo("Quarto 3", this.listaTier.get(2), true, true);
+				Comodo banheiro3C5 = new Comodo("Banheiro 3", this.listaTier.get(3), false, false);
+				Comodo quarto4C5 = new Comodo("Quarto 4", this.listaTier.get(2), false, true);
+				Comodo banheiro4C5 = new Comodo("Banheiro 4", this.listaTier.get(3), false, false);
+				Comodo corredor2C5 = new Comodo("Corredor 2", this.listaTier.get(1), true, true);
+				Comodo quarto5C5 = new Comodo("Quarto 5", this.listaTier.get(2), true, true);
+				Comodo banheiro5C5 = new Comodo("Banheiro 5", this.listaTier.get(3), false, false);
+				Comodo quarto6C5 = new Comodo("Quarto 6", this.listaTier.get(2), false, true);
+				Comodo banheiro6C5 = new Comodo("Banheiro 6", this.listaTier.get(3), false, false);
+				Comodo quarto7C5 = new Comodo("Quarto 7", this.listaTier.get(2), true, true);
+				Comodo banheiro7C5 = new Comodo("Banheiro 7", this.listaTier.get(3), false, false);
+				Comodo quarto8C5 = new Comodo("Quarto 8", this.listaTier.get(2), false, true);
+				Comodo banheiro8C5 = new Comodo("Banheiro 8", this.listaTier.get(3), false, false);
 			
-				casa = new Casa("Hotel", "Hotel a beira da praia!", "resource/casas/Casa 5.png");
+				// Adiciona Comodo
+				casa.adicionaComodo(recepcaoC5);
+				casa.adicionaComodo(balcaoC5);
+				casa.adicionaComodo(escritorioC5);
+				casa.adicionaComodo(estacionamentoC5);
+				casa.adicionaComodo(escada1C5);
+				casa.adicionaComodo(escada2C5);
+				casa.adicionaComodo(elevadorC5);
+				casa.adicionaComodo(corredor1C5);
+				casa.adicionaComodo(quarto1C5);
+				casa.adicionaComodo(banheiro1C5);
+				casa.adicionaComodo(quarto2C5);
+				casa.adicionaComodo(banheiro2C5);
+				casa.adicionaComodo(quarto3C5);
+				casa.adicionaComodo(banheiro3C5);
+				casa.adicionaComodo(quarto4C5);
+				casa.adicionaComodo(banheiro4C5);
+				casa.adicionaComodo(corredor2C5);
+				casa.adicionaComodo(quarto5C5);
+				casa.adicionaComodo(banheiro5C5);
+				casa.adicionaComodo(quarto6C5);
+				casa.adicionaComodo(banheiro6C5);
+				casa.adicionaComodo(quarto7C5);
+				casa.adicionaComodo(banheiro7C5);
+				casa.adicionaComodo(quarto8C5);
+				casa.adicionaComodo(banheiro8C5);
+			
+				// Adiciona Porta
+				casa.adicionaPorta(recepcaoC5, estacionamentoC5, false);
+				casa.adicionaPorta(recepcaoC5, cozinhaC5, true);
+				casa.adicionaPorta(recepcaoC5, escritorioC5, true);
+				casa.adicionaPorta(balcaoC5, escritorioC5, false);
+				casa.adicionaPorta(recepcaoC5, escada1C5, false);
+				casa.adicionaPorta(corredor1C5, escada1C5, false);
+				casa.adicionaPorta(corredor1C5, quarto1C5, false);
+				casa.adicionaPorta(banheiro1C5, quarto1C5, true);
+				casa.adicionaPorta(corredor1C5, quarto2C5, true);
+				casa.adicionaPorta(banheiro2C5, quarto2C5, false);
+				casa.adicionaPorta(corredor1C5, quarto3C5, false);
+				casa.adicionaPorta(banheiro3C5, quarto3C5, true);
+				casa.adicionaPorta(corredor1C5, quarto4C5, true);
+				casa.adicionaPorta(banheiro4C5, quarto4C5, false);
+				casa.adicionaPorta(corredor1C5, escada2C5, false);
+				casa.adicionaPorta(corredor2C5, escada2C5, false);
+				casa.adicionaPorta(corredor2C5, quarto5C5, true);
+				casa.adicionaPorta(banheiro5C5, quarto5C5, true);
+				casa.adicionaPorta(corredor2C5, quarto6C5, false);
+				casa.adicionaPorta(banheiro6C5, quarto6C5, true);
+				casa.adicionaPorta(corredor2C5, quarto7C5, true);
+				casa.adicionaPorta(banheiro7C5, quarto7C5, false);
+				casa.adicionaPorta(corredor2C5, quarto8C5, false);
+				casa.adicionaPorta(banheiro8C5, quarto8C5, true);
+				casa.adicionaPorta(recepcaoC5, elevadorC5, false);
+				casa.adicionaPorta(corredor1C5, elevadorC5, false);
+				casa.adicionaPorta(corredor2C5, elevadorC5, false);
+			
+				// Seleciona comodo inicial do ladrão
+				casa.setComodoInicial(estacionamentoC5);
+				
+				// Adiciona os Donos
+				casa.adicionaDonos(4);
 			
 			default:
 				throw new RuntimeException("Erro - Casa selecionada nao existe!");
-				break;
 		}
 		
 		return casa;
