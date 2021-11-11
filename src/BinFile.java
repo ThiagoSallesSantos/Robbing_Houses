@@ -22,9 +22,9 @@ public class BinFile {
 	    	arq.writeObject(sb);
     	}
     	catch(IOException e){
-    		jogo.enviaInformacaoPopUp("Erro - Nao foi possivel escrever no arquivo, devido ao um erro de entrada e saida!\nMais informacoes: " e.getMessage());
+    		jogo.enviaInformacaoPopUp("Erro - Nao foi possivel escrever no arquivo, devido ao um erro de entrada e saida!\nMais informacoes: " + e.getMessage());
     	}catch(Exception e){
-			jogo.enviaInformacaoPopUp("Erro - Nao foi possivel escrever no arquivo, devido algum erro inesperado!\nMais informacoes: " e.getMessage());
+			jogo.enviaInformacaoPopUp("Erro - Nao foi possivel escrever no arquivo, devido algum erro inesperado!\nMais informacoes: " + e.getMessage());
 		}
     }
 /**
@@ -37,11 +37,11 @@ public class BinFile {
     	try(ObjectInputStream arq = new ObjectInputStream(new FileInputStream(nomeArquivo))){
 	    	sb = (ScoreBoard)arq.readObject();
     	}catch(FileNotFoundException e){
-    		jogo.enviaInformacaoPopUp("Alerta - Nao foi possivel ler o arquivo, devido a arquivo na encontrado!\nMais informacoes: " e.getMessage());
+    		jogo.enviaInformacaoPopUp("Alerta - Nao foi possivel ler o arquivo, devido a arquivo na encontrado!\nMais informacoes: " + e.getMessage());
     	}catch(IOException e){
-    		jogo.enviaInformacaoPopUp("Erro - Nao foi possivel ler o arquivo, devido ao um erro de entrada e saida!\nMais informacoes: " e.getMessage());
+    		jogo.enviaInformacaoPopUp("Erro - Nao foi possivel ler o arquivo, devido ao um erro de entrada e saida!\nMais informacoes: " + e.getMessage());
     	}catch (ClassNotFoundException e){
-    		jogo.enviaInformacaoPopUp("Erro - Nao foi possivel ler o arquivo, devido ao um erro de classe nao encontrada!\nMais informacoes: " e.getMessage());
+    		jogo.enviaInformacaoPopUp("Erro - Nao foi possivel ler o arquivo, devido ao um erro de classe nao encontrada!\nMais informacoes: " + e.getMessage());
 		}
 		return sb;
     }

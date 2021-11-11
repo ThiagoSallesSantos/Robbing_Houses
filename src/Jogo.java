@@ -418,7 +418,7 @@ public class Jogo{
  * @param texto objeto do tipo String, é a informação que será exibida ao jogador.
  */	
 	public void enviaInformacaoPopUp(String texto){
-		this.this.interfaceJogo.enviaMensagem(texto);
+		this.interfaceJogo.enviaMensagem(texto);
 	}
 	
 /**
