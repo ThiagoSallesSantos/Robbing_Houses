@@ -1,3 +1,7 @@
+/**
+ * Esta classe representa o Jogo, sendo responsável por montar as casas, criar os itens, os
+ * tiers, os cômodos e as portas, implementar e gerenciar os comandos dos jogadores.
+ */
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -10,52 +14,77 @@ public class Jogo{
 	private Ladrao ladrao;
 	private Casa casaAtual;
 	private boolean status;
-	
+/**
+ * Construtor da classe Jogo. */	
 	private Jogo(){
 		this.jogador = new Jogador();
 		this.listaTier = this.criarTierItens();
 		this.status = false;
 	}
-	
+/**
+ * Método responsável por retornar a instância do jogo. Caso o jogo não exista, ele é criado.
+ * @return
+ */	
 	public static Jogo getInstanciaJogo(){
 		if(jogo == null){
 			jogo = new Jogo();
 		}
 		return jogo;
 	}
-	
+/**
+ * Método responsável por iniciar o jogo, iniciando a fase, a interface e a exibindo. */	
 	public void start(){
 		this.status = true;
 		this.iniciaFase();
 		this.interfaceJogo = new Interface(this);
 		this.interfaceJogo.exibir();
 	}
-	
+/**
+ * Método responsável por retornar o cômodo em que o ladrão se encontra.
+ * @return retorna um objeto do tipo Comodo contendo o local em que o ladrão está.
+ */	
 	public Comodo getComodoAtualLadrao(){
 		return this.ladrao.getLocalAtual();
 	}
-	
+/**
+ * Método responsável por retornar o ladrão do jogo.
+ * @return retorna o atributo do tipo Ladrao.
+ */	
 	public Ladrao getLadrao(){
 		return this.ladrao;
 	}
-	
+/**
+ * Método responsável por retornar a casa da fase em questão.
+ * @return retorna um objeto do tipo Casa que contém a casa da fase atual.
+ */	
 	public Casa getCasaAtual(){
 		return this.casaAtual;
 	}
-	
+/**
+ * Método responsável por retornar o diretório da imagem das casas.
+ * @return retorna uma String que contém o diretório das imagens das casas.
+ */	
 	public String getImagemCasaAtual(){
 		return this.casaAtual.getDirImagem();
 	}
-	
+/**
+ * Método responsável por retornar as informações do jogador. 
+ * @return retorna uma String contendo as informações do jogador,
+ */
 	public String getInfoJogador(){
 		return "<b>Vidas do Jogador:</b> " + this.jogador.getVidasRestantes() + "<br/>";
 	}
-	
+/**
+ * Método responsável por iniciar a fase em que o ladrão estará. */	
 	public void iniciaFase(){
 		this.casaAtual = this.criarFases(this.jogador.getFaseAtual());
 		this.ladrao = new Ladrao(this.casaAtual.getComodoInicial());
 	}
-	
+/**
+ * Método responsável por retornar os comandos que aparecerão na tela. 
+ * @return retornará uma String contendo o texto que será mostrado na tela que
+ * vai depender da ação dos jogadores.
+ */	
 	public String getComandosDisp(){
 		String texto = "<b>-LISTA COMANDOS DISPONIVEIS-</b><br/>";
 		if(!this.status){
@@ -87,7 +116,11 @@ public class Jogo{
 	private boolean verificarComandoFugir(){
 		return (this.ladrao.getLocalAtual().getSaida());
 	}
-	
+/**
+ * Método responsável por executar o comando dado pelo jogador. Cada comando terá uma acão diferente
+ * dentro do jogo. Caso o comando não exista, uma mensagem de erro é exibida.
+ * @param comando Atributo da classe Comando que contém o comando escolhido pelo jogador.
+ */	
 	public void executaComando(Comando comando){
 		try{
 			switch(comando.getComando()){
@@ -269,7 +302,11 @@ public class Jogo{
 			}
 		}
 	}
-	
+/**
+ * Método responsável por criar os itens que estarão na casa e os tiers. Haverão 4 tiers:
+ * comuns, incomuns, raros e lendários.
+ * @return retorna um array contendo os tiers criados.
+ */	
 	public ArrayList<Tier> criarTierItens(){
 		
 		ArrayList<Tier> auxListaTier = new ArrayList<Tier>();

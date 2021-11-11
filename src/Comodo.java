@@ -2,7 +2,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-
+/**
+ * A classe Comodo representa um cômodo da casa. Nela contém o nome do cômodo, um valor booleano indicando se há 
+ * ou não uma saída, um valor também booleano indicando se há ou não um esconderijo, um mapa representando as portas contendo
+ * um cômodo adjacente em que este irá interagir e um booleano indicando se a porta ou não está fechada.
+ */
 public class Comodo{
 
 	private String nome;
@@ -11,6 +15,14 @@ public class Comodo{
 	private Map<Comodo, Boolean> portas;
 	private ArrayList<Item> listaItens;
 
+/**
+ * Construtor da classe Comodo
+ * @param nome uma String contendo o nome do cômodo.
+ * @param tier um objeto do tipo Tier indicando o nível dos itens do cômodo.
+ * @param saida um valor booleano indicando se há ou não saída.
+ * @param esconderijo um valor booleano indicando se há ou não esconderijo.
+ */
+
 	public Comodo(String nome, Tier tier, boolean saida, boolean esconderijo){
 		this.nome = nome;
 		this.saida = saida;
@@ -18,27 +30,49 @@ public class Comodo{
 		this.portas = new HashMap<Comodo, Boolean>();
 		this.listaItens = this.selecionaItens(tier);
 	}
-	
+/**
+ * Método que retorna o nome do cômodo.
+ * @return Retorna uma String contendo o nome do cômodo.
+ */	
 	public String getNome(){
 		return this.nome;
 	}
-	
+
+/**
+ * Método que retorna a se há saída ou não.
+ * @return Retorna um valor booleano indicando se há ou não saída no cômodo.
+ */	
+
 	public boolean getSaida(){
 		return this.saida;
 	}
-	
+/**
+ * Método que retorna a se há esconderijo ou não.
+ * @return Retorna um valor booleano indicando se há ou não esconderijo no cômodo.
+ * @return
+ */	
 	public boolean getEsconderijo(){
 		return this.esconderijo;
 	}
-	
+/**
+ * Método responsável por adicionar uma porta que ligará o cômodo em questão com seu adjacente.
+ * @param comodosAdjacente objeto do tipo cômodo que contém o cômodo adjacente.
+ * @param fechada objeto com valor booleano que indica se a porta está ou não fechada.
+ */	
 	public void adicionaPorta(Comodo comodosAdjacente, boolean fechada){
 		this.portas.put(comodosAdjacente, fechada);
 	}
-	
+/**
+ * Método que retorna as portas que interagem com o cômodo.
+ * @return retorna um mapa contendo as informações das portas.
+ */	
 	public Map<Comodo, Boolean> getPortas(){
 		return this.portas;
 	}
-	
+/**
+ * Método que abre uma porta setando um valor false para a porta, indicando que a mesma está aberta.
+ * @param comodoX objeto do tipo cômodo que representa o cômodo ajdacente.
+ */	
 	public void abrirPorta(Comodo comodoX){
 		this.portas.replace(comodoX, false);
 	}
@@ -52,19 +86,31 @@ public class Comodo{
 		}
 		return auxListaItens;
 	}
-	
+/**
+ * Método responsável por retornar a lista de itens presentes no cômodo.
+ * @return retorna um array contendo os itens do cômodo.
+ */	
 	public ArrayList<Item> getItens(){
 		return this.listaItens;
 	}
-	
+/**
+ * Método responsável por retornar a quantidade de itens presentes no cômodo.
+ * @return retorna um inteiro contendo a quantidade de itens.
+ */	
 	public int getQtdItens(){
 		return this.listaItens.size();
 	}
-	
+/**
+ * Método responsável por remover um item da lista (roubar).
+ * @param posicaoItem um inteiro contendo a posição do item a ser removido.
+ * @return retorna o item removido.
+ */	
 	public Item roubaItem(int posicaoItem){
 		return this.listaItens.remove(posicaoItem);
 	}
-	
+/**
+ * Método responsável por retornar uma String contendo as informações do cômodo.
+ */	
 	@Override
 	public String toString(){
 		int cont = 1;

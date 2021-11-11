@@ -32,15 +32,6 @@ public class Interface {
         montarJanela(jogo);
     }
 
-/**
- * Método para montar a janela do jogo.
- * Neste método, cria-se uma janela de dimensões 1200x600 px. Nela, será criada um painel esquerdo
- * de dimensões 280x450 em que serão inseridas as informações dos cômodos. Também será criado um painel
- * direito de mesma dimensão contendo as informações do jogador e do ladrão. Já o painel central conterá
- * o mapa da casa e suas informações. E por fim, é criado um terminal de dimensões 1200x150 onde conterá
- * os comandos disponíveis, além de possuir um campo para o imput do comando e um botão de enviar.
- * @param jogo atributo do tipo Jogo passado por parâmetro para montar a interface do jogo  a partir de suas informações
- */
     private void montarJanela(Jogo jogo){
 		
         // Configuração janela geral
@@ -181,57 +172,27 @@ public class Interface {
 	public void exibirInformacao(String info){
 		this.informacoesCasa.setText(info);
 	}
-
-	/**
-	 * Método para atualizar informação dos cômodos
-	 * Este método é responsável por setar o cômodo que o jogador está no momento.
-	 * @param jogo este atributo do tipo Jogo passado por parâmetro possui um método que retorna o cômodo atual do ladrão.
-	 */
 	
 	private void atualizaInfoComodos(Jogo jogo){
 		this.informacoesComodos.setText("<html><strong>---INFORMACOES COMODO---</strong><br/>" + jogo.getComodoAtualLadrao() + "</html>");
 	}
 
-	/**
-	 * Método para atualizar informações dos jogadores
-	 * Este método é responsável por setar as informações do jogadore, ou seja, a quantidade de vidas restantes.
-	 * @param jogo este atributo do tipo Jogo passado por parâmetro possui um método que retorna as informações do jogador.
-	 */
 	private void atualizaInfoJogador(Jogo jogo){
 		this.informacoesJogador.setText("<html><strong>---INFORMACOES JOGADOR---</strong><br/>" + jogo.getInfoJogador() + "<br/></html>");
 	}
-	/**
-	 * Método para atualizar as informações do ladrão
-	 * Este método é responsável por setar as informações do ladrão, ou seja, a quantidade de itens já roubados e a quantidade de chaves-mestre que ele possui.
-	 * @param jogo este atributo do tipo Jogo passado por parâmetro possui um método que retorna as informações do ladrão.
-	 */
 
 	private void atualizaInfoLadrao(Jogo jogo){
 		this.informacoesLadrao.setText("<html><strong>---INFORMACOES LADRAO---</strong><br/>" + jogo.getLadrao() + "</html>");
 	}
-	/**
-	 *Método que atualiza a informação da casa.
-	 Este método é responsável por setar as informações da casa contendo nome, descrição e a lista de donos.
-	 * @param jogo este atributo do tipo Jogo passado por parâmetro possui um método que retorna a casa atual.
-	 */
+
 	private void atualizaInfoCasa(Jogo jogo){
 		this.informacoesCasa.setText("<html><strong>---INFORMACOES CASA---</strong><br/>" + jogo.getCasaAtual() + "</html>");
 	}
 	
-	/**
-	 * Método de atualizar o mapa.
-	 * Este método é responsável por trocar e atualizar o mapa da casa.
-	 * @param jogo este atributo do tipo Jogo passado por parâmetro possui um método para pegar a imagem da casa atual.
-	 */
 	private void atualizaMapa(Jogo jogo){
 		this.mapaCasa.setIcon(new ImageIcon(jogo.getImagemCasaAtual()));
 	}
 	
-	/**
-	 * Método de atualizar informações do terminal 
-	 * Este método é responsável por setar as informações atualizadas dos comandos disponíveis para o jogador.
-	 * @param jogo este atributo do tipo Jogo passado por parâmetro será utilizado para setar as informações dos comandos disponíveis.
-	 */
 	private void atualizaInfoTerminal(Jogo jogo){
 		this.terminal.setText("<html><strong>---COMANDOS---</strong><br/>" + jogo.getComandosDisp() + "</html>");
 	}
