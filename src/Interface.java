@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -26,7 +25,6 @@ public class Interface {
 	private JLabel informacoesCasa;
 	private JLabel terminal;
 	private JTextArea terminalInput;
-	private JButton botao;
 
 /**
  * Construtor da classe Interface.
@@ -110,11 +108,11 @@ public class Interface {
         this.terminalInput.setPreferredSize(new Dimension(800, 30));
         terminalInputEBotao.add(this.terminalInput);
 
-        this.botao = new JButton("Enviar");
-        this.botao.setPreferredSize(new Dimension(200, 30));
-        terminalInputEBotao.add(this.botao);
+        JButton botao = new JButton("Enviar");
+        botao.setPreferredSize(new Dimension(200, 30));
+        terminalInputEBotao.add(botao);
 
-		this.botao.addActionListener(
+		botao.addActionListener(
 			new ActionListener(){
 				@Override
 				public void actionPerformed(ActionEvent e) {
