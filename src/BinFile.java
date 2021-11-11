@@ -55,9 +55,11 @@ public class BinFile {
  */	
 	public static void saveSBFileTxt(ScoreBoard sb, Jogo jogo){
 		try(FileWriter arq = new FileWriter(nomeArquivoTxt)){
-			arq.write(String.format("%-20s %10s%n", "Nome Jogador", "Pontuacao"));
+			arq.write(String.format("%-10s %-20s %-10s%n", "Posicao", "Nome Jogador", "Pontuacao"));
+			int cont = 1;
 			for (Jogador jogador : sb.getJogadores()) {
-				arq.write(String.format("%-20s %10s%n", jogador.getNome(), "R$" + jogador.getPontuacao()));
+				arq.write(String.format("%-10d %-20s %-10s%n", cont, jogador.getNome(), "R$" + jogador.getPontuacao()));
+				cont += 1;
 			}
         }catch(IOException e){
     		jogo.enviaInformacaoPopUp("Erro - Nao foi possivel escrever no arquivo de texto, devido ao um erro de entrada e saida!\nMais informacoes: " + e.getMessage());

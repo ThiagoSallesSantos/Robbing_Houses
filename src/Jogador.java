@@ -97,7 +97,7 @@ public class Jogador implements Comparable<Jogador>, Serializable {
  */	
 	@Override
 	public String toString(){
-		return String.format("%-20s %10s%n", this.getNome(), "R$" + this.getPontuacao());
+		return "Nome Jogador: " + this.getNome() + " Pontuacao: " + this.getPontuacao();
 	}
 	
 }

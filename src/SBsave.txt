@@ -1,3 +1,6 @@
-Nome Jogador          Pontuacao
-brabo                       R$0
-teste                       R$2
+Posicao    Nome Jogador         Pontuacao 
+1          brabo                R$0       
+2          teste                R$2       
+3          tadeu                R$7       
+4          tff                  R$0       
+5          amigo                R$4       
