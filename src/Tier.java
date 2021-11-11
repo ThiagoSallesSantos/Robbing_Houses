@@ -56,13 +56,7 @@ public class Tier{
 	public Item getItem(int posicao){
 		return this.itens.get(posicao);
 	}
-/**
- * Método responsável por retornar a quantidade de itens de um tier.
- * @return retorna um inteiro contendo o valor da quantidade de itens.
- */	
-	public int getQtdItens(){
-		return this.itens.size();
-	}
+	
 /**
  * Método responsável reodernar de formar aleatória a lista de itens.
  */	

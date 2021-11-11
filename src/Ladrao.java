@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author Chrystian Arriel Amaral
  * @author Thiago Salles Santos
  */
-public class Ladrao extends Pessoa{
+public class Ladrao extends Personagem{
 
 	private int vidaUtilChaveMestre;
 	private ArrayList<Item> listaItensRoubados;
@@ -100,7 +100,7 @@ public class Ladrao extends Pessoa{
 		if(this.getQtdItens() == 0){
 			return texto + "Nenhum item foi roubado ainda!<br/>";
 		}
-		for(Item itemRoubado : this.listaItensRoubados){
+		for(Item itemRoubado : this.getListaItensRoubados()){
 			texto += itemRoubado + "<br/>";
 		}
 		return texto;

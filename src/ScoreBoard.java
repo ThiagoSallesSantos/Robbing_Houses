@@ -27,6 +27,15 @@ public class ScoreBoard implements Serializable {
 	public void addJogador(Jogador jogador){
 		lista.add(jogador);
 	}
+	
+/**
+ * Método responsável por retornar a lista de jogadores da ScoreBoard.
+ * @return retorna uma ArrayList dos jogadores salvo na ScoreBoard.
+ */	
+	public ArrayList<Jogador> getJogadores(){
+		return this.lista;
+	}
+	
 /**
  * Retornará as pontuações obtidas pelos jogadores em ordem decrescente 
  * @return retorna uma String, contendo informações do objeto.
@@ -34,8 +43,8 @@ public class ScoreBoard implements Serializable {
 	@Override
 	public String toString(){
 		Collections.sort(this.lista);
-		String texto = "";
-		for(Jogador jogador : this.lista){
+		String texto = String.format("%-20s %10s%n", "Nome Jogador", "Pontuacao") + "<br/><br/>";
+		for(Jogador jogador : this.getJogadores()){
 			texto += jogador + "<br/>";
 		}
 		return texto;

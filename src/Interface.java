@@ -134,6 +134,7 @@ public class Interface {
 					Comando comando = new Comando(comandoStr, atributo);
 					Jogo jogo = Jogo.getInstanciaJogo();
 					jogo.executaComando(comando);
+					entrada.close();
 				}
 			});
 

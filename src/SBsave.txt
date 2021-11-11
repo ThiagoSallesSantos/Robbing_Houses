@@ -1,0 +1,3 @@
+Nome Jogador          Pontuacao
+brabo                       R$0
+teste                       R$2

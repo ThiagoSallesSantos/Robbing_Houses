@@ -190,7 +190,7 @@ public class Jogo{
 				default:
 					throw new RuntimeException("Erro - Comando Invalido, este comando nao existe!");
 			}
-			if(this.verficarEncontro()){
+			if(this.verificarEncontro()){
 				executaEncontro();
 				return;
 			}else{
@@ -262,6 +262,8 @@ public class Jogo{
 			ScoreBoard sb = BinFile.loadSBFile(this);
 			sb.addJogador(this.jogador);
 			BinFile.saveSBFile(sb, this);
+			BinFile.saveSBFileTxt(sb, this);
+			this.enviaInformacaoPopUp("Foi gerado um arquivo SBsave.txt, com a ScoreBoard, caso queira consultar!");
 			this.interfaceJogo.limpaJanela();
 			this.interfaceJogo.exibirInformacao("<html><strong>---SCOREBOARD---</strong><br/>" + sb + "<br/><br/></strong>Obrigado por jogar ;)</strong></html>");
 			this.jogador = null;
@@ -382,7 +384,7 @@ public class Jogo{
 /**
  * Método responsável por verificar se houve encontro entre o ladrão e o(s) dono(s).
  */	
-	private boolean verficarEncontro(){
+	private boolean verificarEncontro(){
 		if(!this.ladrao.getEscondido()){
 			for(Dono dono : this.casaAtual.getDonos()){
 				if((this.ladrao.getLocalAtual() == dono.getLocalAtual()) || (this.ladrao.getLocalAtual() == dono.getProximoComodo())){

@@ -10,7 +10,7 @@ import java.util.Random;
  * @author Chrystian Arriel Amaral
  * @author Thiago Salles Santos
  */
-public class Dono extends Pessoa {
+public class Dono extends Personagem {
 
 	private Comodo proximoComodo;
 /**
