@@ -2,6 +2,7 @@
  * Esta classe representa os tiers (níveis) dos itens do jogo.
  */
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Tier{
 	
@@ -56,6 +57,13 @@ public class Tier{
 	public int getQtdItens(){
 		return this.itens.size();
 	}
+/**
+ * Método responsável reodernar de formar aleatória a lista de itens.
+ */	
+	public void misturarItens(){
+		Collections.shuffle(this.itens);
+	}
+	
 /**
  * Retorna um tipo String contendo a descrição do tier. */	
 	@Override

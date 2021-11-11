@@ -123,8 +123,9 @@ public class Casa{
 	public String toString(){
 		int cont = 1;
 		String texto = "<b>Casa:</b> " + this.getNome() + "<br/><b>Descricao:</b> " + this.getDescricao() + "<br/><br/><b>-LISTA DONOS-</b><br/>";
+		texto += "<b>Lembrete:</b> entrar no comodo atual de algum dono, fara com que voce seja capturado!<br/>";
 		for(Dono dono : this.getDonos()){
-			texto += "Dono " + cont + " - " + dono + "<br/>";
+			texto += "<b>Dono " + cont + " -</b> " + dono + "<br/>";
 			cont += 1;
 		}
 		return texto;

@@ -1,8 +1,10 @@
+import java.io.Serializable;
+
 /**
  * Esta classe representa o jogador e contém informações como o nome, a pontuação obtida, as
  * vidas restantes e a fase em que o mesmo se encontra.
  */
-public class Jogador implements Comparable<Jogador> {
+public class Jogador implements Comparable<Jogador>, Serializable {
 	
 	private String nome;
 	private int pontuacao;
@@ -87,7 +89,7 @@ public class Jogador implements Comparable<Jogador> {
  * e sua pontuação. */	
 	@Override
 	public String toString(){
-		return "Nome: " + this.getNome() + " - Pontuacao: " + this.getPontuacao();
+		return "Nome do jogador: " + this.getNome() + " - Pontuacao: R$" + this.getPontuacao();
 	}
 	
 }

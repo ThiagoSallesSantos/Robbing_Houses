@@ -88,6 +88,9 @@ public class Ladrao extends Pessoa{
 	@Override
 	public String toString(){
 		String texto = "<b>Chave Mestre:</b> " + this.getVidaUtilChave() + " uso(s) restante<br/>";
+		if(this.getEscondido()){
+			texto += "<b>VOCE ESTA ESCONDIDO!</b> (<i>sai do esconderijo para realizar outras acoes</i>)";
+		}
 		texto += "<br/><b>-LISTA ITENS ROUBADOS-</b><br/>";
 		if(this.getQtdItens() == 0){
 			return texto + "Nenhum item foi roubado ainda!<br/>";

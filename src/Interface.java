@@ -89,7 +89,7 @@ public class Interface {
         painelTerminal.setPreferredSize(new Dimension(1200, 150));
 
         this.terminal = new JLabel("<html><strong>---COMANDOS---</strong><br/>" + jogo.getComandosDisp() + "</html>");
-        this.terminal.setFont(new Font("Ariel", Font.BOLD, 10));
+        this.terminal.setFont(new Font("Ariel", Font.BOLD, 8));
         this.terminal.setPreferredSize(new Dimension(1200, 120));
 		this.terminal.setMaximumSize(new Dimension(400, 120));
 		this.terminal.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
@@ -143,11 +143,13 @@ public class Interface {
  * @param jogo atributo do tipo Jogo em que será atualizado.
  */	
 	public void atualizaDados(Jogo jogo){
-		this.atualizaInfoComodos(jogo);
-		this.atualizaInfoJogador(jogo);
-		this.atualizaInfoLadrao(jogo);
-		this.atualizaInfoCasa(jogo);
-		this.atualizaMapa(jogo);
+		if(jogo.getStatus()){
+			this.atualizaInfoComodos(jogo);
+			this.atualizaInfoJogador(jogo);
+			this.atualizaInfoLadrao(jogo);
+			this.atualizaInfoCasa(jogo);
+			this.atualizaMapa(jogo);
+		}
 		this.atualizaInfoTerminal(jogo);
 	}
 
@@ -160,7 +162,7 @@ public class Interface {
 		this.informacoesJogador.setText("");
 		this.informacoesLadrao.setText("");
 		this.informacoesCasa.setText("");
-		this.mapaCasa.setText("");
+		this.mapaCasa.setIcon(new ImageIcon());
 		this.terminal.setText("");
 	}
 

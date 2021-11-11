@@ -81,8 +81,9 @@ public class Comodo{
 		Random random = new Random();
 		ArrayList<Item> auxListaItens = new ArrayList<Item>();
 		int qtdItens = random.nextInt(5) + 1;
+		tier.misturarItens();
 		for(int i=0; i < qtdItens; i++){
-			auxListaItens.add(tier.getItem(random.nextInt(tier.getQtdItens())));
+			auxListaItens.add(tier.getItem(i));
 		}
 		return auxListaItens;
 	}
@@ -115,10 +116,11 @@ public class Comodo{
 	public String toString(){
 		int cont = 1;
 		String texto = "<b>Comodo Atual:</b> " + this.getNome() + "<br/>";
-		
+		texto += "<b>Esconderijo:</b> " + (this.getEsconderijo() ? "Este comodo possui esconderijo" : "Este comodo <b>NAO</b> possui esconderijo") + "<br/>";
+		texto += "<b>Rota de Fuga:</b> " + (this.getSaida() ? "Este comodo possui rota de fuga" : "Este comodo <b>NAO</b> possui rota de fuga") + "<br/>";
 		texto += "<br/><b>-LISTA PORTAS-</b><br/>Lista de comodos adjacentes:<br/>";
 		for(Comodo comodoAdjacente : this.getPortas().keySet()){
-			texto += cont + " - " + comodoAdjacente.getNome() + "<br/>";
+			texto += cont + " - " + comodoAdjacente.getNome() + (this.portas.get(comodoAdjacente) ? " - <b>(TRANCADA)</b>" : "") + "<br/>";
 			cont += 1;
 		}
 		texto += "<br/><b>-LISTA ITENS-</b><br/>Lista de itens para serem roubados:<br/>";
